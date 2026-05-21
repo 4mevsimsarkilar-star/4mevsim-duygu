@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NRAtölye PRO • NRA Prompt Aracı V5.0 (Ultimate)</title>
+
+<style>
+/* ========== v5.0 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
+:root {
+    --bg: #0f1115;
+    --card: #151922;
+    --muted: #9aa3b2;
+    --text: #e9ecf1;
+    --accent: #14b8a6; 
+    --line: #222838;
+    --btn: #1f2633;
+    --btnh: #273042;
+    --amber: #f0c94b;
+    --gold: #f5c26b;
+    --danger: #ef4444;
+    --btn-shadow: 0 18px 40px rgba(0,0,0,0.75);
+}
+
+* { box-sizing: border-box; transition: all 0.2s ease; }
+
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #111827 0, #020308 52%, #000 100%);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, Arial, sans-serif;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container { max-width: 1000px; width: 100%; }
+
+header {
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+    margin-bottom: 25px; padding: 20px; border-radius: 24px;
+    background: linear-gradient(135deg, rgba(15,23,42,0.88), rgba(15,23,42,0.65));
+    border: 1px solid rgba(148,163,184,0.3); box-shadow: var(--btn-shadow); backdrop-filter: blur(18px);
+}
+
+.logo-real {
+    width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; overflow: hidden;
+    background: radial-gradient(circle at 30% 30%, #a5f3fc 0, #22c55e 40%, #0f172a 100%);
+    box-shadow: 0 0 0 1px rgba(15,23,42,.9), 0 0 18px rgba(45,212,191,.7), 0 0 40px rgba(56,189,248,.55);
+    animation: nraGlow 4s ease-in-out infinite;
+}
+
+.logo-real img { width: 100%; height: 100%; object-fit: cover; }
+
+@keyframes nraGlow {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(15,23,42,.9), 0 0 18px rgba(45,212,191,.7), 0 0 40px rgba(56,189,248,.55); }
+  50% { box-shadow: 0 0 0 1px rgba(15,23,42,.9), 0 0 25px rgba(20, 184, 166, 0.9), 0 0 60px rgba(56,189,248,.8); transform: scale(1.02); }
+}
+
+header h2 {
+    margin: 0; font-size: 26px;
+    background: linear-gradient(to right, var(--accent), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.main-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+    padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+input, select, .auto-expand {
+    width: 100%; background: #0f131a !important; border: 1px solid var(--line) !important;
+    border-radius: 12px !important; color: var(--text) !important; padding: 14px !important;
+    font-size: 15px; margin: 8px 0; outline: none;
+}
+
+/* Simge kutusu: Tek satır ve genişleyebilir */
+.auto-expand {
+    resize: none;
+    overflow: hidden;
+    min-height: 48px;
+    height: 48px;
+    display: block;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.input-container { position: relative; }
+.clear-input {
+    position: absolute; right: 10px; top: 22px;
+    background: var(--btn); border: 1px solid var(--line); color: var(--muted);
+    border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 11px;
+    z-index: 5;
+}
+.clear-input:hover { background: var(--danger); color: white; }
+
+.icon-stock {
+    background: rgba(255,255,255,0.02); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px; margin: 5px 0 15px 0;
+}
+.icon-stock span { font-size: 13px; color: var(--muted); display: block; margin-bottom: 8px; }
+.icon-stock small { font-size: 11px; color: var(--accent); display: block; margin-bottom: 10px; font-style: italic; }
+.chips-container { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.chip {
+    background: var(--btn); color: var(--text); border: 1px solid var(--line);
+    padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer;
+    font-weight: 500;
+}
+.chip:hover { background: var(--btnh); border-color: var(--accent); color: var(--accent); }
+
+/* Seçilen simge stili */
+.chip.selected {
+    border-color: var(--accent) !important;
+    background: rgba(20, 184, 166, 0.15);
+    box-shadow: 0 0 10px rgba(20, 184, 166, 0.3);
+    color: var(--accent);
+}
+
+.links {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 15px 0; padding: 12px;
+    background: rgba(255,255,255,0.03); border-radius: 14px;
+}
+
+.links button {
+    background: var(--btn); color: var(--muted); border: 1px solid var(--line);
+    padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer;
+}
+
+.preview-area { text-align: center; border-top: 1px solid var(--line); padding-top: 20px; }
+#previewImg {
+    max-width: 100%; height: auto; max-height: 250px; border-radius: 15px;
+    border: 2px dashed var(--line); margin: 15px 0; display: block; margin-left: auto; margin-right: auto;
+}
+
+.action-btns { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+.btn-main { background: var(--accent); color: #000; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+.btn-sub { background: var(--btn); color: var(--text); border: 1px solid var(--line); padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+.btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
+.prompt-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;
+}
+
+.prompt-box { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; }
+.prompt-box h3 { margin: 0; font-size: 15px; color: var(--accent); }
+.prompt-tr { font-size: 12px; color: var(--muted); display: block; margin-bottom: 10px; font-style: italic; }
+
+textarea {
+    width: 100%; height: 220px; background: #090c10; color: #cbd5e1; border: 1px solid #1e293b;
+    border-radius: 10px; padding: 12px; font-family: monospace; font-size: 13px; resize: none;
+}
+
+.box-btns { display: flex; gap: 8px; margin-top: 10px; }
+.copy-btn { flex: 2; background: var(--accent); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; padding: 10px; }
+.edit-btn { flex: 1; background: var(--btn); color: var(--text); border: 1px solid var(--line); border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+.select-group { display: flex; gap: 10px; margin: 8px 0; }
+.select-group select { margin: 0 !important; }
+
+@media (max-width: 600px) {
+    .select-group { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo-real">
+            <img src="NRAtölyelogo.png" alt="NR" onerror="this.src='https://via.placeholder.com/80/14b8a6/fff?text=NR'">
+        </div>
+        <h2>NRAtölye PRO • NRA Prompt Aracı V5.0</h2>
+    </header>
+
+    <div class="main-card">
+        <div class="input-container">
+            <input type="text" id="channel" placeholder="Kanal Adı (Boş bırakılırsa eklenmez)" value="4mevsimşarkılar">
+            <button class="clear-input" onclick="clearField('channel')">✕</button>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="artist" placeholder="Sanatçı / Yazar Adı (Boş bırakılırsa eklenmez)">
+            <button class="clear-input" onclick="clearField('artist')">✕</button>
+        </div>
+        <div class="input-container">
+            <input type="text" id="song" placeholder="Eser / Video Başlığı (Boş bırakılırsa eklenmez)">
+            <button class="clear-input" onclick="clearField('song')">✕</button>
+        </div>
+
+        <div class="input-container">
+            <textarea id="icon" class="auto-expand" placeholder="Simge (Virgülle ayırarak çoklu yazabilirsiniz)" rows="1" oninput="autoGrow(this)"></textarea>
+            <button class="clear-input" onclick="clearField('icon')">✕</button>
+        </div>
+        
+        <div class="icon-stock">
+            <span>✨ İlham Verici Simgeler:</span>
+            <small>💡 Simgelere peş peşe tıklayarak birden fazla simgeyi virgülle birleştirebilirsiniz.</small>
+            <div class="chips-container">
+                <button class="chip" onclick="selectIcon('a majestically waving Turkish flag', this)">🇹🇷͜͜͡͡✯  Dalgalanan Türk Bayrağı</button>    
+                <button class="chip" onclick="selectIcon('a patterned traditional Anatolian kilim rug', this)">🪘 Desenli Kilim</button>
+                <button class="chip" onclick="selectIcon('a cozy glowing fireplace with burning logs', this)">🔥 Şömine</button>
+                <button class="chip" onclick="selectIcon('a traditional cast iron wood-burning stove with a steaming teapot on top', this)">🍵 Çaydanlıklı Soba</button>  
+                <button class="chip" onclick="selectIcon('an antique classic wooden radio with glowing warm dials', this)">📻 Klasik Radyo</button>
+                <button class="chip" onclick="selectIcon('an old retro CRT tube television', this)">📺 Eski Tüplü TV</button>
+                <button class="chip" onclick="selectIcon('a peaceful seaside beach with sand and gentle waves', this)">🏖️ Deniz Kenarı Kumsal</button>
+                <button class="chip" onclick="selectIcon('a peaceful coastal harbor filled with small wooden fishing boats and rowboats', this)">⛵ Balıkçı Limanı</button>  
+                <button class="chip" onclick="selectIcon('a rustic Anatolian village neighborhood with old traditional houses', this)">🏘️ Köy Mahallesi</button>
+                <button class="chip" onclick="selectIcon('a glowing crescent moon', this)">🌙 Hilal</button>
+                <button class="chip" onclick="selectIcon('a graceful flying dove', this)">🕊️ Güvercin</button>
+                <button class="chip" onclick="selectIcon('a majestic eagle silhouette', this)">🦅 Kartal</button>
+                <button class="chip" onclick="selectIcon('burning phoenix wings', this)">🔥 Anka Kuşu</button>
+                <button class="chip" onclick="selectIcon('an ancient open book', this)">📖 Kitap</button>
+                <button class="chip" onclick="selectIcon('a burning candle with melting wax', this)">🕯️ Mum</button>
+                <button class="chip" onclick="selectIcon('an antique pocket watch', this)">⏳ Saat</button>
+                <button class="chip" onclick="selectIcon('a classic vintage gramophone record', this)">🎵 Plak</button>
+                <button class="chip" onclick="selectIcon('a professional studio microphone', this)">🎙️ Mikrofon</button>                
+                <button class="chip" onclick="selectIcon('a green oak tree leaf', this)">🍃 Yaprak</button>
+                <button class="chip" onclick="selectIcon('a red blooming rose covered in fresh water droplets', this)">🌹 Damlalı Kırmızı Gül</button>
+                <button class="chip" onclick="selectIcon('a glowing 3D hologram wireframe', this)">🧬 Hologram</button>
+                <button class="chip" onclick="selectIcon('an artist paint palette with colorful strokes', this)">🎨 Palet</button>
+                <button class="chip" onclick="selectIcon('a traditional Black Sea kemenche instrument', this)">🎻 Kemençe</button>
+                <button class="chip" onclick="selectIcon('a traditional Turkish acoustic baglama saz', this)">🪕 Saz (Bağlama)</button>
+                <button class="chip" onclick="selectIcon('a golden violin silhouette', this)">🎻 Keman</button>
+                <button class="chip" onclick="selectIcon('a bold glowing YouTube play button or massive 3D arrow', this)">▶️ 3D Ok & Play Butonu</button>
+                <button class="chip" onclick="selectIcon('a majestic 3D musical staff starting with a treble clef, spiraling inward into a deep perspective tunnel, notes vanishing into the distance with a glowing motion blur', this)">🎼 Nota Tüneli (3D)</button>
+            </div>
+        </div>
+
+        <div class="select-group">
+            <select id="format" style="flex: 1;">
+                <option value="horizontal">📺 Yatay (16:9)</option>
+                <option value="vertical">📱 Dikey (9:16)</option>
+                <option value="square">⬛ Kare (1:1)</option>
+            </select>
+            
+<select id="focusStyle" style="flex: 1; border: 1px solid var(--accent) !important;">
+    <option value="standard">⚖️ Standart Denge</option>
+    <option value="subject_first" selected>👤 Sanatçı ve Yazı Odaklı (Simgeler Silik)</option>
+    <option value="artistic">🎨 Sanatsal / Dağınık</option>
+</select>
+
+            <select id="watermarkStyle" style="flex: 1;">
+                <option value="subtle">💧Kanal Adı Silik / Zarif</option>
+                <option value="clear">👁️Kanal Adı Belirgin</option>
+                <option value="neon">🌟Kanal Adı Parlak / Neon</option>
+                <option value="gold" selected>🏆 Kanal Adı Altın İmza</option>
+                <option value="musical_gold">🎼 Altın Nota & Melodi</option>
+                <option value="flashy">💥 Kanal Adı Gösterişli/Glitch</option>
+            </select>
+        </div>
+
+        <div style="text-align: right; margin-top: 10px;">
+            <button class="btn-danger" style="padding: 8px 16px; font-size: 13px;" onclick="clearAllFields()">🧹 Tüm Yazıları Temizle</button>
+        </div>
+
+        <div class="links">
+            <button onclick="window.open('https://copilot.microsoft.com/', '_blank')">Copilot</button>
+            <button onclick="window.open('https://gemini.google.com/app', '_blank')">Gemini</button>
+            <button onclick="window.open('https://chatgpt.com/', '_blank')">ChatGPT</button>
+            <button onclick="window.open('https://grok.com/', '_blank')">Grok</button>
+            <button onclick="window.open('https://manus.im/app', '_blank')">Manus</button> 
+            <button onclick="window.open('https://firefly.adobe.com/', '_blank')">Firefly</button>
+            <button onclick="window.open('https://meta.ai/', '_blank')">Meta</button>
+        </div>
+
+        <div class="preview-area">
+            <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)" style="display:none">
+            <button class="btn-sub" onclick="document.getElementById('fileInput').click()">📂 Dosya Seç</button>
+            <img id="previewImg" src="">
+            <div class="action-btns">
+                <button class="btn-main" onclick="pasteImageButton()">📋 Butonla Yapıştır</button>
+                <button class="btn-main" style="background: var(--gold);" onclick="downloadImage()">💾 İndir</button>
+                <button class="btn-danger" onclick="clearImage()">🗑️ Resmi Kaldır</button>
+            </div>
+            <p style="font-size:11px; color:var(--muted); margin-top:10px;">💡 İpucu: Sayfanın neresinde olursanız olun CTRL+V (veya sağ tık yapıştır) ile resim yapıştırabilirsiniz.</p>
+        </div>
+    </div>
+
+    <div class="prompt-grid" id="promptsContainer"></div>
+</div>
+
+<script>
+const promptsData = Array.from({length: 33}, (_, i) => `p${i+1}`);
+
+const titles = [
+    "🏹 Sinematik Anadolu", "🌟 Altın Sıcaklığı", "🎭 Dramatik Noir", "🌹 Bahar Gülü", "🕌 İlahi Işık", 
+    "☔ Huzurlu Yağmur", "🔥 Kor Kırmızı", "🇹🇷 Vatan Sevdası", "📜 Klasik Öykü", "🔍 Gizemli Harfler", 
+    "🕊️ Bilgelik Odası", "🎞️ Yeşilçam Ruhu", "🎸 Sahne Işığı",
+    "🏛️ Antik Sütunlar", "🌑 Derin Gece", "🏙️ Siber Şehir", "💎 Elit Mermer", "🌊 Okyanus Sesi", 
+    "🔥 Anka Kuşu", "🎡 Karnaval", "🍃 Doğa Akustiği", "⛪ Gotik Ruh", "🛸 Gelecek Çağ", 
+    "🎨 Sanat Tuvali", "🎻 Klasik Senfoni", "🌌 Galaksi", "🎙️ Podcast / Gönderi", "☕ Akustik Stüdyo",
+    "🌌 Galaktik Sonsuzluk", "🌇 Kızıl Günbatımı",
+    "📺 YouTube Çarpıcı Kapak", "🚨 YouTube Aksiyon/Şok", "🕵️ YouTube Gizem/Merak"
+];
+
+const trDescriptions = [
+    "Kültürel dokulu sinematik Anadolu tarzı.", "Sıcak altın tonları ve parıltılar.", "Ağır gölgeli, duygusal dramatik ruh hali.", "Romantik gün ışığı ve gül estetiği.", "Huzurlu manevi fon ve ilahi atmosfer.", 
+    "Yağmurlu lofi rahatlama ortamı.", "Siyah fon üzerine neon kırmızı odaklar.", "Şanlı bayrak ve kahramanlık ışığı.", "Eski radyo ve kitaplık temalı edebi hava.", "Havada süzülen gizemli 3D harfler.", 
+    "Manevi sohbetler için Rembrandt ışığı.", "Nostaljik gramofon ve eski dönem havası.", "Canlı konser ve enerjik sahne ışıkları.",
+    "Tarihi sütunlar ve görkemli epik fon.", "Sokak tarzı derin ve karanlık atmosfer.", "Fütüristik neon ve teknolojik müzik.", "Lüks mermer ve altın detaylı tasarım.", "Mavi tonlarda ferah deniz estetiği.", 
+    "Alevli ve küllerinden doğan görkemli tema.", "Rengarenk ve hareketli festival havası.", "Yeşil ve doğal akustik tınılar.", "Gotik mimari ve ruhani ışık oyunları.", "Holografik ve ileri teknoloji.", 
+    "Yağlı boya tablo dokusunda artistik kapak.", "Görkemli orkestra ve kadife fonlar.", "Yıldızlar arası sonsuzluk ve nebula.", "Antik mikrofon ve dört mevsim.", "Sıcak ahşap, bokeh ışıkları ve lofi samimiyeti.",
+    "Derin uzay, nebulalar ve yıldız tozlarıyla dolu kozmik atmosfer.", "Turuncu ve kızıl tonların hakim olduğu huzurlu günbatımı.",
+    "Devasa 3D yazılar ve gerçeküstü arkaplanlı popüler YouTube stili.", "Hareketli, ateşli ve yüksek heyecanlı YouTube aksiyon stili.", "Karanlık gölgeler ve neon ışıklarla merak uyandıran YouTube stili."
+];
+
+const defaultThemeIcons = [
+    "an ancient traditional Anatolian rug pattern or mystical cultural symbol",
+    "glowing golden light particles or a glowing warm aura",
+    "a solitary glowing street lamp or heavy atmospheric shadows",
+    "a single blooming red rose with fresh water droplets",
+    "floating luminous prayer beads or spiritual light rays from above",
+    "steaming coffee cup next to raindrops on a glass window",
+    "vibrant glowing neon abstract lines or intense red fire embers",
+    "a majestic silhouette of a soaring eagle or historic monument",
+    "an antique pocket watch or a burning candle next to old books",
+    "floating abstract glowing 3D alphabet letters and symbols",
+    "an ancient weathered parchment scroll or wise old tree branches",
+    "a classic vintage gramophone record or an old film projector",
+    "a glowing drum or dynamic stage lens flare",
+    "a broken ancient marble pillar or a laurel wreath",
+    "a classic detective hat or an old pocket knife",
+    "futuristic digital wireframes or glowing neon abstract shapes",
+    "a premium luxury geometric gold emblem",
+    "a massive ocean wave or glowing seashells",
+    "majestic burning phoenix wings or flying sparks",
+    "a glowing ferris wheel or colorful floating confetti",
+    "a fresh green oak leaf or a mountain silhouette",
+    "a chiseled gothic cross or a mystical gargoyle",
+    "a glowing 3D hologram or futuristic digital matrix lines",
+    "an artist paint palette or splashing colorful ink drops",
+    "a golden violin or an elegant grand piano silhouette",
+    "a spinning galaxy or a glowing interstellar nebula",
+    "a classic professional studio microphone",
+    "glowing fairy lights and a warm acoustic guitar",
+    "a spinning spiral galaxy or a glowing supernova",
+    "a silhouette of a flying bird against the setting sun",
+    "dynamic cinematic glowing light particles",
+    "dynamic flying debris and glowing fiery sparks",
+    "a glowing neon question mark or mysterious floating digital data"
+];
+
+const container = document.getElementById("promptsContainer");
+promptsData.forEach((id, i) => {
+    let div = document.createElement("div");
+    div.className = "prompt-box";
+    div.innerHTML = `
+        <h3>${titles[i]}</h3>
+        <span class="prompt-tr">${trDescriptions[i]}</span>
+        <textarea id="${id}" readonly></textarea>
+        <div class="box-btns">
+            <button class="edit-btn" onclick="toggleEdit('${id}', this)">🔒 Kilitli</button>
+            <button class="copy-btn" onclick="copyText('${id}', this)">📋 Kopyala</button>
+        </div>
+    `;
+    container.appendChild(div);
+});
+
+// Otomatik Genişleme Fonksiyonu
+function autoGrow(element) {
+    element.style.height = "48px";
+    element.style.height = (element.scrollHeight) + "px";
+}
+
+function updatePrompts() {
+    const channel = document.getElementById("channel").value.trim();
+    const artist = document.getElementById("artist").value.trim();
+    const song = document.getElementById("song").value.trim();
+    const userIcon = document.getElementById("icon").value.trim();
+    const format = document.getElementById("format").value;
+    const watermarkStyle = document.getElementById("watermarkStyle").value;
+    const focusStyle = document.getElementById("focusStyle").value;
+
+    let sizeRule = format === "vertical" ? " --ar 9:16" : (format === "square" ? " --ar 1:1" : " --ar 16:9");
+    
+    let focusCommand = "";
+    let iconModifier = "";
+    let textPower = "";
+
+    if (focusStyle === "subject_first") {
+        focusCommand = "SUBJECT FOCUS: The person MUST be the absolute focal point with extreme high-definition clarity and sharp rim lighting. Subject must pop out aggressively from the background.";
+        iconModifier = "BACKGROUND ELEMENTS: Place [ICON] ONLY in the far background with a soft bokeh blur. It must be subtle and MUST NOT overlap or distract from the subject.";
+        textPower = "TYPOGRAPHY DOMINANCE: Use massive, bold, and extremely clear 3D typography. Text must be the most prominent and readable element, high-contrast, popping off the screen.";
+    } else if (focusStyle === "artistic") {
+        focusCommand = "ARTISTIC STYLE: Blend the person creatively with environmental effects and thematic textures. Subject and background should have a cohesive, painterly unity.";
+        iconModifier = "SYMBOLS: Distribute [ICON] elements artistically and fluidly throughout the scene as part of the visual composition.";
+        textPower = "ARTISTIC TYPOGRAPHY: Typography should be stylized and integrated into the overall art style, appearing as part of the aesthetic design.";
+    } else { // standard
+        focusCommand = "Keep the original person clearly visible. Subject MUST stand out strongly with sharp, glowing rim lighting, popping out perfectly from the background.";
+        iconModifier = "Add symbolic [ICON] naturally. Symbols should integrate seamlessly without overshadowing the subject.";
+        textPower = "Typography: Elegant 3D letters. Ensure clear hierarchy.";
+    }
+    
+    let branding = "";
+    if (channel) {
+        if (watermarkStyle === "subtle") {
+            branding = `\n\n[Watermark: Place the text "${channel}" in a tiny, elegant, semi-transparent modern font at the bottom corner.]`;
+        } else if (watermarkStyle === "clear") {
+            branding = `\n\n[Branding: Place the text "${channel}" in a solid, clearly readable, crisp professional font with high opacity at the bottom corner.]`;
+        } else if (watermarkStyle === "neon") {
+            branding = `\n\n[Branding: Place the text "${channel}" in a bright, glowing neon font at the bottom corner.]`;
+        } else if (watermarkStyle === "gold") {
+            branding = `\n\n[Signature: Place the text "${channel}" as a luxurious shiny golden signature at the bottom corner.]`;
+        } else if (watermarkStyle === "musical_gold") {
+            branding = `\n\n[Branding: Integrate the text "${channel}" with a 3D glossy golden musical staff and flowing musical notes. The text must be in a bold, premium 3D golden metallic font, starting with an elegant treble clef (sol anahtarı). Place the text prominently and logically; the musical symbols should complement but not overshadow the clearly readable text, forming a clean golden melody line at the bottom corner.]`;
+        } else if (watermarkStyle === "flashy") {
+            branding = `\n\n[Watermark: Place the text "${channel}" in a hyper-vibrant, 3D glitch effect font at the bottom corner.]`;
+        }
+    }
+
+    let textSection = "";
+    let textLines = [];
+    if (artist) textLines.push(artist);
+    if (song) textLines.push(song);
+    
+    if (textLines.length > 0) {
+        textSection = `\n\nText:\n\n${textLines.join("\\n")}\n\n`;
+    } else {
+        textSection = `\n\n`;
+    }
+
+    const pTemplates = [
+        `Transform the uploaded image into a Cinematic Anatolian composite cover.\n\n${focusCommand}\n\nBackground: deep Anatolian cultural textures, vivid warm amber tones, glowing gold highlights, saturated reds, and subtle warm dust particles. Create a dramatic, high-contrast atmosphere with rich cinematic depth.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Golden Warmth composite cover.\n\n${focusCommand}\n\nBackground: vibrant golden hour rays, intense warm aura, luxurious glowing gold particles, and rich sunset bokeh. Create a dramatic, high-contrast atmosphere with rich cinematic depth.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Dramatic Noir composite cover.\n\n${focusCommand}\n\nBackground: deep obsidian blacks, heavy moody shadows, striking misty street lamp light. Create a dramatic, high-contrast atmosphere.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Spring Rose composite cover.\n\n${focusCommand}\n\nBackground: vibrant ruby red roses, lush emerald green leaves, and glowing dreamy romantic sunlight.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Divine Light spiritual composite cover.\n\n${focusCommand}\n\nBackground: glowing ethereal god rays, intense bright whites, deep contrasting shadows.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Peaceful Rain composite cover.\n\n${focusCommand}\n\nBackground: deep moody blues, highly reflective wet glass surfaces, and vibrant glowing warm city bokeh.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Crimson Glow composite cover.\n\n${focusCommand}\n\nBackground: pure velvet black contrasted with blindingly piercing, luminous neon red lighting.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Patriotic (Vatan) composite cover.\n\n${focusCommand}\n\nBackground: vivid crimson reds, striking heroic sun highlights, majestic waving flag textures.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Classic Storyteller composite cover.\n\n${focusCommand}\n\nBackground: rich mahogany browns, vibrant warm amber light, deep shadows, and glowing cinematic dust over vintage books.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Mystery Letters composite cover.\n\n${focusCommand}\n\nBackground: deep mysterious blues, luminous floating 3D glowing letters.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Wisdom Study composite cover.\n\n${focusCommand}\n\nBackground: rich warm traditional tones, striking Rembrandt lighting on the subject.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Retro Yeşilçam composite cover.\n\n${focusCommand}\n\nBackground: vibrant warm nostalgic tones, intense film halation, rich cinematic grain.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Live Stage composite cover.\n\n${focusCommand}\n\nBackground: explosive glowing neon stage lights, deep concert blacks, dynamic lens flares.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Ancient Pillar composite cover.\n\n${focusCommand}\n\nBackground: rich textured marble, dramatic epic sunlight striking through columns.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Deep Street Night composite cover.\n\n${focusCommand}\n\nBackground: moody dark urban shadows, intensely vibrant neon reflections on wet asphalt.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cyber Neon composite cover.\n\n${focusCommand}\n\nBackground: intense electric blues, vibrant cyberpunk pinks, glowing digital grids.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Luxury Marble composite cover.\n\n${focusCommand}\n\nBackground: pristine deep white marble, intensely reflective luxury gold accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Ocean Deep composite cover.\n\n${focusCommand}\n\nBackground: bioluminescent deep oceanic blues, piercing bright underwater sunrays.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Phoenix Fire composite cover.\n\n${focusCommand}\n\nBackground: explosive flying fire embers, blindingly bright orange and red flares.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Carnival Lights composite cover.\n\n${focusCommand}\n\nBackground: wildly vibrant festive neon colors, glowing long-exposure light trails.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Natural Forest composite cover.\n\n${focusCommand}\n\nBackground: intensely vibrant lush greens, piercing golden sunbeams filtering through leaves.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Gothic Soul composite cover.\n\n${focusCommand}\n\nBackground: deep mysterious dark greys, striking colorful stained-glass light beams.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Future Vision composite cover.\n\n${focusCommand}\n\nBackground: intensely glowing holographic blue panels, sleek metallic tones.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Artistic Oil Painting cover.\n\n${focusCommand}\n\nBackground: wildly vibrant color palettes, thick textured oil brush strokes.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Classical Opera cover.\n\n${focusCommand}\n\nBackground: extraordinarily rich velvet reds, glowing warm golden orchestra lights.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Interstellar Nebula cover.\n\n${focusCommand}\n\nBackground: explosively vibrant cosmic purples, glowing pink nebulas.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Modern Podcast cover.\n\n${focusCommand}\n\nBackground: sleek high-end studio tones, pop-color LED light accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cozy Acoustic Studio cover.\n\n${focusCommand}\n\nBackground: warm glowing string lights, rich deep mahogany wooden textures.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Deep Space Galaxy cover.\n\n${focusCommand}\n\nBackground: intensely vibrant swirling cosmic dust, piercing bright supernovas.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Sunset Landscape cover.\n\n${focusCommand}\n\nBackground: overwhelmingly vivid glowing orange and magenta skies.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a High-Impact YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: surreal hyper-realistic background blend, vibrant cinematic lighting.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Action-Shock YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: intense cinematic action, explosive lighting, dynamic motion blur.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Mystery-Intrigue YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: deep moody shadows, striking neon accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`
+    ];
+
+    promptsData.forEach((id, i) => {
+        const area = document.getElementById(id);
+        const finalIcon = userIcon ? userIcon : defaultThemeIcons[i];
+        
+        let currentIconMod = iconModifier.replace("[ICON]", finalIcon);
+        let finalPrompt = pTemplates[i].replace("[ICON_MOD]", currentIconMod);
+        
+        if(area && area.hasAttribute("readonly")) area.value = finalPrompt;
+    });
+}
+
+function selectIcon(iconName, btn) {
+    const iconInput = document.getElementById("icon");
+    let currentVal = iconInput.value.trim();
+    
+    // Butonun seçili halini toggle yap (seçiliyse kaldır, değilse ekle)
+    if(btn.classList.contains('selected')) {
+        btn.classList.remove('selected');
+        // Yazıdan simgeyi kaldır
+        let parts = currentVal.split(", ").filter(p => p !== iconName && p !== "");
+        iconInput.value = parts.join(", ");
+    } else {
+        btn.classList.add('selected');
+        // Yazıya simgeyi ekle
+        if (currentVal === "") { iconInput.value = iconName; } 
+        else { if (!currentVal.includes(iconName)) iconInput.value = currentVal + ", " + iconName; }
+    }
+    
+    autoGrow(iconInput);
+    updatePrompts();
+}
+
+function toggleEdit(id, btn) {
+    const area = document.getElementById(id);
+    if(area.hasAttribute("readonly")) {
+        area.removeAttribute("readonly"); btn.innerText = "🔓 Düzenle"; btn.style.background = "var(--amber)";
+    } else {
+        area.setAttribute("readonly", "true"); btn.innerText = "🔒 Kilitli"; btn.style.background = "var(--btn)";
+    }
+}
+
+function copyText(id, btn) {
+    const area = document.getElementById(id); area.select(); document.execCommand("copy");
+    btn.innerText = "✔ Kopyalandı"; setTimeout(() => { btn.innerText = "📋 Kopyala"; }, 1500);
+}
+
+function clearField(id) { 
+    const el = document.getElementById(id);
+    el.value = ""; 
+    if(id === 'icon') {
+        el.style.height = "48px";
+        // Tüm butonlardaki 'selected' sınıfını temizle
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    }
+    updatePrompts(); 
+}
+
+function clearAllFields() { 
+    ["channel", "artist", "song", "icon"].forEach(id => {
+        const el = document.getElementById(id);
+        el.value = "";
+        if(id === 'icon') {
+            el.style.height = "48px";
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        }
+    }); 
+    updatePrompts(); 
+}
+
+let currentImg = "";
+function previewImage(event) {
+    const file = event.target.files[0];
+    if(file) { currentImg = URL.createObjectURL(file); document.getElementById("previewImg").src = currentImg; }
+}
+
+function pasteImageButton() {
+    navigator.clipboard.read().then(items => {
+        for (const item of items) {
+            for (const type of item.types) {
+                if (type.startsWith("image/")) {
+                    item.getType(type).then(blob => {
+                        currentImg = URL.createObjectURL(blob);
+                        document.getElementById("previewImg").src = currentImg;
+                    });
+                }
+            }
+        }
+    }).catch(() => alert("Lütfen CTRL+V kullanın."));
+}
+
+document.addEventListener("paste", function(e) {
+    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") !== -1) {
+            const blob = items[i].getAsFile();
+            currentImg = URL.createObjectURL(blob);
+            document.getElementById("previewImg").src = currentImg;
+            break; 
+        }
+    }
+});
+
+function downloadImage() {
+    if(!currentImg) return alert("Önce resim yükleyin veya yapıştırın!");
+    const a = document.createElement("a"); a.href = currentImg; a.download = "nra-referans.png"; a.click();
+}
+
+function clearImage() { document.getElementById("previewImg").src = ""; currentImg = ""; document.getElementById("fileInput").value = ""; }
+
+["channel", "artist", "song", "icon", "format", "watermarkStyle", "focusStyle"].forEach(id => {
+    document.getElementById(id).addEventListener("input", updatePrompts);
+    document.getElementById(id).addEventListener("change", updatePrompts);
+});
+
+updatePrompts();
+</script>
+</body>
+</html>
