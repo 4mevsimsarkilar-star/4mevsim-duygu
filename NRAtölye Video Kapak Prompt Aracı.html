@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NRAtölye PRO • NRA Prompt Aracı V5.0 (Ultimate)</title>
+<title>NRAtölye PRO • NRA Prompt Aracı V6.0 (Studio)</title>
 
 <style>
-/* ========== v5.0 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
+/* ========== v6.0 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
 :root {
     --bg: #0f1115;
     --card: #151922;
@@ -69,13 +69,12 @@ header h2 {
     padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-input, select, .auto-expand {
+input[type=text], select, .auto-expand {
     width: 100%; background: #0f131a !important; border: 1px solid var(--line) !important;
     border-radius: 12px !important; color: var(--text) !important; padding: 14px !important;
     font-size: 15px; margin: 8px 0; outline: none;
 }
 
-/* Simge kutusu: Tek satır ve genişleyebilir */
 .auto-expand {
     resize: none;
     overflow: hidden;
@@ -109,8 +108,6 @@ input, select, .auto-expand {
     font-weight: 500;
 }
 .chip:hover { background: var(--btnh); border-color: var(--accent); color: var(--accent); }
-
-/* Seçilen simge stili */
 .chip.selected {
     border-color: var(--accent) !important;
     background: rgba(20, 184, 166, 0.15);
@@ -131,13 +128,30 @@ input, select, .auto-expand {
 .preview-area { text-align: center; border-top: 1px solid var(--line); padding-top: 20px; }
 #previewImg {
     max-width: 100%; height: auto; max-height: 250px; border-radius: 15px;
-    border: 2px dashed var(--line); margin: 15px 0; display: block; margin-left: auto; margin-right: auto;
+    border: 2px dashed var(--line); margin: 15px 0; 
+    display: none;
+    margin-left: auto; margin-right: auto;
+    cursor: zoom-in;
 }
-
 .action-btns { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
 .btn-main { background: var(--accent); color: #000; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 .btn-sub { background: var(--btn); color: var(--text); border: 1px solid var(--line); padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
+/* Kategori Sekmeleri (Tabs) */
+.tabs-container {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px;
+    background: rgba(15, 19, 26, 0.5); padding: 10px; border-radius: 16px; border: 1px solid var(--line);
+}
+.tab-btn {
+    background: var(--btn); color: var(--muted); border: 1px solid var(--line);
+    padding: 10px 16px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 13px; transition: all 0.3s;
+}
+.tab-btn:hover { background: var(--btnh); color: var(--text); }
+.tab-btn.active { 
+    background: rgba(20, 184, 166, 0.15); color: var(--accent); 
+    border-color: var(--accent); box-shadow: 0 0 10px rgba(20,184,166,0.2); 
+}
 
 .prompt-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;
@@ -156,22 +170,71 @@ textarea {
 .copy-btn { flex: 2; background: var(--accent); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; padding: 10px; }
 .edit-btn { flex: 1; background: var(--btn); color: var(--text); border: 1px solid var(--line); border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-.select-group { display: flex; gap: 10px; margin: 8px 0; }
-.select-group select { margin: 0 !important; }
+.select-group { display: flex; gap: 12px; margin: 15px 0; flex-wrap: wrap; }
+.select-box { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
 
+.select-box label { 
+    font-size: 14px;
+    color: var(--text); 
+    font-weight: 700; 
+    padding-left: 2px;
+    margin-bottom: 4px;
+}
+
+/* Slider (Ayar Çubukları) Stilleri */
+input[type=range] {
+    -webkit-appearance: none; width: 100%; background: #090c10 !important; border: 1px solid var(--line) !important;
+    height: 12px; border-radius: 6px; outline: none; padding: 0 !important; margin: 0;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent); cursor: pointer; border: 2px solid #000; box-shadow: 0 0 5px rgba(20,184,166,0.5);
+}
+input[type=range]::-moz-range-thumb {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent); cursor: pointer; border: 2px solid #000;
+}
+
+.hint-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 15px;
+    line-height: 1.5;
+}
+.select-box select { margin: 0 !important; width: 100%; cursor: pointer; }
+
+@media (max-width: 800px) {
+    .select-box { min-width: 45%; }
+}
 @media (max-width: 600px) {
     .select-group { flex-direction: column; }
+    .select-box { min-width: 100%; }
+}
+
+#fullscreenOverlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.92); z-index: 9999; justify-content: center; align-items: center;
+    cursor: zoom-out; backdrop-filter: blur(8px);
+}
+#fullscreenImg {
+    max-width: 95%; max-height: 95%; border-radius: 16px;
+    box-shadow: 0 0 50px rgba(20,184,166,0.3); object-fit: contain;
 }
 </style>
 </head>
 <body>
+
+<div id="fullscreenOverlay" onclick="closeFullscreen()">
+    <img id="fullscreenImg" src="">
+</div>
 
 <div class="container">
     <header>
         <div class="logo-real">
             <img src="NRAtölyelogo.png" alt="NR" onerror="this.src='https://via.placeholder.com/80/14b8a6/fff?text=NR'">
         </div>
-        <h2>NRAtölye PRO • NRA Prompt Aracı V5.0</h2>
+        <h2>NRAtölye PRO • NRA Prompt Aracı V6.0 (Studio)</h2>
     </header>
 
     <div class="main-card">
@@ -184,12 +247,18 @@ textarea {
             <input type="text" id="artist" placeholder="Sanatçı / Yazar Adı (Boş bırakılırsa eklenmez)">
             <button class="clear-input" onclick="clearField('artist')">✕</button>
         </div>
+        
         <div class="input-container">
             <input type="text" id="song" placeholder="Eser / Video Başlığı (Boş bırakılırsa eklenmez)">
             <button class="clear-input" onclick="clearField('song')">✕</button>
         </div>
+        
+        <div class="input-container" style="margin-top: 15px;">
+            <input type="text" id="negative" placeholder="İstenmeyen Detaylar (Örn: text, watermark, ugly, frame) (Boş bırakılabilir)" style="border: 1px solid rgba(239, 68, 68, 0.4) !important;">
+            <button class="clear-input" onclick="clearField('negative')">✕</button>
+        </div>
 
-        <div class="input-container">
+        <div class="input-container" style="margin-top: 15px;">
             <textarea id="icon" class="auto-expand" placeholder="Simge (Virgülle ayırarak çoklu yazabilirsiniz)" rows="1" oninput="autoGrow(this)"></textarea>
             <button class="clear-input" onclick="clearField('icon')">✕</button>
         </div>
@@ -207,9 +276,11 @@ textarea {
                 <button class="chip" onclick="selectIcon('a peaceful seaside beach with sand and gentle waves', this)">🏖️ Deniz Kenarı Kumsal</button>
                 <button class="chip" onclick="selectIcon('a peaceful coastal harbor filled with small wooden fishing boats and rowboats', this)">⛵ Balıkçı Limanı</button>  
                 <button class="chip" onclick="selectIcon('a rustic Anatolian village neighborhood with old traditional houses', this)">🏘️ Köy Mahallesi</button>
+                <button class="chip" onclick="selectIcon('a majestic beautiful traditional mosque silhouette', this)">🕌 Cami</button>
                 <button class="chip" onclick="selectIcon('a glowing crescent moon', this)">🌙 Hilal</button>
                 <button class="chip" onclick="selectIcon('a graceful flying dove', this)">🕊️ Güvercin</button>
                 <button class="chip" onclick="selectIcon('a majestic eagle silhouette', this)">🦅 Kartal</button>
+                <button class="chip" onclick="selectIcon('a beautiful singing nightingale bird', this)">🐦 Bülbül Kuşu</button>
                 <button class="chip" onclick="selectIcon('burning phoenix wings', this)">🔥 Anka Kuşu</button>
                 <button class="chip" onclick="selectIcon('an ancient open book', this)">📖 Kitap</button>
                 <button class="chip" onclick="selectIcon('a burning candle with melting wax', this)">🕯️ Mum</button>
@@ -218,6 +289,7 @@ textarea {
                 <button class="chip" onclick="selectIcon('a professional studio microphone', this)">🎙️ Mikrofon</button>                
                 <button class="chip" onclick="selectIcon('a green oak tree leaf', this)">🍃 Yaprak</button>
                 <button class="chip" onclick="selectIcon('a red blooming rose covered in fresh water droplets', this)">🌹 Damlalı Kırmızı Gül</button>
+                <button class="chip" onclick="selectIcon('a cluster of delicate glowing red hearts like floating rose petals', this)">💖 Romantik Kalpler</button>
                 <button class="chip" onclick="selectIcon('a glowing 3D hologram wireframe', this)">🧬 Hologram</button>
                 <button class="chip" onclick="selectIcon('an artist paint palette with colorful strokes', this)">🎨 Palet</button>
                 <button class="chip" onclick="selectIcon('a traditional Black Sea kemenche instrument', this)">🎻 Kemençe</button>
@@ -229,29 +301,77 @@ textarea {
         </div>
 
         <div class="select-group">
-            <select id="format" style="flex: 1;">
-                <option value="horizontal">📺 Yatay (16:9)</option>
-                <option value="vertical">📱 Dikey (9:16)</option>
-                <option value="square">⬛ Kare (1:1)</option>
-            </select>
+            <div class="select-box">
+                <label>📐 FORMAT & BOYUT</label>
+                <select id="format" style="border: 1px solid var(--accent) !important;">
+                    <option value="horizontal">📺 Yatay (16:9)</option>
+                    <option value="vertical">📱 Dikey (9:16)</option>
+                    <option value="portrait">📸 Dikey Gönderi (4:5)</option>
+                    <option value="square">⬛ Kare (1:1)</option>
+                </select>
+            </div>
             
-<select id="focusStyle" style="flex: 1; border: 1px solid var(--accent) !important;">
-    <option value="standard">⚖️ Standart Denge</option>
-    <option value="subject_first" selected>👤 Sanatçı ve Yazı Odaklı (Simgeler Silik)</option>
-    <option value="artistic">🎨 Sanatsal / Dağınık</option>
-</select>
+            <div class="select-box">
+                <label>⚖️ GÖRSEL AĞIRLIĞI</label>
+                <select id="imageWeight" style="border: 1px solid var(--accent) !important;">
+                    <option value="--iw 0.5">🎨 Çok Değiştir (--iw 0.5)</option>
+                    <option value="--iw 1.0" selected>⚖️ Dengeli (--iw 1.0)</option>
+                    <option value="--iw 1.5">🖼️ Orijinale Yakın (--iw 1.5)</option>
+                    <option value="--iw 2.0">📸 Birebir Aynı (--iw 2.0)</option>
+                </select>
+            </div>
+            
+            <div class="select-box">
+                <label>🎯 ODAK & STİL</label>
+                <select id="focusStyle" style="border: 1px solid var(--accent) !important;">
+                    <option value="standard">⚖️ Standart Denge</option>
+                    <option value="subject_first" selected>👤 Sanatçı ve Yazı Odaklı (Simgeler Silik)</option>
+                    <option value="artistic">🎨 Sanatsal / Dağınık</option>
+                </select>
+            </div>
 
-            <select id="watermarkStyle" style="flex: 1;">
-                <option value="subtle">💧Kanal Adı Silik / Zarif</option>
-                <option value="clear">👁️Kanal Adı Belirgin</option>
-                <option value="neon">🌟Kanal Adı Parlak / Neon</option>
-                <option value="gold" selected>🏆 Kanal Adı Altın İmza</option>
-                <option value="musical_gold">🎼 Altın Nota & Melodi</option>
-                <option value="flashy">💥 Kanal Adı Gösterişli/Glitch</option>
-            </select>
+            <div class="select-box">
+                <label>✍️ KANAL ADI STİLİ</label>
+                <select id="watermarkStyle" style="border: 1px solid var(--accent) !important;">
+                    <option value="subtle">💧Kanal Adı Silik / Zarif</option>
+                    <option value="clear">👁️Kanal Adı Belirgin</option>
+                    <option value="neon">🌟Kanal Adı Parlak / Neon</option>
+                    <option value="gold" selected>🏆 Kanal Adı Altın İmza</option>
+                    <option value="musical_gold">🎼 Altın Nota & Melodi</option>
+                    <option value="flashy">💥 Kanal Adı Gösterişli/Glitch</option>
+                </select>
+            </div>
         </div>
 
-        <div style="text-align: right; margin-top: 10px;">
+        <div class="select-group" style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 14px; border: 1px solid var(--line);">
+            <div class="select-box">
+                <label>🤖 YAPAY ZEKA MODELİ</label>
+                <select id="aiModel" style="border: 1px solid var(--accent) !important;">
+                    <option value="--v 6.0" selected>Midjourney v6.0 (Gerçekçi)</option>
+                    <option value="--niji 6">Niji 6 (İllüstrasyon / Anime)</option>
+                    <option value="--style raw">Style Raw (Doğal / Filtresiz)</option>
+                </select>
+            </div>
+            
+            <div class="select-box">
+                <label>✨YZ Katkısı: STİLİZASYON (Sanatsallık)</label>
+                <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px;">
+                    <input type="range" id="stylize" min="0" max="1000" value="100" style="flex:1;">
+                    <span id="stylizeVal" style="width: 40px; font-size: 15px; font-weight: bold; color: var(--amber); text-align: right;">100</span>
+                </div>
+            </div>
+
+            <div class="select-box">
+                <label>🌪️YZ Katkısı: KAOS (Rastgelelik / Çeşitlilik)</label>
+                <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px;">
+                    <input type="range" id="chaos" min="0" max="100" value="0" style="flex:1;">
+                    <span id="chaosVal" style="width: 40px; font-size: 15px; font-weight: bold; color: var(--amber); text-align: right;">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: right; margin-top: 15px; display: flex; justify-content: flex-end; gap: 10px;">
+            <button style="background: rgba(240, 201, 75, 0.15); color: var(--amber); border: 1px solid var(--amber); padding: 8px 16px; font-size: 13px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='var(--amber)'; this.style.color='#000';" onmouseout="this.style.background='rgba(240, 201, 75, 0.15)'; this.style.color='var(--amber)';" onclick="resetToDefaults()">🔄 Varsayılana Dön</button>
             <button class="btn-danger" style="padding: 8px 16px; font-size: 13px;" onclick="clearAllFields()">🧹 Tüm Yazıları Temizle</button>
         </div>
 
@@ -268,42 +388,65 @@ textarea {
         <div class="preview-area">
             <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)" style="display:none">
             <button class="btn-sub" onclick="document.getElementById('fileInput').click()">📂 Dosya Seç</button>
-            <img id="previewImg" src="">
+            <img id="previewImg" src="" onclick="openFullscreen()" title="Tam ekran görmek için tıkla">
             <div class="action-btns">
                 <button class="btn-main" onclick="pasteImageButton()">📋 Butonla Yapıştır</button>
                 <button class="btn-main" style="background: var(--gold);" onclick="downloadImage()">💾 İndir</button>
                 <button class="btn-danger" onclick="clearImage()">🗑️ Resmi Kaldır</button>
             </div>
-            <p style="font-size:11px; color:var(--muted); margin-top:10px;">💡 İpucu: Sayfanın neresinde olursanız olun CTRL+V (veya sağ tık yapıştır) ile resim yapıştırabilirsiniz.</p>
+            <p class="hint-text">💡 İpucu: Sayfanın neresinde olursanız olun CTRL+V (veya sağ tık yapıştır) ile resim yapıştırabilirsiniz. Yüklenen resme tıklayarak büyütebilirsiniz.</p>
         </div>
+    </div>
+
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="filterPrompts('all', this)">📌 Tümü</button>
+        <button class="tab-btn" onclick="filterPrompts('cinematic', this)">🎬 Sinematik & Dramatik</button>
+        <button class="tab-btn" onclick="filterPrompts('music', this)">🎵 Müzik & Stüdyo</button>
+        <button class="tab-btn" onclick="filterPrompts('art', this)">🎨 Sanatsal Dokular</button>
+        <button class="tab-btn" onclick="filterPrompts('nature', this)">🍃 Doğa & Atmosfer</button>
+        <button class="tab-btn" onclick="filterPrompts('epic', this)">🌌 Epik & Işık</button>
+        <button class="tab-btn" onclick="filterPrompts('youtube', this)">📺 YouTube Özel</button>
     </div>
 
     <div class="prompt-grid" id="promptsContainer"></div>
 </div>
 
 <script>
-const promptsData = Array.from({length: 33}, (_, i) => `p${i+1}`);
+const promptsData = Array.from({length: 36}, (_, i) => `p${i+1}`);
 
 const titles = [
     "🏹 Sinematik Anadolu", "🌟 Altın Sıcaklığı", "🎭 Dramatik Noir", "🌹 Bahar Gülü", "🕌 İlahi Işık", 
-    "☔ Huzurlu Yağmur", "🔥 Kor Kırmızı", "🇹🇷 Vatan Sevdası", "📜 Klasik Öykü", "🔍 Gizemli Harfler", 
+    "☔ Huzurlu Yağmur", "🔥 Kor Kırmızı", "🇹🇷 Vatan Sevdası", "📜 Klasik Öykü", "🔍 Gerilimli Harfler", 
     "🕊️ Bilgelik Odası", "🎞️ Yeşilçam Ruhu", "🎸 Sahne Işığı",
     "🏛️ Antik Sütunlar", "🌑 Derin Gece", "🏙️ Siber Şehir", "💎 Elit Mermer", "🌊 Okyanus Sesi", 
     "🔥 Anka Kuşu", "🎡 Karnaval", "🍃 Doğa Akustiği", "⛪ Gotik Ruh", "🛸 Gelecek Çağ", 
     "🎨 Sanat Tuvali", "🎻 Klasik Senfoni", "🌌 Galaksi", "🎙️ Podcast / Gönderi", "☕ Akustik Stüdyo",
     "🌌 Galaktik Sonsuzluk", "🌇 Kızıl Günbatımı",
-    "📺 YouTube Çarpıcı Kapak", "🚨 YouTube Aksiyon/Şok", "🕵️ YouTube Gizem/Merak"
+    "📺 YouTube Çarpıcı Kapak", "🚨 YouTube Aksiyon/Şok", "🕵️ YouTube Gerilim/Merak",
+    "🪵 Akustik Yağlı Boya", "🎬 Sinematik Akustik Boya", "🎧 Lofi Akustik Boya"
 ];
 
 const trDescriptions = [
     "Kültürel dokulu sinematik Anadolu tarzı.", "Sıcak altın tonları ve parıltılar.", "Ağır gölgeli, duygusal dramatik ruh hali.", "Romantik gün ışığı ve gül estetiği.", "Huzurlu manevi fon ve ilahi atmosfer.", 
-    "Yağmurlu lofi rahatlama ortamı.", "Siyah fon üzerine neon kırmızı odaklar.", "Şanlı bayrak ve kahramanlık ışığı.", "Eski radyo ve kitaplık temalı edebi hava.", "Havada süzülen gizemli 3D harfler.", 
+    "Yağmurlu lofi rahatlama ortamı.", "Siyah fon üzerine neon kırmızı odaklar.", "Şanlı bayrak ve kahramanlık ışığı.", "Eski radyo ve kitaplık temalı edebi hava.", "Havada süzülen gerilimli 3D harfler.", 
     "Manevi sohbetler için Rembrandt ışığı.", "Nostaljik gramofon ve eski dönem havası.", "Canlı konser ve enerjik sahne ışıkları.",
     "Tarihi sütunlar ve görkemli epik fon.", "Sokak tarzı derin ve karanlık atmosfer.", "Fütüristik neon ve teknolojik müzik.", "Lüks mermer ve altın detaylı tasarım.", "Mavi tonlarda ferah deniz estetiği.", 
     "Alevli ve küllerinden doğan görkemli tema.", "Rengarenk ve hareketli festival havası.", "Yeşil ve doğal akustik tınılar.", "Gotik mimari ve ruhani ışık oyunları.", "Holografik ve ileri teknoloji.", 
     "Yağlı boya tablo dokusunda artistik kapak.", "Görkemli orkestra ve kadife fonlar.", "Yıldızlar arası sonsuzluk ve nebula.", "Antik mikrofon ve dört mevsim.", "Sıcak ahşap, bokeh ışıkları ve lofi samimiyeti.",
     "Derin uzay, nebulalar ve yıldız tozlarıyla dolu kozmik atmosfer.", "Turuncu ve kızıl tonların hakim olduğu huzurlu günbatımı.",
-    "Devasa 3D yazılar ve gerçeküstü arkaplanlı popüler YouTube stili.", "Hareketli, ateşli ve yüksek heyecanlı YouTube aksiyon stili.", "Karanlık gölgeler ve neon ışıklarla merak uyandıran YouTube stili."
+    "Devasa 3D yazılar ve gerçeküstü arkaplanlı popüler YouTube stili.", "Hareketli, ateşli ve yüksek heyecanlı YouTube aksiyon stili.", "Karanlık gölgeler ve neon ışıklarla merak uyandıran YouTube stili.",
+    "Sıcak ahşap ve yağlı boya fırça darbelerinin mükemmel uyumu.", "Dramatik ışıklarla zenginleştirilmiş ahşap ve sanatsal doku.", "Modern neon yansımalarla harmanlanmış ahşap yağlı boya."
+];
+
+// Sekmeler için Kategorilendirme Dizisi
+const categoriesMap = [
+    "cinematic", "epic", "cinematic", "nature", "epic", 
+    "nature", "epic", "epic", "cinematic", "epic", 
+    "cinematic", "cinematic", "music", "epic", "cinematic", 
+    "epic", "art", "nature", "epic", "epic", 
+    "nature", "epic", "epic", "art", "music", 
+    "epic", "music", "music", "epic", "nature", 
+    "youtube", "youtube", "youtube", "art", "art", "art"
 ];
 
 const defaultThemeIcons = [
@@ -339,13 +482,17 @@ const defaultThemeIcons = [
     "a silhouette of a flying bird against the setting sun",
     "dynamic cinematic glowing light particles",
     "dynamic flying debris and glowing fiery sparks",
-    "a glowing neon question mark or mysterious floating digital data"
+    "a glowing neon question mark or mysterious floating digital data",
+    "a traditional Turkish acoustic baglama saz and a red blooming rose",
+    "an antique pocket watch and glowing embers",
+    "a glowing neon acoustic guitar and floating musical notes"
 ];
 
 const container = document.getElementById("promptsContainer");
 promptsData.forEach((id, i) => {
     let div = document.createElement("div");
     div.className = "prompt-box";
+    div.dataset.category = categoriesMap[i]; // Kategori etiketi eklendi
     div.innerHTML = `
         <h3>${titles[i]}</h3>
         <span class="prompt-tr">${trDescriptions[i]}</span>
@@ -358,10 +505,19 @@ promptsData.forEach((id, i) => {
     container.appendChild(div);
 });
 
-// Otomatik Genişleme Fonksiyonu
 function autoGrow(element) {
     element.style.height = "48px";
     element.style.height = (element.scrollHeight) + "px";
+}
+
+function openFullscreen() {
+    if(!currentImg) return;
+    document.getElementById("fullscreenImg").src = currentImg;
+    document.getElementById("fullscreenOverlay").style.display = "flex";
+}
+
+function closeFullscreen() {
+    document.getElementById("fullscreenOverlay").style.display = "none";
 }
 
 function updatePrompts() {
@@ -369,11 +525,20 @@ function updatePrompts() {
     const artist = document.getElementById("artist").value.trim();
     const song = document.getElementById("song").value.trim();
     const userIcon = document.getElementById("icon").value.trim();
+    const negativePrompt = document.getElementById("negative").value.trim(); // Yeni: İstenmeyenler
     const format = document.getElementById("format").value;
     const watermarkStyle = document.getElementById("watermarkStyle").value;
     const focusStyle = document.getElementById("focusStyle").value;
+    const imageWeight = document.getElementById("imageWeight").value;
+    
+    // Yeni: Gelişmiş Ayarlar
+    const aiModel = document.getElementById("aiModel").value;
+    const stylize = document.getElementById("stylize").value;
+    const chaos = document.getElementById("chaos").value;
 
-    let sizeRule = format === "vertical" ? " --ar 9:16" : (format === "square" ? " --ar 1:1" : " --ar 16:9");
+    let negRule = negativePrompt ? ` --no ${negativePrompt}` : "";
+    let paramRule = `${aiModel} --s ${stylize} --c ${chaos}${negRule}`;
+    let sizeRule = (format === "vertical" ? " --ar 9:16" : (format === "portrait" ? " --ar 4:5" : (format === "square" ? " --ar 1:1" : " --ar 16:9"))) + " " + imageWeight + " " + paramRule;
     
     let focusCommand = "";
     let iconModifier = "";
@@ -454,7 +619,10 @@ function updatePrompts() {
         `Transform the uploaded image into a Sunset Landscape cover.\n\n${focusCommand}\n\nBackground: overwhelmingly vivid glowing orange and magenta skies.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
         `Transform the uploaded image into a High-Impact YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: surreal hyper-realistic background blend, vibrant cinematic lighting.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
         `Transform the uploaded image into an Action-Shock YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: intense cinematic action, explosive lighting, dynamic motion blur.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Mystery-Intrigue YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: deep moody shadows, striking neon accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`
+        `Transform the uploaded image into a Mystery-Intrigue YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: deep moody shadows, striking neon accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cozy Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: warm glowing string lights, rich deep mahogany wooden textures blended with wildly vibrant color palettes and thick textured oil brush strokes.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cinematic Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: cinematic dramatic lighting, deep mahogany wooden textures, heavy shadows blended with expressive, thick textured oil brush strokes and subtle glowing string lights.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Lofi Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: dreamy lofi aesthetic lighting, soft neon purple and warm orange accents, rich wooden textures fused with expressive, thick oil paint brush strokes and glowing dust particles.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`
     ];
 
     promptsData.forEach((id, i) => {
@@ -464,6 +632,9 @@ function updatePrompts() {
         let currentIconMod = iconModifier.replace("[ICON]", finalIcon);
         let finalPrompt = pTemplates[i].replace("[ICON_MOD]", currentIconMod);
         
+        // Fazla boşlukları temizle (Eğer negatif prompt girilmemişse aradaki çift boşlukları teke düşürür)
+        finalPrompt = finalPrompt.replace(/\s+/g, ' ').replace(/ \n/g, '\n').replace(/\n /g, '\n');
+        
         if(area && area.hasAttribute("readonly")) area.value = finalPrompt;
     });
 }
@@ -472,15 +643,12 @@ function selectIcon(iconName, btn) {
     const iconInput = document.getElementById("icon");
     let currentVal = iconInput.value.trim();
     
-    // Butonun seçili halini toggle yap (seçiliyse kaldır, değilse ekle)
     if(btn.classList.contains('selected')) {
         btn.classList.remove('selected');
-        // Yazıdan simgeyi kaldır
         let parts = currentVal.split(", ").filter(p => p !== iconName && p !== "");
         iconInput.value = parts.join(", ");
     } else {
         btn.classList.add('selected');
-        // Yazıya simgeyi ekle
         if (currentVal === "") { iconInput.value = iconName; } 
         else { if (!currentVal.includes(iconName)) iconInput.value = currentVal + ", " + iconName; }
     }
@@ -503,19 +671,34 @@ function copyText(id, btn) {
     btn.innerText = "✔ Kopyalandı"; setTimeout(() => { btn.innerText = "📋 Kopyala"; }, 1500);
 }
 
+function filterPrompts(category, btn) {
+    // Aktif sekme stilini güncelle
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    // Kutuları filtrele
+    const boxes = document.querySelectorAll('.prompt-box');
+    boxes.forEach(box => {
+        if (category === 'all' || box.dataset.category === category) {
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+    });
+}
+
 function clearField(id) { 
     const el = document.getElementById(id);
     el.value = ""; 
     if(id === 'icon') {
         el.style.height = "48px";
-        // Tüm butonlardaki 'selected' sınıfını temizle
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
     }
     updatePrompts(); 
 }
 
 function clearAllFields() { 
-    ["channel", "artist", "song", "icon"].forEach(id => {
+    ["channel", "artist", "song", "icon", "negative"].forEach(id => {
         const el = document.getElementById(id);
         el.value = "";
         if(id === 'icon') {
@@ -526,10 +709,44 @@ function clearAllFields() {
     updatePrompts(); 
 }
 
+function resetToDefaults() {
+    document.getElementById("channel").value = "4mevsimşarkılar";
+    document.getElementById("artist").value = "";
+    document.getElementById("song").value = "";
+    document.getElementById("negative").value = "";
+    
+    const iconEl = document.getElementById("icon");
+    iconEl.value = "";
+    iconEl.style.height = "48px";
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    
+    document.getElementById("format").value = "horizontal";
+    document.getElementById("imageWeight").value = "--iw 1.0";
+    document.getElementById("focusStyle").value = "subject_first";
+    document.getElementById("watermarkStyle").value = "gold";
+    
+    // YENİ: İleri Düzey Ayarları da sıfırla
+    document.getElementById("aiModel").value = "--v 6.0";
+    document.getElementById("stylize").value = "100";
+    document.getElementById("stylizeVal").innerText = "100";
+    document.getElementById("chaos").value = "0";
+    document.getElementById("chaosVal").innerText = "0";
+    
+    // Sekmeleri "Tümü"ne döndür
+    filterPrompts('all', document.querySelector('.tab-btn'));
+    
+    updatePrompts();
+}
+
 let currentImg = "";
 function previewImage(event) {
     const file = event.target.files[0];
-    if(file) { currentImg = URL.createObjectURL(file); document.getElementById("previewImg").src = currentImg; }
+    if(file) { 
+        currentImg = URL.createObjectURL(file); 
+        const imgEl = document.getElementById("previewImg");
+        imgEl.src = currentImg; 
+        imgEl.style.display = "block";
+    }
 }
 
 function pasteImageButton() {
@@ -539,7 +756,9 @@ function pasteImageButton() {
                 if (type.startsWith("image/")) {
                     item.getType(type).then(blob => {
                         currentImg = URL.createObjectURL(blob);
-                        document.getElementById("previewImg").src = currentImg;
+                        const imgEl = document.getElementById("previewImg");
+                        imgEl.src = currentImg;
+                        imgEl.style.display = "block";
                     });
                 }
             }
@@ -553,22 +772,40 @@ document.addEventListener("paste", function(e) {
         if (items[i].type.indexOf("image") !== -1) {
             const blob = items[i].getAsFile();
             currentImg = URL.createObjectURL(blob);
-            document.getElementById("previewImg").src = currentImg;
+            const imgEl = document.getElementById("previewImg");
+            imgEl.src = currentImg;
+            imgEl.style.display = "block";
             break; 
         }
     }
 });
 
+function clearImage() { 
+    const imgEl = document.getElementById("previewImg");
+    imgEl.src = ""; 
+    imgEl.style.display = "none";
+    currentImg = ""; 
+    document.getElementById("fileInput").value = ""; 
+}
 function downloadImage() {
     if(!currentImg) return alert("Önce resim yükleyin veya yapıştırın!");
     const a = document.createElement("a"); a.href = currentImg; a.download = "nra-referans.png"; a.click();
 }
 
-function clearImage() { document.getElementById("previewImg").src = ""; currentImg = ""; document.getElementById("fileInput").value = ""; }
-
-["channel", "artist", "song", "icon", "format", "watermarkStyle", "focusStyle"].forEach(id => {
+// Event Dinleyicileri (Yeni Slider'lar dahil)
+["channel", "artist", "song", "icon", "negative", "format", "watermarkStyle", "focusStyle", "imageWeight", "aiModel"].forEach(id => {
     document.getElementById(id).addEventListener("input", updatePrompts);
     document.getElementById(id).addEventListener("change", updatePrompts);
+});
+
+// Slider (Range) Dinleyicileri (Sayıyı anlık günceller)
+document.getElementById("stylize").addEventListener("input", function() {
+    document.getElementById("stylizeVal").innerText = this.value;
+    updatePrompts();
+});
+document.getElementById("chaos").addEventListener("input", function() {
+    document.getElementById("chaosVal").innerText = this.value;
+    updatePrompts();
 });
 
 updatePrompts();
