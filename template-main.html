@@ -182,7 +182,7 @@ textarea {
   <header>
     <div class="brand">
       <div class="logo-real">
-        <img src="4mş logo.png" alt="4mevsimşabloncu" onerror="this.src='https://via.placeholder.com/48/15b8a6/fff?text=4M'">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663344594731/iMp8GopQqVy5RC7XBpUXhE/logo-4m_4abbe3f5.png" alt="4mevsimşabloncu" onerror="this.src='https://via.placeholder.com/48/15b8a6/fff?text=4M'">
       </div>
       <h1>
         <span>4mevsimşabloncu • NRAtölye</span>
@@ -253,8 +253,8 @@ textarea {
             <button id="btnShorts" class="btn-act act-2">🎬 YouTube Shorts Şablonu</button>
             <button id="btnClearAll" class="btn-act act-3">🧹 Temizle</button>
             <button id="btnAI" class="btn-act act-4">🤖 Akıllı Öneri Al</button>
-            <a href="NRAtölye Dijital İçerik Asistanı.html" target="_blank" class="btn-act act-6">🧑‍💻 İçerik Asistanı</a>
-            <a href="NRAtölye Video Kapak Prompt Aracı.html" target="_blank" class="btn-act act-5">💽 Kapak Prompt Aracı</a> 
+            <a href="content-assistant-nra.html" target="_blank" class="btn-act act-6">🧑‍💻 İçerik Asistanı</a>
+            <a href="video-cover-nra.html" target="_blank" class="btn-act act-5">💽 Kapak Prompt Aracı</a> 
             <button id="btnHisAra" type="button" class="btn-act act-7">🌹 NRA His Evreni</button>
             <input type="text" id="hisSelected" class="input-kutucuk" style="flex:1; min-width:200px;" placeholder="His Seçin veya Elle Yazın..." oninput="$('#feel').value=this.value; regenerate();">
             <input type="hidden" id="feel">
@@ -369,7 +369,7 @@ textarea {
     
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
       <div style="display:flex; align-items:center; gap:15px;">
-        <img src="NRAtölyelogo.png" alt="Neo Logo" style="width:40px; height:40px; object-fit:contain;" onerror="this.style.display='none'">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663344594731/iMp8GopQqVy5RC7XBpUXhE/logo-nra_6bde4377.png" alt="Neo Logo" style="width:40px; height:40px; object-fit:contain;" onerror="this.style.display='none'">
         <h2 style="margin:0; color:#fff;"> NRA His Evreni</h2>
       </div>
       <div class="neo-actions">
@@ -537,8 +537,8 @@ function setCounter(sel,max,ctSel){
   else ct.classList.add("err");
 }
 
-const TITLE_TAGS=["#4mevsimşarkılar","#4mevsimşarkılarShorts","#shorts","#Müzik","#Kalp","#CanlıPerformans","#DikeyVideolar","#Radyo","#TV","#Piyano","#Guitar","#TürkçeMüzik","#Huzur","#Melankoli","#Romantik","#Nostalji","#Gece","#Yaz","#Kış","#Relax"].sort((a,b)=>a.localeCompare(b,"tr"));
-const DESC_TAGS=["#DiniMüzik","#Ambiance","#HuzurluAnlar","#Duygusal","#Uyku","#Odaklanma","#NostaljikRadyoŞarkıları","#Doğasesleri","#Şiir","#VatanŞarkıları","#Soundtrack","#Sözler","#Şarkı","#TasavvufMüziği","#Shorts","#Arabesk","#TelevizyonOdasıŞarkıları","#Televizyon","#DamarŞarkılar","#Radyo","#Öykü","#Hikaye","#Türkiye","#AskeriMüzik","#Türkü","#TürkHalkMüziği","#TürkSanatMüziği","#TürkFolkMüziği","#RelaxingMusic"].sort((a,b)=>a.localeCompare(b,"tr"));
+const TITLE_TAGS=["#4mevsimşarkılar","#4mevsimşarkılarShorts","#shorts","#Müzik","#Kalp","#CanlıPerformans","#DikeyVideolar","#Radyo","#TV","#Piano","#Guitar","#TürkçeMüzik","#Huzur","#Melankoli","#Romantik","#Nostalji","#Gece","#Yaz","#Kış","#Relax"].sort((a,b)=>a.localeCompare(b,"tr"));
+const DESC_TAGS=["#Ambiyans","#Ambiance","#HuzurluAnlar","#Duygusal","#Uyku","#Odaklanma","#Doğasesleri","#Soundtrack","#Sözler","#Şarkı","#Shorts","#RelaxingMusic"].sort((a,b)=>a.localeCompare(b,"tr"));
 
 const TYPE_MAP={
   "Şarkı Videoları":   { eser:"Şarkı", sahip:"Şarkıcı", feel:"Şarkı Hissi",  icon1:"🎵", icon2:"🎤" },
@@ -556,52 +556,13 @@ const INTRO={
   "Ambiyans Videoları": "✨ Sessizlik + doğa sesi + huzurlu müzik = ruh için bir mola...\nDoğanın kalbinde bir akşam; suyun sesi, ateşin sıcaklığı ve huzurun yankısı..."
 };
 
-// DİNAMİK AÇIKLAMA HASHTAG OLUŞTURUCU
-function getDynamicHashtags(type, owner, work, feel, isShorts) {
-    // Boşlukları silip ilk harfleri büyüterek hashtag formatına çeviren yardımcı fonksiyon
-    const toTag = (str) => {
-        if (!str || str === "—") return "";
-        return "#" + str.split(/\s+/).map(w => w.charAt(0).toLocaleUpperCase('tr-TR') + w.slice(1).toLocaleLowerCase('tr-TR')).join("");
-    };
-
-    const tagOwner = toTag(owner);
-    const tagWork = toTag(work);
-    // His içindeki emojileri temizleyip hashtag yapar
-    const cleanFeel = feel ? feel.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim() : "";
-    const tagFeel = toTag(cleanFeel);
-
-    // Genel kullanım için dinamik etiketler (Şarkıcı, Eser, His)
-    const dynamicTags = [tagOwner, tagWork, tagFeel].filter(t => t !== "").join(" ");
-
-    // 6. Shorts Modu Aktifse Doğrudan Bu Blok Çalışır
-    if (isShorts) {
-        return `#4mevsimşarkılar #RuhumuDinlendirenŞarkılar ${dynamicTags} #CanlıPerformanslar #Nostalji #DuygusalŞarkılar #KalbeDokunanŞarkılar #MüzikKeyfi`.replace(/\s+/g, " ").trim();
-    }
-
-    let fixedPart = "";
-    switch (type) {
-        case "Şarkı Videoları":
-            fixedPart = `${dynamicTags} #CanlıPerformanslar #TürkçeŞarkılar #Nostalji #DuygusalŞarkılar #UnutulmayanŞarkılar #AşkaÖzlem #MüzikKeyfi #KalbeDokunanŞarkılar `;
-            break;
-        case "Şiir Videoları":
-            fixedPart = `${dynamicTags} #ŞiirDinle #ŞiirSokakta #SesliŞiir #DuygusalŞiirler #Edebiyat #FonMüziği #HüzünlüŞiirler #GeceyeBirŞiir #ŞiirHerYerde`;
-            break;
-        case "Öykü Videoları":
-            fixedPart = `${dynamicTags} #SesliKitap #SesliÖykü #Edebiyat #HikayeDinle #KitapDinle #Nostalji #SesliKütüphane #SafDuygular #HuzurluDinleti`;
-            break;
-        case "Film Videoları":
-            fixedPart = `#KıssadanVideolar ${dynamicTags} #Huşu #Maneviyat #Huzur #GününMesajı #AnlamlıSahneler`;
-            break;
-        case "Ambiyans Videoları":
-            // Ambiyansta sıralama değişiyor: [AmbiyansTürü] [OrtamAdı] [AtmosferHissi]
-            const ambiyansTags = [tagWork, tagOwner, tagFeel].filter(t => t !== "").join(" ");
-            fixedPart = `#DoğaSesleri ${ambiyansTags} #GörselTerapi #Ambiyans #UykuMüziği #OdaklanmaMüziği #Meditasyon #RahatlatıcıSesler #YağmurSesi #ŞömineKeyfi #ASMR #Huzur #ZihinTemizliği`;
-            break;
-    }
-
-    // Ana sabitler ve kategorilere özel kısımlar birleştirilir (Fazla boşluklar temizlenir)
-    return `#4mevsimşarkılar #RuhumuDinlendirenŞarkılar ${fixedPart}`.replace(/\s+/g, " ").trim();
-}
+const FIXED_HASHTAGS={
+  "Şarkı Videoları": "#4mevsimşarkılar #Müzik #DuygusalŞarkılar #Huzur #RuhumuDinlendirenŞarkılar",
+  "Şiir Videoları": "#4mevsimşarkılar #Şiir #Duygusal #Huzur #SesliŞiir #KalbeDokunanŞiirler",
+  "Öykü Videoları": "#4mevsimşarkılar #Hikaye #Anlatı #Duygu #Sözler #SesliÖykü",
+  "Film Videoları": "#4mevsimşarkılar #Film #Sahne #DuygusalAnlar #Sinema #Soundtrack",
+  "Ambiyans Videoları": "#4mevsimşarkılar #Doğa #Ambiyans #Huzur #Sessizlik #Doğasesleri #RelaxingMusic"
+};
 
 const PIN_DEFAULT =
 `💬 Yorumlarınızla yalnız olmadığımızı hissediyor, daha iyisini yapmak için motive oluyoruz.
@@ -909,13 +870,12 @@ function baseBlocks(){
 🪶 https://www.youtube.com/@4mevsimsarkilar/playlists
 
 📝 Yorumlarınız bizim için çok kıymetli. Beğeni ve yorumlarınız için teşekkür ederiz ❤️❤️
-🎧 Keyifli dinlemeler!
-   ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬`;
+🎧 Keyifli dinlemeler!`;
   
-const fixedTags = getDynamicHashtags(t, ownerInput, workInput, feelInput, false);
+  const fixedTags = FIXED_HASHTAGS[t] || "";
   let desc = `${info}\n\n${middleDefault}\n\n${staticBlock}`;
-  if(fixedTags) desc += `\n\n${fixedTags}`; // Önce paket hashtagler
-  if(selDesc.size) desc += `\n${[...selDesc].join(" ")}`; // En sona seçilenler
+  if(selDesc.size) desc += `\n\n${[...selDesc].join(" ")}`;
+  if(fixedTags) desc += `\n${fixedTags}`;
   
   return { title, desc };
 }
@@ -945,7 +905,7 @@ function regenerate(){
   // FIX: Kapak Prompt Aracına giden Linki Otomatik Güncelle
   const btnKapak = document.querySelector('a[href*="Kapak Prompt Aracı"]');
   if (btnKapak) {
-      btnKapak.href = `NRAtölye Video Kapak Prompt Aracı.html?s=${encodeURIComponent(ownerInput)}&e=${encodeURIComponent(workInput)}`;
+      btnKapak.href = `video-cover-nra.html?s=${encodeURIComponent(ownerInput)}&e=${encodeURIComponent(workInput)}`;
   }
 
   if(shortsMode){
@@ -968,8 +928,8 @@ function regenerate(){
     $("#outTitle").value = titleShort.trim();
 
     const descTags = [...selDesc]; if(!descTags.includes("#Shorts")) descTags.push("#Shorts");
-    const fixed = getDynamicHashtags(t, ownerInput, workInput, feelInput, true);
-    $("#outDesc").value = `${infoShort}\n\n${defaultShortMiddle}\n\n${fixed}\n${descTags.join(" ")}`.trim();
+    const fixed = FIXED_HASHTAGS[t] || "";
+    $("#outDesc").value = `${infoShort}\n\n${defaultShortMiddle}\n\n${descTags.join(" ")}\n${fixed}`.trim();
   }else{
     $("#outTitle").value = b.title; 
     $("#outDesc").value  = b.desc;
