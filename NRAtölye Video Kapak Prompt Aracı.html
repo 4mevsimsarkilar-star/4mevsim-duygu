@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NRAtölye PRO • NRA Prompt Aracı V6.0 (Studio)</title>
+<title>NRAtölye PRO • NRA Prompt Aracı V6.6 (Studio)</title>
 
 <style>
-/* ========== v6.0 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
+/* ========== v6.6 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
 :root {
     --bg: #0f1115;
     --card: #151922;
@@ -69,7 +69,6 @@ header h2 {
     padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* Modern, Yumuşak ve Neon Çerçeveli Tasarım */
 input[type=text], select, .auto-expand {
     width: 100%;
     background: #0f131a !important;
@@ -83,21 +82,18 @@ input[type=text], select, .auto-expand {
     transition: all 0.3s ease !important;
 }
 
-/* Seçim kutularına (select) o istediğin özel çerçeve efekti */
 select {
     border: 1px solid var(--accent) !important;
     cursor: pointer;
-    background-image: none !important; /* Standart oku kaldırıp daha temiz yaptık */
+    background-image: none !important;
     appearance: none;
 }
 
-/* Üzerine gelince parlayan neon efekti */
 input[type=text]:hover, select:hover, .auto-expand:hover {
     border-color: var(--accent) !important;
     box-shadow: 0 0 8px rgba(20, 184, 166, 0.3);
 }
 
-/* Tıklandığında veya aktifken daha belirgin vurgu */
 input[type=text]:focus, select:focus, .auto-expand:focus {
     border-color: var(--accent) !important;
     box-shadow: 0 0 12px rgba(20, 184, 166, 0.5);
@@ -127,7 +123,7 @@ input[type=text]:focus, select:focus, .auto-expand:focus {
     background: rgba(255,255,255,0.02); border: 1px solid var(--line);
     border-radius: 12px; padding: 12px; margin: 5px 0 15px 0;
 }
-.icon-stock span { font-size: 13px; color: var(--muted); display: block; margin-bottom: 8px; }
+.icon-stock span { font-size: 13px; color: var(--muted); display: block; margin-bottom: 8px; font-weight: bold; }
 .icon-stock small { font-size: 11px; color: var(--accent); display: block; margin-bottom: 10px; font-style: italic; }
 .chips-container { display: flex; flex-wrap: wrap; gap: 6px; }
 
@@ -167,7 +163,6 @@ input[type=text]:focus, select:focus, .auto-expand:focus {
 .btn-sub { background: var(--btn); color: var(--text); border: 1px solid var(--line); padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-/* Kategori Sekmeleri (Tabs) */
 .tabs-container {
     display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px;
     background: rgba(15, 19, 26, 0.5); padding: 10px; border-radius: 16px; border: 1px solid var(--line);
@@ -210,7 +205,6 @@ textarea {
     margin-bottom: 4px;
 }
 
-/* Slider (Ayar Çubukları) Stilleri */
 input[type=range] {
     -webkit-appearance: none; width: 100%; background: #090c10 !important; border: 1px solid var(--line) !important;
     height: 12px; border-radius: 6px; outline: none; padding: 0 !important; margin: 0;
@@ -233,6 +227,20 @@ input[type=range]::-moz-range-thumb {
 }
 .select-box select { margin: 0 !important; width: 100%; cursor: pointer; }
 
+/* Safe Zone Tasarımı */
+.safe-zone-box {
+    background: rgba(20, 184, 166, 0.08); 
+    padding: 15px; 
+    border-radius: 14px; 
+    border: 1px dashed var(--accent); 
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+.safe-zone-box:hover {
+    background: rgba(20, 184, 166, 0.15); 
+    border-style: solid;
+}
+
 @media (max-width: 800px) {
     .select-box { min-width: 45%; }
 }
@@ -251,28 +259,15 @@ input[type=range]::-moz-range-thumb {
     box-shadow: 0 0 50px rgba(20,184,166,0.3); object-fit: contain;
 }
 #scrollTopBtn {
-    display: none;
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 99;
-    background: rgba(20, 184, 166, 0.2); /* Daha şeffaf */
-    backdrop-filter: blur(10px); /* Modern cam efekti */
-    border: 1px solid rgba(245, 194, 107, 0.3);
-    color: var(--gold);
-    padding: 12px;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-    /* Gelişmiş geçiş */
+    display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99;
+    background: rgba(20, 184, 166, 0.2); backdrop-filter: blur(10px); 
+    border: 1px solid rgba(245, 194, 107, 0.3); color: var(--gold);
+    padding: 12px; border-radius: 50%; font-size: 20px; cursor: pointer;
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 #scrollTopBtn:hover {
-    background: var(--accent);
-    color: #000;
-    transform: scale(1.2);
-    box-shadow: 0 0 25px var(--accent);
+    background: var(--accent); color: #000; transform: scale(1.2); box-shadow: 0 0 25px var(--accent);
 }
 </style>
 </head>
@@ -287,13 +282,20 @@ input[type=range]::-moz-range-thumb {
         <div class="logo-real">
             <img src="NRAtölyelogo.png" alt="NR" onerror="this.src='https://via.placeholder.com/80/14b8a6/fff?text=NR'">
         </div>
-        <h2>NRAtölye PRO • NRA Prompt Aracı V6.0 (Studio)</h2>
+        <h2>NRAtölye PRO • NRA Prompt Aracı V6.6 (Studio)</h2>
     </header>
 
     <div class="main-card">
-        <div class="input-container">
-            <input type="text" id="channel" placeholder="Kanal Adı (Boş bırakılırsa eklenmez)" value="4mevsimşarkılar">
-            <button class="clear-input" onclick="clearField('channel')">✕</button>
+        
+        <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 14px; border: 1px solid var(--line); margin-bottom: 15px;">
+            <label style="display: flex; align-items: center; cursor: pointer; font-size: 14px; font-weight: bold; color: var(--gold); margin-bottom: 10px;">
+                <input type="checkbox" id="showChannel" checked style="width: 18px; height: 18px; margin: 0 10px 0 0; accent-color: var(--accent);"> 
+                Kanal Adı / İmza Görünsün mü?
+            </label>
+            <div class="input-container">
+                <input type="text" id="channel" placeholder="Kanal Adı" value="4mevsimşarkılar" style="margin: 0;">
+                <button class="clear-input" onclick="clearField('channel')" style="top: 8px;">✕</button>
+            </div>
         </div>
 
         <div class="input-container">
@@ -348,9 +350,60 @@ input[type=range]::-moz-range-thumb {
                 <button class="chip" onclick="selectIcon('a traditional Black Sea kemenche instrument', this)">🎻 Kemençe</button>
                 <button class="chip" onclick="selectIcon('a traditional Turkish acoustic baglama saz', this)">🪕 Saz (Bağlama)</button>
                 <button class="chip" onclick="selectIcon('a golden violin silhouette', this)">🎻 Keman</button>
+                <button class="chip" onclick="selectIcon('an ornate classic glowing golden frame border', this)">🖼️ Klasik Altın Çerçeve</button>
+                <button class="chip" onclick="selectIcon('an elegant vintage floral border frame', this)">🌸 Vintage Çiçekli Çerçeve</button>
+                <button class="chip" onclick="selectIcon('a glowing cinematic neon border frame', this)">🔲 Neon Işıklı Çerçeve</button>
                 <button class="chip" onclick="selectIcon('a bold glowing YouTube play button or massive 3D arrow', this)">▶️ 3D Ok & Play Butonu</button>
                 <button class="chip" onclick="selectIcon('a majestic 3D musical staff starting with a treble clef, spiraling inward into a deep perspective tunnel, notes vanishing into the distance with a glowing motion blur', this)">🎼 Nota Tüneli (3D)</button>
             </div>
+        </div>
+
+        <div class="input-container" style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 14px; border: 1px solid var(--accent); margin: 15px 0;">
+            <h3 style="margin-top:0; color: var(--gold); font-size: 15px;">✨ Akıllı Sanat Katmanı & Fırça Stilleri</h3>
+            
+            <label style="display: flex; align-items: center; cursor: pointer; font-size: 14px; margin-bottom: 10px;">
+                <input type="checkbox" id="useBrush" style="width: auto; margin: 0 10px 0 0; transform: scale(1.2); accent-color: var(--accent);"> 
+                Sanatsal Fırça Darbelerini (Arkaplan Olarak) Aktif Et
+            </label>
+
+            <div id="brushOptions" style="display:none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--line);">
+                
+                <div class="input-container" style="margin-bottom: 10px;">
+                    <input type="text" id="line1" placeholder="1. Satır Yazısı (Örn: Kalpten Gelen)" style="border-left: 4px solid #ef4444 !important;">
+                    <button class="clear-input" onclick="clearField('line1')">✕</button>
+                </div>
+                <div class="input-container" style="margin-bottom: 15px;">
+                    <input type="text" id="line2" placeholder="2. Satır Yazısı (Örn: Türküler)" style="border-left: 4px solid #3b82f6 !important;">
+                    <button class="clear-input" onclick="clearField('line2')">✕</button>
+                </div>
+
+                <div class="input-container">
+                    <textarea id="brushStyle" class="auto-expand" placeholder="Özel Fırça Stili (Örn: thick impasto strokes) (Boş bırakırsanız standart uygulanır)" rows="1" oninput="autoGrow(this)"></textarea>
+                    <button class="clear-input" onclick="clearField('brushStyle')">✕</button>
+                </div>
+
+                <div class="icon-stock" style="margin-top: 10px; border: none; background: transparent; padding: 0;">
+                    <span>🎨 Tavsiye Edilen Fırça Stilleri:</span>
+                    <div class="chips-container" style="margin-top: 8px;">
+                        <button class="chip" onclick="selectBrush('thick expressive impasto oil paint brush strokes with rich texture', this)">🖌️ 1. Kalın & Ekspresif Yağlı Boya</button>
+                        <button class="chip" onclick="selectBrush('vibrant modern acrylic paint textures with bold palette knife marks', this)">🎨 2. Dinamik Akrilik & Spatula</button>
+                        <button class="chip" onclick="selectBrush('elegant semi-transparent watercolor washes and artistic ink splatters', this)">💧 3. Zarif Suluboya & Sıçramalar</button>
+                        <button class="chip" onclick="selectBrush('luxurious gold leaf brushed accents with elegant metallic stroke textures', this)">✨ 4. Altın Varaklı Elit Fırça</button>
+                        <button class="chip" onclick="selectBrush('soft minimalist pastel strokes with a grainy textured background', this)">✏️ 5. Minimalist Pastel Dokusu</button>
+                        <button class="chip" onclick="selectBrush('glowing futuristic neon light streaks and cosmic cyber brush effects', this)">🌟 6. Neon & Işıltılı Siber Fırça</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="safe-zone-box">
+            <label style="display: flex; align-items: center; cursor: pointer; font-size: 15px; font-weight: bold; color: var(--accent);">
+                <input type="checkbox" id="safeZoneToggle" style="width: 20px; height: 20px; margin: 0 10px 0 0; accent-color: var(--accent);"> 
+                🛡️ Instagram Reels Koruması (Safe Zone / Güvenli Alan)
+            </label>
+            <p style="margin: 8px 0 0 30px; font-size: 12px; color: var(--muted); line-height: 1.4;">
+                Aktif olduğunda arka planı tam ekran yapar (siyah boşluk bırakmaz), yazıları merkeze kilitler ve fırçaları alt köşelere şık bir şekilde dağıtır.
+            </p>
         </div>
 
         <div class="select-group">
@@ -444,6 +497,7 @@ input[type=range]::-moz-range-thumb {
             <img id="previewImg" src="" onclick="openFullscreen()" title="Tam ekran görmek için tıkla">
             <div class="action-btns">
                 <button class="btn-main" onclick="pasteImageButton()">📋 Butonla Yapıştır</button>
+                <button class="btn-main" style="background: #3b82f6; color: #fff; display: none;" id="copyOriginalBtn" onclick="copyOriginalImage()">📥 Orijinali Kopyala</button>
                 <button class="btn-main" style="background: var(--gold);" onclick="downloadImage()">💾 İndir</button>
                 <button class="btn-danger" onclick="clearImage()">🗑️ Resmi Kaldır</button>
             </div>
@@ -493,7 +547,6 @@ const trDescriptions = [
     "Sanatçıyı çevreleyen yoğun sahne ışıkları ve altın ateş parıltıları.", "Derinliğe uzanan 3D nota tüneli ve büyüleyici sahne atmosferi.", "Klasik çini desenli bordür, canlı kırmızı güller ve altın varak dokunuşlar."
 ];
 
-// Sekmeler için Kategorilendirme Dizisi
 const categoriesMap = [
     "cinematic", "epic", "cinematic", "nature", "epic", 
     "nature", "epic", "epic", "cinematic", "epic", 
@@ -551,7 +604,7 @@ const container = document.getElementById("promptsContainer");
 promptsData.forEach((id, i) => {
     let div = document.createElement("div");
     div.className = "prompt-box";
-    div.dataset.category = categoriesMap[i]; // Kategori etiketi eklendi
+    div.dataset.category = categoriesMap[i]; 
     div.innerHTML = `
         <h3>${titles[i]}</h3>
         <span class="prompt-tr">${trDescriptions[i]}</span>
@@ -579,25 +632,258 @@ function closeFullscreen() {
     document.getElementById("fullscreenOverlay").style.display = "none";
 }
 
+document.getElementById("useBrush").addEventListener("change", function() {
+    document.getElementById("brushOptions").style.display = this.checked ? "block" : "none";
+    updatePrompts();
+});
+
+document.getElementById("showChannel").addEventListener("change", function() {
+    const channelInput = document.getElementById("channel");
+    if(this.checked) {
+        channelInput.style.opacity = "1";
+        channelInput.style.pointerEvents = "auto";
+    } else {
+        channelInput.style.opacity = "0.5";
+        channelInput.style.pointerEvents = "none";
+    }
+    updatePrompts();
+});
+
+document.getElementById("safeZoneToggle").addEventListener("change", updatePrompts);
+
+function selectBrush(brushDesc, btn) {
+    const brushInput = document.getElementById("brushStyle");
+    if (btn.classList.contains('selected')) {
+        btn.classList.remove('selected');
+        brushInput.value = "";
+    } else {
+        const allBrushChips = btn.parentElement.querySelectorAll('.chip');
+        allBrushChips.forEach(chip => chip.classList.remove('selected'));
+        btn.classList.add('selected');
+        brushInput.value = brushDesc;
+    }
+    if (typeof updatePrompts === "function") {
+        updatePrompts();
+    }
+}
+
+function selectIcon(iconName, btn) {
+    const iconInput = document.getElementById("icon");
+    let currentVal = iconInput.value.trim();
+    
+    if(btn.classList.contains('selected')) {
+        btn.classList.remove('selected');
+        let parts = currentVal.split(", ").filter(p => p !== iconName && p !== "");
+        iconInput.value = parts.join(", ");
+    } else {
+        btn.classList.add('selected');
+        if (currentVal === "") { iconInput.value = iconName; } 
+        else { if (!currentVal.includes(iconName)) iconInput.value = currentVal + ", " + iconName; }
+    }
+    
+    autoGrow(iconInput);
+    updatePrompts();
+}
+
+function clearField(id) { 
+    document.getElementById(id).value = ''; 
+    if(id === 'icon') {
+        document.querySelectorAll('.icon-stock .chip').forEach(btn => btn.classList.remove('selected'));
+        autoGrow(document.getElementById(id));
+    }
+    if(id === 'brushStyle') {
+        document.querySelectorAll('#brushOptions .chip').forEach(btn => btn.classList.remove('selected'));
+        autoGrow(document.getElementById(id));
+    }
+    updatePrompts(); 
+}
+
+function clearAllFields() {
+    clearField('channel');
+    clearField('artist');
+    clearField('song');
+    clearField('negative');
+    clearField('icon');
+    clearField('line1');
+    clearField('line2');
+    clearField('brushStyle');
+    document.getElementById("showChannel").checked = true;
+    document.getElementById("channel").style.opacity = "1";
+    document.getElementById("channel").style.pointerEvents = "auto";
+    document.getElementById("useBrush").checked = false;
+    document.getElementById("brushOptions").style.display = "none";
+    document.getElementById("safeZoneToggle").checked = false; 
+}
+
+function resetToDefaults() {
+    clearAllFields();
+    document.getElementById('channel').value = '4mevsimşarkılar';
+    document.getElementById('format').value = 'horizontal';
+    document.getElementById('imageWeight').value = '--iw 1.0';
+    document.getElementById('focusStyle').value = 'subject_first';
+    document.getElementById('watermarkStyle').value = 'gold';
+    document.getElementById('aiModel').value = '--v 6.0';
+    document.getElementById('stylize').value = '100';
+    document.getElementById('chaos').value = '0';
+    document.getElementById('stylizeVal').innerText = '100';
+    document.getElementById('chaosVal').innerText = '0';
+    clearImage();
+    updatePrompts();
+}
+
+document.getElementById('stylize').addEventListener('input', function() {
+    document.getElementById('stylizeVal').innerText = this.value;
+    updatePrompts();
+});
+
+document.getElementById('chaos').addEventListener('input', function() {
+    document.getElementById('chaosVal').innerText = this.value;
+    updatePrompts();
+});
+
+let currentImg = "";
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            currentImg = e.target.result;
+            document.getElementById('previewImg').src = currentImg;
+            document.getElementById('previewImg').style.display = "block";
+            document.getElementById("copyOriginalBtn").style.display = "inline-block";
+            updatePrompts();
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+async function pasteImageButton() {
+    try {
+        const clipboardItems = await navigator.clipboard.read();
+        for (const clipboardItem of clipboardItems) {
+            const imageTypes = clipboardItem.types.filter(type => type.startsWith('image/'));
+            for (const imageType of imageTypes) {
+                const blob = await clipboardItem.getType(imageType);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImg = e.target.result;
+                    document.getElementById('previewImg').src = currentImg;
+                    document.getElementById('previewImg').style.display = "block";
+                    document.getElementById("copyOriginalBtn").style.display = "inline-block";
+                    updatePrompts();
+                };
+                reader.readAsDataURL(blob);
+                return;
+            }
+        }
+        alert("Panoda resim bulunamadı. Lütfen önce bir resmi kopyalayın.");
+    } catch (err) {
+        alert("Panodan okuma izni reddedildi veya hata oluştu: " + err);
+    }
+}
+
+window.addEventListener('paste', e => {
+    if (e.clipboardData.files.length > 0) {
+        const file = e.clipboardData.files[0];
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                currentImg = ev.target.result;
+                document.getElementById('previewImg').src = currentImg;
+                document.getElementById('previewImg').style.display = "block";
+                document.getElementById("copyOriginalBtn").style.display = "inline-block";
+                updatePrompts();
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});
+
+async function copyOriginalImage() {
+    if (!currentImg) {
+        alert("Kopyalanacak resim yok!");
+        return;
+    }
+    try {
+        const response = await fetch(currentImg);
+        const blob = await response.blob();
+        await navigator.clipboard.write([
+            new ClipboardItem({ [blob.type]: blob })
+        ]);
+        alert("Orijinal resim tam boyutlarında başarıyla panoya kopyalandı!");
+    } catch (err) {
+        alert("Kopyalama başarısız oldu: " + err);
+    }
+}
+
+function clearImage() {
+    currentImg = "";
+    document.getElementById('previewImg').src = "";
+    document.getElementById('previewImg').style.display = "none";
+    document.getElementById('fileInput').value = "";
+    document.getElementById("copyOriginalBtn").style.display = "none";
+    updatePrompts();
+}
+
+function downloadImage() {
+    if(!currentImg) {
+        alert("İndirilecek bir resim yok.");
+        return;
+    }
+    const a = document.createElement("a");
+    a.href = currentImg;
+    a.download = "NRA_Referans_Gorseli.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
 function updatePrompts() {
-    const channel = document.getElementById("channel").value.trim();
+    const showChannel = document.getElementById("showChannel").checked;
+    const channelRaw = document.getElementById("channel").value.trim();
+    const channel = showChannel ? channelRaw : ""; 
+    
     const artist = document.getElementById("artist").value.trim();
     const song = document.getElementById("song").value.trim();
     const userIcon = document.getElementById("icon").value.trim();
-    const negativePrompt = document.getElementById("negative").value.trim(); // Yeni: İstenmeyenler
-    const format = document.getElementById("format").value;
-    const watermarkStyle = document.getElementById("watermarkStyle").value;
-    const focusStyle = document.getElementById("focusStyle").value;
-    const imageWeight = document.getElementById("imageWeight").value;
+    const negInput = document.getElementById("negative").value.trim();
     
-    // Yeni: Gelişmiş Ayarlar
+    const format = document.getElementById("format").value;
+    const iw = document.getElementById("imageWeight").value;
+    const focusStyle = document.getElementById("focusStyle").value;
+    const watermarkStyle = document.getElementById("watermarkStyle").value;
     const aiModel = document.getElementById("aiModel").value;
     const stylize = document.getElementById("stylize").value;
     const chaos = document.getElementById("chaos").value;
 
-    let negRule = negativePrompt ? ` --no ${negativePrompt}` : "";
+    const useBrush = document.getElementById("useBrush").checked;
+    const line1 = document.getElementById("line1") ? document.getElementById("line1").value.trim() : "";
+    const line2 = document.getElementById("line2") ? document.getElementById("line2").value.trim() : "";
+    const brushStyle = document.getElementById("brushStyle") ? document.getElementById("brushStyle").value.trim() : "";
+
+    const useSafeZone = document.getElementById("safeZoneToggle").checked;
+    
+    let safeZonePrompt = "";
+    if (useSafeZone) {
+        safeZonePrompt = "\n\n[FRAME LAYER 1 - BACKGROUND]: The background environment, studio setup, lights, and textures MUST be full-bleed, stretching edge-to-edge from left to right, covering the entire canvas without any empty black borders or cinematic cropping.\n\n[FRAME LAYER 2 - TEXT SAFE ZONE]: All text elements, including artist names, song titles, and central typography, MUST be strictly confined to the exact vertical and horizontal center of the image. Do not place any main text near the top or bottom edges to avoid UI overlap.\n\n[FRAME LAYER 3 - AESTHETIC PLACEMENT]: All decorative elements and brush strokes must be placed aesthetically in the extreme bottom left and bottom right corners, or arranged diagonally. They MUST NOT mix with, overlap, or obstruct the central main text.";
+    }
+
+    let brushPrompt = "";
+    if (useBrush) {
+        const defaultBrush = "expressive, thick oil paint brush strokes";
+        const selectedBrush = brushStyle || defaultBrush;
+        let brushTextLines = [];
+        if(line1) brushTextLines.push(line1);
+        if(line2) brushTextLines.push(line2);
+        let brushTextStr = brushTextLines.length > 0 ? ` featuring the text "${brushTextLines.join(' ')}"` : "";
+        
+        brushPrompt = `\n\n[BRUSH STROKE LAYER]: Add ${selectedBrush} acting as a dynamic background layer. The brush strokes MUST be grouped together as a cohesive unit, rather than separated. Ensure the brush colors are distinct and vibrant enough so they do not blend into the background or get lost. Keep the brush stroke elements appropriately sized (not too large).${brushTextStr}`;
+    }
+
+    let negRule = negInput ? ` --no ${negInput}` : "";
     let paramRule = `${aiModel} --s ${stylize} --c ${chaos}${negRule}`;
-    let sizeRule = (format === "vertical" ? " --ar 9:16" : (format === "portrait" ? " --ar 4:5" : (format === "square" ? " --ar 1:1" : " --ar 16:9"))) + " " + imageWeight + " " + paramRule;
+    let sizeRule = (format === "vertical" ? " --ar 9:16" : (format === "portrait" ? " --ar 4:5" : (format === "square" ? " --ar 1:1" : " --ar 16:9"))) + " " + iw + " " + paramRule;
     
     let focusCommand = "";
     let iconModifier = "";
@@ -611,7 +897,7 @@ function updatePrompts() {
         focusCommand = "ARTISTIC STYLE: Blend the person creatively with environmental effects and thematic textures. Subject and background should have a cohesive, painterly unity.";
         iconModifier = "SYMBOLS: Distribute [ICON] elements artistically and fluidly throughout the scene as part of the visual composition.";
         textPower = "ARTISTIC TYPOGRAPHY: Typography should be stylized and integrated into the overall art style, appearing as part of the aesthetic design.";
-    } else { // standard
+    } else {
         focusCommand = "Keep the original person clearly visible. Subject MUST stand out strongly with sharp, glowing rim lighting, popping out perfectly from the background.";
         iconModifier = "Add symbolic [ICON] naturally. Symbols should integrate seamlessly without overshadowing the subject.";
         textPower = "Typography: Elegant 3D letters. Ensure clear hierarchy.";
@@ -646,45 +932,45 @@ function updatePrompts() {
     }
 
     const pTemplates = [
-        `Transform the uploaded image into a Cinematic Anatolian composite cover.\n\n${focusCommand}\n\nBackground: deep Anatolian cultural textures, vivid warm amber tones, glowing gold highlights, saturated reds, and subtle warm dust particles. Create a dramatic, high-contrast atmosphere with rich cinematic depth.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Golden Warmth composite cover.\n\n${focusCommand}\n\nBackground: vibrant golden hour rays, intense warm aura, luxurious glowing gold particles, and rich sunset bokeh. Create a dramatic, high-contrast atmosphere with rich cinematic depth.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Dramatic Noir composite cover.\n\n${focusCommand}\n\nBackground: deep obsidian blacks, heavy moody shadows, striking misty street lamp light. Create a dramatic, high-contrast atmosphere.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Spring Rose composite cover.\n\n${focusCommand}\n\nBackground: vibrant ruby red roses, lush emerald green leaves, and glowing dreamy romantic sunlight.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Divine Light spiritual composite cover.\n\n${focusCommand}\n\nBackground: glowing ethereal god rays, intense bright whites, deep contrasting shadows.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Peaceful Rain composite cover.\n\n${focusCommand}\n\nBackground: deep moody blues, highly reflective wet glass surfaces, and vibrant glowing warm city bokeh.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Crimson Glow composite cover.\n\n${focusCommand}\n\nBackground: pure velvet black contrasted with blindingly piercing, luminous neon red lighting.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Patriotic (Vatan) composite cover.\n\n${focusCommand}\n\nBackground: vivid crimson reds, striking heroic sun highlights, majestic waving flag textures.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Classic Storyteller composite cover.\n\n${focusCommand}\n\nBackground: rich mahogany browns, vibrant warm amber light, deep shadows, and glowing cinematic dust over vintage books.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Mystery Letters composite cover.\n\n${focusCommand}\n\nBackground: deep mysterious blues, luminous floating 3D glowing letters.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Wisdom Study composite cover.\n\n${focusCommand}\n\nBackground: rich warm traditional tones, striking Rembrandt lighting on the subject.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Retro Yeşilçam composite cover.\n\n${focusCommand}\n\nBackground: vibrant warm nostalgic tones, intense film halation, rich cinematic grain.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Live Stage composite cover.\n\n${focusCommand}\n\nBackground: explosive glowing neon stage lights, deep concert blacks, dynamic lens flares.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Ancient Pillar composite cover.\n\n${focusCommand}\n\nBackground: rich textured marble, dramatic epic sunlight striking through columns.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Deep Street Night composite cover.\n\n${focusCommand}\n\nBackground: moody dark urban shadows, intensely vibrant neon reflections on wet asphalt.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Cyber Neon composite cover.\n\n${focusCommand}\n\nBackground: intense electric blues, vibrant cyberpunk pinks, glowing digital grids.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Luxury Marble composite cover.\n\n${focusCommand}\n\nBackground: pristine deep white marble, intensely reflective luxury gold accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Ocean Deep composite cover.\n\n${focusCommand}\n\nBackground: bioluminescent deep oceanic blues, piercing bright underwater sunrays.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Phoenix Fire composite cover.\n\n${focusCommand}\n\nBackground: explosive flying fire embers, blindingly bright orange and red flares.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Carnival Lights composite cover.\n\n${focusCommand}\n\nBackground: wildly vibrant festive neon colors, glowing long-exposure light trails.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Natural Forest composite cover.\n\n${focusCommand}\n\nBackground: intensely vibrant lush greens, piercing golden sunbeams filtering through leaves.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Gothic Soul composite cover.\n\n${focusCommand}\n\nBackground: deep mysterious dark greys, striking colorful stained-glass light beams.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Future Vision composite cover.\n\n${focusCommand}\n\nBackground: intensely glowing holographic blue panels, sleek metallic tones.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Artistic Oil Painting cover.\n\n${focusCommand}\n\nBackground: wildly vibrant color palettes, thick textured oil brush strokes.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Classical Opera cover.\n\n${focusCommand}\n\nBackground: extraordinarily rich velvet reds, glowing warm golden orchestra lights.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Interstellar Nebula cover.\n\n${focusCommand}\n\nBackground: explosively vibrant cosmic purples, glowing pink nebulas.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Modern Podcast cover.\n\n${focusCommand}\n\nBackground: sleek high-end studio tones, pop-color LED light accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Cozy Acoustic Studio cover.\n\n${focusCommand}\n\nBackground: warm glowing string lights, rich deep mahogany wooden textures.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Deep Space Galaxy cover.\n\n${focusCommand}\n\nBackground: intensely vibrant swirling cosmic dust, piercing bright supernovas.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Sunset Landscape cover.\n\n${focusCommand}\n\nBackground: overwhelmingly vivid glowing orange and magenta skies.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a High-Impact YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: surreal hyper-realistic background blend, vibrant cinematic lighting.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Action-Shock YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: intense cinematic action, explosive lighting, dynamic motion blur.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Mystery-Intrigue YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: deep moody shadows, striking neon accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Cozy Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: warm glowing string lights, rich deep mahogany wooden textures blended with wildly vibrant color palettes and thick textured oil brush strokes.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Cinematic Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: cinematic dramatic lighting, deep mahogany wooden textures, heavy shadows blended with expressive, thick textured oil brush strokes and subtle glowing string lights.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Lofi Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: dreamy lofi aesthetic lighting, soft neon purple and warm orange accents, rich wooden textures fused with expressive, thick oil paint brush strokes and glowing dust particles.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a 'Sahne Ateşi' composite cover.\n\n${focusCommand}\n\nBackground: intense stage lights, explosive glowing gold fire embers, and dramatic rim lighting on the subject.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an 'Epik Nota Tüneli' composite cover.\n\n${focusCommand}\n\nBackground: a massive 3D musical staff spiraling into an infinite tunnel, vibrant golden musical notes, motion blur, and dramatic cinematic lighting.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a 'Nostaljik Gül & Varak' composite cover.\n\n${focusCommand}\n\nBackground: lush blooming red roses at the bottom, traditional intricate Anatolian tile patterns, glowing golden dust particles, and luxury gold leaf accents.\n\n[ICON_MOD]${textSection}${textPower}${branding}${sizeRule}`
+        `Transform the uploaded image into a Cinematic Anatolian composite cover.\n\n${focusCommand}\n\nBackground: deep Anatolian cultural textures, vivid warm amber tones, glowing gold highlights, saturated reds, and subtle warm dust particles. Create a dramatic, high-contrast atmosphere with rich cinematic depth.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Golden Warmth composite cover.\n\n${focusCommand}\n\nBackground: vibrant golden hour rays, intense warm aura, luxurious glowing gold particles, and rich sunset bokeh. Create a dramatic, high-contrast atmosphere with rich cinematic depth.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Dramatic Noir composite cover.\n\n${focusCommand}\n\nBackground: deep obsidian blacks, heavy moody shadows, striking misty street lamp light. Create a dramatic, high-contrast atmosphere.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Spring Rose composite cover.\n\n${focusCommand}\n\nBackground: vibrant ruby red roses, lush emerald green leaves, and glowing dreamy romantic sunlight.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Divine Light spiritual composite cover.\n\n${focusCommand}\n\nBackground: glowing ethereal god rays, intense bright whites, deep contrasting shadows.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Peaceful Rain composite cover.\n\n${focusCommand}\n\nBackground: deep moody blues, highly reflective wet glass surfaces, and vibrant glowing warm city bokeh.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Crimson Glow composite cover.\n\n${focusCommand}\n\nBackground: pure velvet black contrasted with blindingly piercing, luminous neon red lighting.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Patriotic (Vatan) composite cover.\n\n${focusCommand}\n\nBackground: vivid crimson reds, striking heroic sun highlights, majestic waving flag textures.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Classic Storyteller composite cover.\n\n${focusCommand}\n\nBackground: rich mahogany browns, vibrant warm amber light, deep shadows, and glowing cinematic dust over vintage books.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Mystery Letters composite cover.\n\n${focusCommand}\n\nBackground: deep mysterious blues, luminous floating 3D glowing letters.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Wisdom Study composite cover.\n\n${focusCommand}\n\nBackground: rich warm traditional tones, striking Rembrandt lighting on the subject.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Retro Yeşilçam composite cover.\n\n${focusCommand}\n\nBackground: vibrant warm nostalgic tones, intense film halation, rich cinematic grain.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Live Stage composite cover.\n\n${focusCommand}\n\nBackground: explosive glowing neon stage lights, deep concert blacks, dynamic lens flares.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Ancient Pillar composite cover.\n\n${focusCommand}\n\nBackground: rich textured marble, dramatic epic sunlight striking through columns.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Deep Street Night composite cover.\n\n${focusCommand}\n\nBackground: moody dark urban shadows, intensely vibrant neon reflections on wet asphalt.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cyber Neon composite cover.\n\n${focusCommand}\n\nBackground: intense electric blues, vibrant cyberpunk pinks, glowing digital grids.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Luxury Marble composite cover.\n\n${focusCommand}\n\nBackground: pristine deep white marble, intensely reflective luxury gold accents.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Ocean Deep composite cover.\n\n${focusCommand}\n\nBackground: bioluminescent deep oceanic blues, piercing bright underwater sunrays.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Phoenix Fire composite cover.\n\n${focusCommand}\n\nBackground: explosive flying fire embers, blindingly bright orange and red flares.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Carnival Lights composite cover.\n\n${focusCommand}\n\nBackground: wildly vibrant festive neon colors, glowing long-exposure light trails.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Natural Forest composite cover.\n\n${focusCommand}\n\nBackground: intensely vibrant lush greens, piercing golden sunbeams filtering through leaves.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Gothic Soul composite cover.\n\n${focusCommand}\n\nBackground: deep mysterious dark greys, striking colorful stained-glass light beams.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Future Vision composite cover.\n\n${focusCommand}\n\nBackground: intensely glowing holographic blue panels, sleek metallic tones.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Artistic Oil Painting cover.\n\n${focusCommand}\n\nBackground: wildly vibrant color palettes, thick textured oil brush strokes.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Classical Opera cover.\n\n${focusCommand}\n\nBackground: extraordinarily rich velvet reds, glowing warm golden orchestra lights.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Interstellar Nebula cover.\n\n${focusCommand}\n\nBackground: explosively vibrant cosmic purples, glowing pink nebulas.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Modern Podcast cover.\n\n${focusCommand}\n\nBackground: sleek high-end studio tones, pop-color LED light accents.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cozy Acoustic Studio cover.\n\n${focusCommand}\n\nBackground: warm glowing string lights, rich deep mahogany wooden textures.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Deep Space Galaxy cover.\n\n${focusCommand}\n\nBackground: intensely vibrant swirling cosmic dust, piercing bright supernovas.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Sunset Landscape cover.\n\n${focusCommand}\n\nBackground: overwhelmingly vivid glowing orange and magenta skies.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a High-Impact YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: surreal hyper-realistic background blend, vibrant cinematic lighting.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Action-Shock YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: intense cinematic action, explosive lighting, dynamic motion blur.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Mystery-Intrigue YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: deep moody shadows, striking neon accents.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cozy Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: warm glowing string lights, rich deep mahogany wooden textures blended with wildly vibrant color palettes and thick textured oil brush strokes.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cinematic Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: cinematic dramatic lighting, deep mahogany wooden textures, heavy shadows blended with expressive, thick textured oil brush strokes and subtle glowing string lights.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Lofi Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: dreamy lofi aesthetic lighting, soft neon purple and warm orange accents, rich wooden textures fused with expressive, thick oil paint brush strokes and glowing dust particles.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a 'Sahne Ateşi' composite cover.\n\n${focusCommand}\n\nBackground: intense stage lights, explosive glowing gold fire embers, and dramatic rim lighting on the subject.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an 'Epik Nota Tüneli' composite cover.\n\n${focusCommand}\n\nBackground: a massive 3D musical staff spiraling into an infinite tunnel, vibrant golden musical notes, motion blur, and dramatic cinematic lighting.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a 'Nostaljik Gül & Varak' composite cover.\n\n${focusCommand}\n\nBackground: lush blooming red roses at the bottom, traditional intricate Anatolian tile patterns, glowing golden dust particles, and luxury gold leaf accents.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`
     ];
 
     promptsData.forEach((id, i) => {
@@ -694,29 +980,10 @@ function updatePrompts() {
         let currentIconMod = iconModifier.replace("[ICON]", finalIcon);
         let finalPrompt = pTemplates[i].replace("[ICON_MOD]", currentIconMod);
         
-        // Fazla boşlukları temizle (Eğer negatif prompt girilmemişse aradaki çift boşlukları teke düşürür)
         finalPrompt = finalPrompt.replace(/\s+/g, ' ').replace(/ \n/g, '\n').replace(/\n /g, '\n');
         
         if(area && area.hasAttribute("readonly")) area.value = finalPrompt;
     });
-}
-
-function selectIcon(iconName, btn) {
-    const iconInput = document.getElementById("icon");
-    let currentVal = iconInput.value.trim();
-    
-    if(btn.classList.contains('selected')) {
-        btn.classList.remove('selected');
-        let parts = currentVal.split(", ").filter(p => p !== iconName && p !== "");
-        iconInput.value = parts.join(", ");
-    } else {
-        btn.classList.add('selected');
-        if (currentVal === "") { iconInput.value = iconName; } 
-        else { if (!currentVal.includes(iconName)) iconInput.value = currentVal + ", " + iconName; }
-    }
-    
-    autoGrow(iconInput);
-    updatePrompts();
 }
 
 function toggleEdit(id, btn) {
@@ -734,11 +1001,9 @@ function copyText(id, btn) {
 }
 
 function filterPrompts(category, btn) {
-    // Aktif sekme stilini güncelle
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     
-    // Kutuları filtrele
     const boxes = document.querySelectorAll('.prompt-box');
     boxes.forEach(box => {
         if (category === 'all' || box.dataset.category === category) {
@@ -749,129 +1014,6 @@ function filterPrompts(category, btn) {
     });
 }
 
-function clearField(id) { 
-    const el = document.getElementById(id);
-    el.value = ""; 
-    if(id === 'icon') {
-        el.style.height = "48px";
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-    }
-    updatePrompts(); 
-}
-
-function clearAllFields() { 
-    ["channel", "artist", "song", "icon", "negative"].forEach(id => {
-        const el = document.getElementById(id);
-        el.value = "";
-        if(id === 'icon') {
-            el.style.height = "48px";
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-        }
-    }); 
-    updatePrompts(); 
-}
-
-function resetToDefaults() {
-    document.getElementById("channel").value = "4mevsimşarkılar";
-    document.getElementById("artist").value = "";
-    document.getElementById("song").value = "";
-    document.getElementById("negative").value = "";
-    
-    const iconEl = document.getElementById("icon");
-    iconEl.value = "";
-    iconEl.style.height = "48px";
-    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-    
-    document.getElementById("format").value = "horizontal";
-    document.getElementById("imageWeight").value = "--iw 1.0";
-    document.getElementById("focusStyle").value = "subject_first";
-    document.getElementById("watermarkStyle").value = "gold";
-    
-    // YENİ: İleri Düzey Ayarları da sıfırla
-    document.getElementById("aiModel").value = "--v 6.0";
-    document.getElementById("stylize").value = "100";
-    document.getElementById("stylizeVal").innerText = "100";
-    document.getElementById("chaos").value = "0";
-    document.getElementById("chaosVal").innerText = "0";
-    
-    // Sekmeleri "Tümü"ne döndür
-    filterPrompts('all', document.querySelector('.tab-btn'));
-    
-    updatePrompts();
-}
-
-let currentImg = "";
-function previewImage(event) {
-    const file = event.target.files[0];
-    if(file) { 
-        currentImg = URL.createObjectURL(file); 
-        const imgEl = document.getElementById("previewImg");
-        imgEl.src = currentImg; 
-        imgEl.style.display = "block";
-    }
-}
-
-function pasteImageButton() {
-    navigator.clipboard.read().then(items => {
-        for (const item of items) {
-            for (const type of item.types) {
-                if (type.startsWith("image/")) {
-                    item.getType(type).then(blob => {
-                        currentImg = URL.createObjectURL(blob);
-                        const imgEl = document.getElementById("previewImg");
-                        imgEl.src = currentImg;
-                        imgEl.style.display = "block";
-                    });
-                }
-            }
-        }
-    }).catch(() => alert("Lütfen CTRL+V kullanın."));
-}
-
-document.addEventListener("paste", function(e) {
-    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-    for (let i = 0; i < items.length; i++) {
-        if (items[i].type.indexOf("image") !== -1) {
-            const blob = items[i].getAsFile();
-            currentImg = URL.createObjectURL(blob);
-            const imgEl = document.getElementById("previewImg");
-            imgEl.src = currentImg;
-            imgEl.style.display = "block";
-            break; 
-        }
-    }
-});
-
-function clearImage() { 
-    const imgEl = document.getElementById("previewImg");
-    imgEl.src = ""; 
-    imgEl.style.display = "none";
-    currentImg = ""; 
-    document.getElementById("fileInput").value = ""; 
-}
-function downloadImage() {
-    if(!currentImg) return alert("Önce resim yükleyin veya yapıştırın!");
-    const a = document.createElement("a"); a.href = currentImg; a.download = "nra-referans.png"; a.click();
-}
-
-// Event Dinleyicileri (Yeni Slider'lar dahil)
-["channel", "artist", "song", "icon", "negative", "format", "watermarkStyle", "focusStyle", "imageWeight", "aiModel"].forEach(id => {
-    document.getElementById(id).addEventListener("input", updatePrompts);
-    document.getElementById(id).addEventListener("change", updatePrompts);
-});
-
-// Slider (Range) Dinleyicileri (Sayıyı anlık günceller)
-document.getElementById("stylize").addEventListener("input", function() {
-    document.getElementById("stylizeVal").innerText = this.value;
-    updatePrompts();
-});
-document.getElementById("chaos").addEventListener("input", function() {
-    document.getElementById("chaosVal").innerText = this.value;
-    updatePrompts();
-});
-
-updatePrompts();
-// Sayfa 300px aşağı kaydırıldığında butonu göster
 window.onscroll = function() { scrollFunction() };
 
 function scrollFunction() {
@@ -883,13 +1025,31 @@ function scrollFunction() {
     }
 }
 
-// Butona tıklandığında yumuşak bir şekilde en üste çık
 function scrollToTop() {
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
     });
 }
+
+// ==== İŞTE EKSİK OLAN VE BÜTÜN SİSTEMİ UYANDIRAN O CAN ALICI KOD BLOKLARI ==== 
+
+// 1. Sayfadaki her bir input (kutu, açılır menü) için anında güncelleme dinleyicisi ekliyoruz.
+const allInputs = ["channel", "artist", "song", "negative", "icon", "line1", "line2", "brushStyle", "format", "imageWeight", "focusStyle", "watermarkStyle", "aiModel"];
+
+allInputs.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) {
+        el.addEventListener("input", updatePrompts); // Yazı yazıldığı anda tetikle
+        el.addEventListener("change", updatePrompts); // Tıklanıp değiştirildiği anda tetikle
+    }
+});
+
+// 2. Sayfa yüklendiğinde boş kutu kalmaması için ilk dolumu yapıyoruz.
+window.onload = function() {
+    updatePrompts();
+};
+
 </script>
 <button id="scrollTopBtn" onclick="scrollToTop()" title="Başa Dön">YUKARI</button>
 </body>
