@@ -538,7 +538,7 @@ function setCounter(sel,max,ctSel){
 }
 
 const TITLE_TAGS=["#4mevsimşarkılar","#4mevsimşarkılarShorts","#shorts","#Müzik","#Kalp","#CanlıPerformans","#DikeyVideolar","#Radyo","#TV","#Piyano","#Guitar","#TürkçeMüzik","#Huzur","#Melankoli","#Romantik","#Nostalji","#Gece","#Yaz","#Kış","#Relax"].sort((a,b)=>a.localeCompare(b,"tr"));
-const DESC_TAGS=["#DiniMüzik","#Ambiance","#HuzurluAnlar","#Duygusal","#Uyku","#Odaklanma","#NostaljikRadyoŞarkıları","#Doğasesleri","#Şiir","#VatanŞarkıları","#Soundtrack","#Sözler","#Şarkı","#TasavvufMüziği","#Shorts","#Arabesk","#TelevizyonOdasıŞarkıları","#Televizyon","#DamarŞarkılar","#Radyo","#Öykü","#Hikaye","#Türkiye","#AskeriMüzik","#Türkü","#TürkHalkMüziği","#TürkSanatMüziği","#TürkFolkMüziği","#RelaxingMusic"].sort((a,b)=>a.localeCompare(b,"tr"));
+const DESC_TAGS=["#DiniMüzik","#Ambiance","#HuzurluAnlar","#Duygusal","#KalbeDokunanEzgiler","#KalptenGelenEzgiler","#KalptenGelenŞarkılar","#KalptenGelenTürküler","#Uyku","#Odaklanma","#NostaljikRadyoŞarkıları","#Doğasesleri","#Şiir","#VatanŞarkıları","#Soundtrack","#Sözler","#Şarkı","#TasavvufMüziği","#Shorts","#Arabesk","#TelevizyonOdasıŞarkıları","#Televizyon","#DamarŞarkılar","#DikeyVideolar","#Radyo","#Öykü","#Hikaye","#SesliÖyküler","#Kitaplık","#Türkiye","#AskeriMüzik","#THM","#TSM","#Türkü","#TürkHalkMüziği","#TürkSanatMüziği","#TürkFolkMüziği","#RelaxingMusic"].sort((a,b)=>a.localeCompare(b,"tr"));
 
 const TYPE_MAP={
   "Şarkı Videoları":   { eser:"Şarkı", sahip:"Şarkıcı", feel:"Şarkı Hissi",  icon1:"🎵", icon2:"🎤" },
@@ -779,10 +779,47 @@ function buildDrop(containerSel, menuSel, list, set, labelSel){
   const menu = $(menuSel);
   const baseText = $(labelSel).getAttribute("data-base") || "Seçim Yap";
   
-  grp.querySelector(".head").onclick = (e)=>{ grp.classList.toggle("open"); e.stopPropagation(); };
-  document.addEventListener("click",()=>grp.classList.remove("open"));
+  // 1. BÖCEK ÇÖZÜMÜ: Kutucuk her yüklendiğinde etiket sayısını günceller.
+  // Ana Temizle butonuna basıldığında sayının ekranda kalma hatasını çözer.
+  const n = set.size;
+  $(labelSel).textContent = n ? `${baseText} (${n})` : baseText;
+  
+  // Event listener'ların üst üste binmesini önlemek için kontrol
+  if (!grp.dataset.init) {
+      grp.querySelector(".head").onclick = (e)=>{ grp.classList.toggle("open"); e.stopPropagation(); };
+      document.addEventListener("click",()=>grp.classList.remove("open"));
+      grp.dataset.init = "true";
+  }
   
   menu.innerHTML = "";
+
+  // 2. YENİ ÖZELLİK: Menü içi "Hepsini Seç" ve "Temizle" Butonları
+  const topBar = document.createElement("div");
+  // position: sticky ile aşağı kaydırıldığında butonların menü tepesinde sabit kalmasını sağlıyoruz
+  topBar.style = "display:flex; gap:5px; padding:6px 8px; border-bottom:1px solid var(--line); position:sticky; top:0; background:#020617; z-index:10;";
+  topBar.innerHTML = `
+    <button type="button" style="flex:1; background:rgba(34, 197, 94, 0.15); color:#4ade80; border:1px solid #22c55e; padding:6px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:bold; transition:0.2s;">✓ Hepsini Seç</button>
+    <button type="button" style="flex:1; background:rgba(239, 68, 68, 0.15); color:#f87171; border:1px solid #ef4444; padding:6px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:bold; transition:0.2s;">✕ Temizle</button>
+  `;
+  menu.appendChild(topBar);
+
+  // Hepsini Seç Aksiyonu
+  topBar.children[0].onclick = (e) => {
+    e.stopPropagation();
+    list.forEach(t => set.add(t));
+    buildDrop(containerSel, menuSel, list, set, labelSel); // Menüyü yenile
+    regenerate(); // Şablonu güncelle
+  };
+
+  // Sadece O Menüyü Temizle Aksiyonu
+  topBar.children[1].onclick = (e) => {
+    e.stopPropagation();
+    set.clear();
+    buildDrop(containerSel, menuSel, list, set, labelSel); // Menüyü yenile
+    regenerate(); // Şablonu güncelle
+  };
+
+  // Mevcut Liste Oluşturma (Değişmedi)
   list.forEach(t=>{
     const d = document.createElement("div"); 
     d.className="opt"; 
@@ -796,14 +833,13 @@ function buildDrop(containerSel, menuSel, list, set, labelSel){
       } else { 
           set.add(t); d.classList.add("active"); d.textContent = t + " ✓"; 
       }
-      const n = set.size;
-      $(labelSel).textContent = n ? `${baseText} (${n})` : baseText;
+      const currN = set.size;
+      $(labelSel).textContent = currN ? `${baseText} (${currN})` : baseText;
       regenerate();
     };
     menu.appendChild(d);
   });
 }
-
 function labelize(){
   const t = $("#typeSel").value; const m = TYPE_MAP[t];
   $("#lblOwner").textContent = (t==="Ambiyans Videoları") ? "Ortam Adı" : m.sahip;
