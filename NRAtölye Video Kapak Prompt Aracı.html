@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NRAtölye PRO • NRA Prompt Aracı V6.6 (Studio)</title>
+<title>NRAtölye PRO • NRA Prompt Aracı V6.7 (Studio)</title>
 
 <style>
-/* ========== v6.6 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
+/* ========== v6.7 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
 :root {
     --bg: #0f1115;
     --card: #151922;
@@ -282,7 +282,7 @@ input[type=range]::-moz-range-thumb {
         <div class="logo-real">
             <img src="NRAtölyelogo.png" alt="NR" onerror="this.src='https://via.placeholder.com/80/14b8a6/fff?text=NR'">
         </div>
-        <h2>NRAtölye PRO • NRA Prompt Aracı V6.6 (Studio)</h2>
+        <h2>NRAtölye PRO • NRA Prompt Aracı V6.7 (Studio)</h2>
     </header>
 
     <div class="main-card">
@@ -408,6 +408,14 @@ input[type=range]::-moz-range-thumb {
 
         <div class="select-group">
             <div class="select-box">
+                <label>🚀 HEDEF YAPAY ZEKA</label>
+                <select id="targetTool" style="border: 1px solid var(--accent) !important;">
+                <option value="other"selected>🤖 Metin Tabanlı Y.Z.</option>
+                <option value="midjourney">⛵ Üretken Y.Z.</option>
+                </select>
+            </div>
+
+            <div class="select-box">
                 <label>📐 FORMAT & BOYUT</label>
                 <select id="format" style="border: 1px solid var(--accent) !important;">
                     <option value="horizontal">📺 Yatay (16:9)</option>
@@ -435,7 +443,9 @@ input[type=range]::-moz-range-thumb {
                     <option value="artistic">🎨 Sanatsal / Dağınık</option>
                 </select>
             </div>
+        </div>
 
+        <div class="select-group">
             <div class="select-box">
                 <label>✍️ KANAL ADI STİLİ</label>
                 <select id="watermarkStyle" style="border: 1px solid var(--accent) !important;">
@@ -447,9 +457,7 @@ input[type=range]::-moz-range-thumb {
                     <option value="flashy">💥 Kanal Adı Gösterişli/Glitch</option>
                 </select>
             </div>
-        </div>
 
-        <div class="select-group" style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 14px; border: 1px solid var(--line);">
             <div class="select-box">
                 <label>🤖 ÇİZİM TARZI</label>
                 <select id="aiModel" style="border: 1px solid var(--accent) !important;">
@@ -460,7 +468,7 @@ input[type=range]::-moz-range-thumb {
             </div>
             
             <div class="select-box">
-                <label>✨YZ Katkısı: STİLİZASYON (Sanatsallık)</label>
+                <label>✨YZ Katkısı: STİLİZASYON</label>
                 <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px;">
                     <input type="range" id="stylize" min="0" max="1000" value="100" style="flex:1;">
                     <span id="stylizeVal" style="width: 40px; font-size: 15px; font-weight: bold; color: var(--amber); text-align: right;">100</span>
@@ -468,7 +476,7 @@ input[type=range]::-moz-range-thumb {
             </div>
 
             <div class="select-box">
-                <label>🌪️YZ Katkısı: KAOS (Rastgelelik / Çeşitlilik)</label>
+                <label>🌪️YZ Katkısı: KAOS</label>
                 <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px;">
                     <input type="range" id="chaos" min="0" max="100" value="0" style="flex:1;">
                     <span id="chaosVal" style="width: 40px; font-size: 15px; font-weight: bold; color: var(--amber); text-align: right;">0</span>
@@ -482,9 +490,9 @@ input[type=range]::-moz-range-thumb {
         </div>
 
         <div class="links">
-            <button onclick="window.open('https://copilot.microsoft.com/', '_blank')">Copilot</button>
             <button onclick="window.open('https://gemini.google.com/app', '_blank')">Gemini</button>
             <button onclick="window.open('https://chatgpt.com/', '_blank')">ChatGPT</button>
+            <button onclick="window.open('https://copilot.microsoft.com/', '_blank')">Copilot</button>            
             <button onclick="window.open('https://grok.com/', '_blank')">Grok</button>
             <button onclick="window.open('https://manus.im/app', '_blank')">Manus</button> 
             <button onclick="window.open('https://firefly.adobe.com/', '_blank')">Firefly</button>
@@ -718,6 +726,8 @@ function clearAllFields() {
 function resetToDefaults() {
     clearAllFields();
     document.getElementById('channel').value = '4mevsimşarkılar';
+    // YENİ EKLENEN DEĞİŞKEN SIFIRLAMASI
+    if(document.getElementById('targetTool')) document.getElementById('targetTool').value = 'midjourney';
     document.getElementById('format').value = 'horizontal';
     document.getElementById('imageWeight').value = '--iw 1.0';
     document.getElementById('focusStyle').value = 'subject_first';
@@ -844,6 +854,9 @@ function updatePrompts() {
     const channelRaw = document.getElementById("channel").value.trim();
     const channel = showChannel ? channelRaw : ""; 
     
+    // YENİ EKLENEN DEĞİŞKENİ OKUYORUZ
+    const targetTool = document.getElementById("targetTool") ? document.getElementById("targetTool").value : "midjourney";
+
     const artist = document.getElementById("artist").value.trim();
     const song = document.getElementById("song").value.trim();
     const userIcon = document.getElementById("icon").value.trim();
@@ -881,9 +894,23 @@ function updatePrompts() {
         brushPrompt = `\n\n[BRUSH STROKE LAYER]: Add ${selectedBrush} acting as a dynamic background layer. The brush strokes MUST be grouped together as a cohesive unit, rather than separated. Ensure the brush colors are distinct and vibrant enough so they do not blend into the background or get lost. Keep the brush stroke elements appropriately sized (not too large).${brushTextStr}`;
     }
 
-    let negRule = negInput ? ` --no ${negInput}` : "";
-    let paramRule = `${aiModel} --s ${stylize} --c ${chaos}${negRule}`;
-    let sizeRule = (format === "vertical" ? " --ar 9:16" : (format === "portrait" ? " --ar 4:5" : (format === "square" ? " --ar 1:1" : " --ar 16:9"))) + " " + iw + " " + paramRule;
+    // ==========================================
+    // YENİ EKLENEN YOL AYRIMI (TARGET TOOL LOGIC)
+    // ==========================================
+    let sizeRule = "";
+    if (targetTool === "midjourney") {
+        let negRule = negInput ? ` --no ${negInput}` : "";
+        let paramRule = `${aiModel} --s ${stylize} --c ${chaos}${negRule}`;
+        sizeRule = (format === "vertical" ? " --ar 9:16" : (format === "portrait" ? " --ar 4:5" : (format === "square" ? " --ar 1:1" : " --ar 16:9"))) + " " + iw + " " + paramRule;
+    } else {
+        let aspectText = "Create this as a 16:9 horizontal image.";
+        if (format === "vertical") aspectText = "Create this as a 9:16 vertical image.";
+        else if (format === "portrait") aspectText = "Create this as a 4:5 portrait image.";
+        else if (format === "square") aspectText = "Create this as a perfectly square 1:1 image.";
+        
+        let noText = negInput ? ` Strictly avoid and DO NOT include: ${negInput}.` : "";
+        sizeRule = `\n\n[ENGINE SETTINGS]: ${aspectText}${noText} Ensure high artistic quality.`;
+    }
     
     let focusCommand = "";
     let iconModifier = "";
@@ -1032,20 +1059,19 @@ function scrollToTop() {
     });
 }
 
-// ==== İŞTE EKSİK OLAN VE BÜTÜN SİSTEMİ UYANDIRAN O CAN ALICI KOD BLOKLARI ==== 
-
-// 1. Sayfadaki her bir input (kutu, açılır menü) için anında güncelleme dinleyicisi ekliyoruz.
-const allInputs = ["channel", "artist", "song", "negative", "icon", "line1", "line2", "brushStyle", "format", "imageWeight", "focusStyle", "watermarkStyle", "aiModel"];
+// ==== YENİ EKLENEN targetTool DAHİL EDİLDİ ==== 
+const allInputs = ["channel", "artist", "song", "negative", "icon", "line1", "line2", "brushStyle", "format", "imageWeight", "focusStyle", "watermarkStyle", "aiModel", "targetTool"];
 
 allInputs.forEach(id => {
+
     const el = document.getElementById(id);
     if(el) {
-        el.addEventListener("input", updatePrompts); // Yazı yazıldığı anda tetikle
-        el.addEventListener("change", updatePrompts); // Tıklanıp değiştirildiği anda tetikle
+        el.addEventListener("input", updatePrompts);
+        el.addEventListener("change", updatePrompts);
+window.addEventListener("DOMContentLoaded", updatePrompts);
     }
 });
 
-// 2. Sayfa yüklendiğinde boş kutu kalmaması için ilk dolumu yapıyoruz.
 window.onload = function() {
     updatePrompts();
 };
