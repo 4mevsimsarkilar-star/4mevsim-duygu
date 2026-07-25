@@ -530,7 +530,6 @@ function setCounter(sel, max, ctSel) {
   const el = $(sel);
   if (!el) return;
   
-  // Emojileri (Surrogate pairs) tek bir karakter olarak saymak için:
   const v = [...el.value].length; 
   const ct = $(ctSel);
   ct.textContent = `${v}/${max}`;
@@ -540,9 +539,9 @@ function setCounter(sel, max, ctSel) {
   if (r < 0.8) {
     ct.classList.add("ok");
   } else if (r <= 1.0) {
-    ct.classList.add("warn"); // Limite yaklaşıldığında sarı
+    ct.classList.add("warn");
   } else {
-    ct.classList.add("err"); // Limit aşıldığında kırmızı
+    ct.classList.add("err");
   }
 }
 
@@ -565,9 +564,7 @@ const INTRO={
   "Ambiyans Videoları": "🌿 Sessizlik + doğa sesi + huzurlu müzik = ruh için bir mola...\nDoğanın kalbinde bir akşam; suyun sesi, ateşin sıcaklığı ve huzurun yankısı..."
 };
 
-// DİNAMİK AÇIKLAMA HASHTAG OLUŞTURUCU
 function getDynamicHashtags(type, owner, work, feel, isShorts) {
-    // Boşlukları silip ilk harfleri büyüterek hashtag formatına çeviren yardımcı fonksiyon
     const toTag = (str) => {
         if (!str || str === "—") return "";
         return "#" + str.split(/\s+/).map(w => w.charAt(0).toLocaleUpperCase('tr-TR') + w.slice(1).toLocaleLowerCase('tr-TR')).join("");
@@ -575,14 +572,11 @@ function getDynamicHashtags(type, owner, work, feel, isShorts) {
 
     const tagOwner = toTag(owner);
     const tagWork = toTag(work);
-    // His içindeki emojileri temizleyip hashtag yapar
     const cleanFeel = feel ? feel.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim() : "";
     const tagFeel = toTag(cleanFeel);
 
-    // Genel kullanım için dinamik etiketler (Şarkıcı, Eser, His)
     const dynamicTags = [tagOwner, tagWork, tagFeel].filter(t => t !== "").join(" ");
 
-    // 6. Shorts Modu Aktifse Doğrudan Bu Blok Çalışır
     if (isShorts) {
         return `#4mevsimşarkılar #RuhumuDinlendirenŞarkılar ${dynamicTags} #CanlıPerformanslar #Nostalji #DuygusalŞarkılar #KalbeDokunanŞarkılar #MüzikKeyfi`.replace(/\s+/g, " ").trim();
     }
@@ -602,13 +596,11 @@ function getDynamicHashtags(type, owner, work, feel, isShorts) {
             fixedPart = `#KıssadanVideolar ${dynamicTags} #Huşu #Maneviyat #Huzur #GününMesajı #AnlamlıSahneler`;
             break;
         case "Ambiyans Videoları":
-            // Ambiyansta sıralama değişiyor: [AmbiyansTürü] [OrtamAdı] [AtmosferHissi]
             const ambiyansTags = [tagWork, tagOwner, tagFeel].filter(t => t !== "").join(" ");
             fixedPart = `#DoğaSesleri ${ambiyansTags} #GörselTerapi #Ambiyans #UykuMüziği #OdaklanmaMüziği #Meditasyon #RahatlatıcıSesler #YağmurSesi #ŞömineKeyfi #ASMR #Huzur #ZihinTemizliği`;
             break;
     }
 
-    // Ana sabitler ve kategorilere özel kısımlar birleştirilir (Fazla boşluklar temizlenir)
     return `#4mevsimşarkılar #RuhumuDinlendirenŞarkılar ${fixedPart}`.replace(/\s+/g, " ").trim();
 }
 
@@ -788,12 +780,9 @@ function buildDrop(containerSel, menuSel, list, set, labelSel){
   const menu = $(menuSel);
   const baseText = $(labelSel).getAttribute("data-base") || "Seçim Yap";
   
-  // 1. BÖCEK ÇÖZÜMÜ: Kutucuk her yüklendiğinde etiket sayısını günceller.
-  // Ana Temizle butonuna basıldığında sayının ekranda kalma hatasını çözer.
   const n = set.size;
   $(labelSel).textContent = n ? `${baseText} (${n})` : baseText;
   
-  // Event listener'ların üst üste binmesini önlemek için kontrol
   if (!grp.dataset.init) {
       grp.querySelector(".head").onclick = (e)=>{ grp.classList.toggle("open"); e.stopPropagation(); };
       document.addEventListener("click",()=>grp.classList.remove("open"));
@@ -802,9 +791,7 @@ function buildDrop(containerSel, menuSel, list, set, labelSel){
   
   menu.innerHTML = "";
 
-  // 2. YENİ ÖZELLİK: Menü içi "Hepsini Seç" ve "Temizle" Butonları
   const topBar = document.createElement("div");
-  // position: sticky ile aşağı kaydırıldığında butonların menü tepesinde sabit kalmasını sağlıyoruz
   topBar.style = "display:flex; gap:5px; padding:6px 8px; border-bottom:1px solid var(--line); position:sticky; top:0; background:#020617; z-index:10;";
   topBar.innerHTML = `
     <button type="button" style="flex:1; background:rgba(34, 197, 94, 0.15); color:#4ade80; border:1px solid #22c55e; padding:6px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:bold; transition:0.2s;">✓ Hepsini Seç</button>
@@ -812,23 +799,20 @@ function buildDrop(containerSel, menuSel, list, set, labelSel){
   `;
   menu.appendChild(topBar);
 
-  // Hepsini Seç Aksiyonu
   topBar.children[0].onclick = (e) => {
     e.stopPropagation();
     list.forEach(t => set.add(t));
-    buildDrop(containerSel, menuSel, list, set, labelSel); // Menüyü yenile
-    regenerate(); // Şablonu güncelle
+    buildDrop(containerSel, menuSel, list, set, labelSel);
+    regenerate();
   };
 
-  // Sadece O Menüyü Temizle Aksiyonu
   topBar.children[1].onclick = (e) => {
     e.stopPropagation();
     set.clear();
-    buildDrop(containerSel, menuSel, list, set, labelSel); // Menüyü yenile
-    regenerate(); // Şablonu güncelle
+    buildDrop(containerSel, menuSel, list, set, labelSel);
+    regenerate();
   };
 
-  // Mevcut Liste Oluşturma (Değişmedi)
   list.forEach(t=>{
     const d = document.createElement("div"); 
     d.className="opt"; 
@@ -849,6 +833,7 @@ function buildDrop(containerSel, menuSel, list, set, labelSel){
     menu.appendChild(d);
   });
 }
+
 function labelize(){
   const t = $("#typeSel").value; const m = TYPE_MAP[t];
   $("#lblOwner").textContent = (t==="Ambiyans Videoları") ? "Ortam Adı" : m.sahip;
@@ -889,7 +874,6 @@ function renderTitleAltFromOut() {
         altT += " " + [...selTitleAlt].join(" ");
     }
 
-    // Öykü videoları için başa emoji ekle
     if (t === "Öykü Videoları") {
         altT = "📚 " + altT;
     }
@@ -907,7 +891,6 @@ function baseBlocks(){
   const owner = ownerInput || "—";
   const work  = workInput || "—";
   
-  // FIX 1: EMOJİ AYIKLAMA (Başlık için emojili, açıklama için emojisiz)
   const feelVal = feelInput || "—"; 
   const feelPlain = feelVal.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim() || "—";
 
@@ -920,20 +903,17 @@ function baseBlocks(){
       const sep = " – "; 
       title = `${owner}${sep}${work}${feelInput ? ` (${feelVal})`:""} | #4mevsimşarkılar ${ownerTag}`; 
   }
-if(selTitle.size) title += " " + [...selTitle].join(" ");
+  if(selTitle.size) title += " " + [...selTitle].join(" ");
 
-  // Öykü videoları için başa emoji ekle
   if (t === "Öykü Videoları") {
       title = "📚 " + title;
   }
 
   let info="";
   if(t==="Ambiyans Videoları"){ 
-      // Açıklamada emojisiz halini kullan (feelPlain)
       info = `🍃 Ortam Adı: ${owner}\n🎉 Ambiyans Türü: ${work}\n💚 Atmosfer Hissi: ${feelPlain}` + (album ? `\n💫 Ambiyans Listesi: ${album}` : ""); 
   } else { 
       const m = TYPE_MAP[t]; 
-      // Açıklamada emojisiz halini kullan (feelPlain)
       info = `${m.icon1} ${m.eser}: ${work}\n${m.icon2} ${m.sahip}: ${owner}\n💖 ${m.feel}: ${feelPlain}` + (album ? `\n💽 Albüm: ${album}` : ""); 
   }
 
@@ -980,10 +960,10 @@ if(selTitle.size) title += " " + [...selTitle].join(" ");
 🎧 Keyifli dinlemeler!🌹
 💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕💕`;
   
-const fixedTags = getDynamicHashtags(t, ownerInput, workInput, feelInput, false);
+  const fixedTags = getDynamicHashtags(t, ownerInput, workInput, feelInput, false);
   let desc = `${info}\n\n${middleDefault}\n\n${staticBlock}`;
-  if(fixedTags) desc += `\n\n${fixedTags}`; // Önce paket hashtagler
-  if(selDesc.size) desc += `\n${[...selDesc].join(" ")}`; // En sona seçilenler
+  if(fixedTags) desc += `\n\n${fixedTags}`; 
+  if(selDesc.size) desc += `\n${[...selDesc].join(" ")}`; 
   
   return { title, desc };
 }
@@ -1000,7 +980,8 @@ function shortsBlocks(){
   const feelPlain = feelVal.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim() || "—";
   const m = TYPE_MAP[t];
   
-  const infoShort = (t==="Ambiyans Videoları") ? `🍃 Ortam Adı: ${owner}\n🎉 Ambiyans Türü: ${work}\n💚 Atmosfer Hissi: ${feelPlain}` : `🎵 ${m.eser}:  ${work}\n🎤 ${m.sahip}: ${owner}\n💖 ${m.feel}:  ${feelPlain}`;
+  // Düzeltme: Tür değiştiğinde Shorts modundaki emojiler de dinamik olarak TYPE_MAP verilerine göre güncellenir.
+  const infoShort = (t==="Ambiyans Videoları") ? `🍃 Ortam Adı: ${owner}\n🎉 Ambiyans Türü: ${work}\n💚 Atmosfer Hissi: ${feelPlain}` : `${m.icon1} ${m.eser}:  ${work}\n${m.icon2} ${m.sahip}: ${owner}\n💖 ${m.feel}:  ${feelVal}`;
   const defaultShortMiddle = `💞 Ruhu dinlendiren en duygusal yansımalar.💝\n📌 Huzur veren paylaşımlar için  @4mevsimsarkilar 'ı takipte kalın.🕊️\n📝 Beğeni ve yorumlarınızla ailemize güç katın.💕\n🎧 Keyifli dinlemeler!🌹`;
   return { infoShort, defaultShortMiddle };
 }
@@ -1010,7 +991,6 @@ function regenerate(){
   const ownerInput = $("#owner").value.trim();
   const workInput  = $("#work").value.trim();
 
-  // FIX: Kapak Prompt Aracına giden Linki Otomatik Güncelle
   const btnKapak = document.querySelector('a[href*="Kapak Prompt Aracı"]');
   if (btnKapak) {
       btnKapak.href = `NRAtölye Video Kapak Prompt Aracı.html?s=${encodeURIComponent(ownerInput)}&e=${encodeURIComponent(workInput)}`;
@@ -1030,11 +1010,10 @@ function regenerate(){
     if(!titleTags.includes("#shorts")) titleTags.push("#shorts");
     if(ownerTag && !titleTags.includes(ownerTag)) titleTags.push(ownerTag);
     
- let titleShort;
-    if(t==="Ambiyans Videoları"){ titleShort = `${owner} Ambiyansı 🔥 ${work} | ${feelVal} ${titleTags.join(" ")}`; }
+    let titleShort;
+    if(t==="Ambiyans Videoları"){ titleShort = `${owner} Ambiyansı | ${work} | ${feelVal} ${titleTags.join(" ")}`; }
     else{ titleShort = `${owner} – ${work}${feelInput?` (${feelVal})`:""} | #4mevsimşarkılar ${titleTags.join(" ")}`; }
     
-    // Shorts modu için de öykü emojisini ekle
     if (t === "Öykü Videoları") {
         titleShort = "📚 " + titleShort;
     }
@@ -1058,7 +1037,6 @@ function regenerate(){
 }
 
 function attachEditLock(){
-  // 1. Textarea'lara input dinleyicisini SADECE BİR KERE ekle
   $$("textarea").forEach(ta => {
     if (!ta.dataset.listening) {
       ta.addEventListener("input", syncPreview);
@@ -1066,7 +1044,6 @@ function attachEditLock(){
     }
   });
 
-  // 2. Düzenle Butonları
   $$("[data-edit]").forEach(b => { 
     b.onclick = () => { 
       const id = b.getAttribute("data-edit"); 
@@ -1079,7 +1056,6 @@ function attachEditLock(){
     }; 
   });
   
-  // 3. Kilitle Butonları
   $$("[data-lock]").forEach(b => { 
     b.onclick = () => { 
       const id = b.getAttribute("data-lock"); 
@@ -1092,11 +1068,11 @@ function attachEditLock(){
     }; 
   });
   
-  // 4. Temizle Butonları
   $$("[data-reset]").forEach(b => { 
     b.onclick = () => { regenerate(); }; 
   });
 }
+
 function setupCopy(){ $$(".copy").forEach(b=>{ b.onclick=()=>{ const t = b.getAttribute("data-target"); const el = document.getElementById(t); navigator.clipboard.writeText(el.textContent).then(()=>toast("Kopyalandı")); }; }); }
 
 function initDrops(){ 
@@ -1105,12 +1081,12 @@ function initDrops(){
     buildDrop("#dropDesc","#menuDesc",DESC_TAGS,selDesc,"#labDesc"); 
 }
 
-/* YEREL AI (4Mevsim) */
 function localAI_generate(){
   const openers = ["🎵 Ruhunuza dokunan bir ezgi..."]; const middles = ["Bu video, duyguların müziğe dönüştüğü bir anı paylaşıyor."]; const closes = ["Beğeni ve yorumlarınızla bize destek olmayı unutmayın 💖"];
   function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
   return `${pick(openers)}\n\n${pick(middles)}\n\n${pick(closes)}`;
 }
+
 function applyAItoDesc(){
   const newMid = ($("#aiQuick").value||"").trim() || localAI_generate();
   const currentDesc = $("#outDesc").value;
@@ -1118,7 +1094,6 @@ function applyAItoDesc(){
   syncPreview(); toast("Öneri uygulandı");
 }
 
-/* RASTGELE YORUM SEÇ BUTONU */
 function addRandomCommentButton(){
   if($("#btnRandomPin")) return;
   function getRandomComment(category){
@@ -1155,13 +1130,11 @@ function addRandomCommentButton(){
   }
 }
 
-/* ========== NRA HİS EVRENİ MOTORU ========== */
 const LS_KEY_NEO = "nra_neo_evren_vfinal";
 
 function prepareInitialFeels() {
     let initial = []; let idCounter = 0;
     if(typeof RAW_DATA === 'undefined') {
-         console.warn("RAW_DATA tanımlı değil, ancak boş bir his havuzu ile sistem devam edebilir.");
          return [];
     }
     for (let cat in RAW_DATA) { 
@@ -1320,7 +1293,6 @@ function exportXLSX() {
     XLSX.writeFile(wb, "NRA_His_Evreni.xlsx");
 }
 
-/* ========== EXCEL + CSV AKILLI YÜKLEME SİSTEMİ ========== */
 function openFileLoader() {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -1331,7 +1303,6 @@ function openFileLoader() {
         if (!file) return;
 
         const reader = new FileReader();
-        
         reader.onload = (ev) => {
             try {
                 const data = new Uint8Array(ev.target.result); 
@@ -1377,11 +1348,9 @@ function openFileLoader() {
     fileInput.click();
 }
 
-/* EVENT LISTENERS & BACKUP BİRLEŞTİRME */
 document.addEventListener("DOMContentLoaded",()=>{
   initDrops(); attachEditLock(); setupCopy(); addRandomCommentButton(); 
 
-  // FIX 2: Tür değiştiğinde Shorts Mode'u Sıfırlama Hatası Giderildi
   $("#typeSel").addEventListener("change",()=>{ labelize(); regenerate(); });
   
   ["owner","work","album"].forEach(id=>{ 
@@ -1413,7 +1382,6 @@ document.addEventListener("DOMContentLoaded",()=>{
         titleTagsAlt: [...selTitleAlt],
         descTags: [...selDesc],
         pinKey: $("#pinSelect").value,
-        // FIX 3: EXE ve HTML'de NRA His Evreni Yedeklemesi Eklendi
         neoFeels: FEELS_NEO 
       };
       const blob = new Blob([JSON.stringify(state)], {type: "application/json"});
@@ -1447,7 +1415,6 @@ document.addEventListener("DOMContentLoaded",()=>{
           selDesc.clear(); (st.descTags||[]).forEach(t => selDesc.add(t));
           if(st.pinKey) $("#pinSelect").value = st.pinKey;
 
-          // FIX 3 (Devamı): Yedeği yüklerken Özel Hisleri de yerine koy
           if (st.neoFeels && Array.isArray(st.neoFeels) && st.neoFeels.length > 0) {
               FEELS_NEO = st.neoFeels;
               saveNeo();
