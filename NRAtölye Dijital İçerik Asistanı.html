@@ -67,14 +67,18 @@
     .btn.orange { border-color: #3b2316; background: #2a170f; color: #fdba74; } .btn.orange:hover { background: #3a1f12; }
     .btn.danger { border-color: #5c1a1a; background: #3b1111; color: #fca5a5; } .btn.danger:hover { background: #521515; }
     
-    /* YENİ: BELİRGİN KOPYALA BUTONU */
     .btn-copy { background: rgba(59, 130, 246, 0.15); border: 1px solid #3b82f6; color: #60a5fa; padding: 8px 14px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; margin-top: 5px; }
     .btn-copy:hover { background: #3b82f6; color: #fff; box-shadow: 0 0 12px rgba(59, 130, 246, 0.6); }
 
     .NRA-butonu { background: transparent; color: #60a5fa; padding: 10px 20px; border-radius: 12px; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; border: 2px solid #1e3a8a; cursor: pointer; font-size: 14px; transition: all 0.3s ease; white-space: nowrap; position: relative; z-index: 10; }
     .NRA-butonu:hover { border-color: #60a5fa; color: #fff; box-shadow: 0 0 10px rgba(96, 165, 250, 0.5); }
 
-    /* ========== INPUT & FORM (CRM PRO) ========== */
+    /* ========== İNPUT & FORM (YENİ X BUTONLU YAPI) ========== */
+    .input-wrapper { position: relative; width: 100%; display: flex; align-items: center; margin-bottom: 8px; }
+    .input-wrapper .input-kutucuk { width: 100%; margin-bottom: 0; padding-right: 32px; }
+    .clear-btn { position: absolute; right: 10px; color: var(--muted); font-size: 18px; font-weight: bold; cursor: pointer; display: none; user-select: none; transition: 0.2s; line-height: 1; }
+    .clear-btn:hover { color: var(--err); }
+    
     .input-kutucuk { width: 100%; background: #18212c; color: #66d9e8; border: 1px solid #29405a; padding: 12px; border-radius: 10px; outline: none; font-size: 14px; font-weight: 500; transition: 0.3s; margin-bottom: 8px; }
     .input-kutucuk:focus { border-color: #4ea9ff; box-shadow: 0 0 8px rgba(78,169,255,0.3); }
     
@@ -111,9 +115,39 @@
     .help-box { background: #151a23; padding: 15px; border-radius: 12px; border-left: 4px solid var(--teal); border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .help-box h3 { margin-top: 0; color: var(--teal); font-size: 15px; margin-bottom: 10px; }
     .help-box p { font-size: 13px; line-height: 1.5; margin: 5px 0; color: #cdd6e3; }
+
+    /* ========== YUKARI KAYDIR BUTONU ========== */
+    #scrollTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 999;
+        border: none;
+        outline: none;
+        background-color: var(--teal);
+        color: #000;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 20px;
+        font-weight: bold;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4), 0 0 0 1px rgba(21,184,166,0.5);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+    #scrollTopBtn:hover {
+        background-color: #135e59;
+        color: white;
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.5), 0 0 10px rgba(21,184,166,0.6);
+    }
 </style>
 </head>
 <body>
+
+<!-- Yukarı Kaydır Butonu -->
+<button id="scrollTopBtn" title="Yukarı Çık">▲</button>
 
 <div class="container">
     <header>
@@ -169,6 +203,62 @@
             </div>
         </div>
     </div>
+
+    <!-- REELS AÇIKLAMA OLUŞTURUCU KARTI -->
+    <div class="card" style="border-top: 3px solid var(--accent-neo);">
+        <h2>📝 Reels Seri Açıklama Oluşturucu</h2>
+        <div class="grid" style="margin-bottom: 10px;">
+            <div class="input-wrapper">
+                <input id="capArtist" class="input-kutucuk" placeholder="Sanatçı Adı" oninput="generateCaptions(); toggleClearBtn(this)">
+                <span class="clear-btn" onclick="clearInput('capArtist')" title="Temizle">&times;</span>
+            </div>
+            <div class="input-wrapper">
+                <input id="capSong" class="input-kutucuk" placeholder="Eser Adı" oninput="generateCaptions(); toggleClearBtn(this)">
+                <span class="clear-btn" onclick="clearInput('capSong')" title="Temizle">&times;</span>
+            </div>
+            <div class="input-wrapper">
+                <input id="capSeries" class="input-kutucuk" placeholder="Seri Adı (Örn: KALBE DOKUNAN ŞARKILAR)" oninput="generateCaptions(); toggleClearBtn(this)">
+                <span class="clear-btn" onclick="clearInput('capSeries')" title="Temizle">&times;</span>
+            </div>
+            <div class="input-wrapper">
+                <input id="capVibe" class="input-kutucuk" placeholder="Eser Hissi (Örn: Kalbin Nefesi)" oninput="generateCaptions(); toggleClearBtn(this)">
+                <span class="clear-btn" onclick="clearInput('capVibe')" title="Temizle">&times;</span>
+            </div>
+            <div class="input-wrapper">
+                <input id="capIgLink" class="input-kutucuk" placeholder="Instagram Uzun Versiyon Linki (Boşsa [Link Profilde] yazar)" oninput="generateCaptions(); toggleClearBtn(this)">
+                <span class="clear-btn" onclick="clearInput('capIgLink')" title="Temizle">&times;</span>
+            </div>
+            <div class="input-wrapper">
+                <input id="capFbLink" class="input-kutucuk" placeholder="Facebook Uzun Versiyon Linki (Boşsa [Link Profilde] yazar)" oninput="generateCaptions(); toggleClearBtn(this)">
+                <span class="clear-btn" onclick="clearInput('capFbLink')" title="Temizle">&times;</span>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button class="btn teal" onclick="generateCaptions()" style="flex: 1; justify-content: center; font-size: 15px; padding: 12px;">✨ Açıklamaları Oluştur</button>
+            <button class="btn danger" onclick="clearAllInputs()" style="flex: 0.3; justify-content: center; font-size: 15px; padding: 12px;">🗑️ Tümünü Temizle</button>
+        </div>
+
+        <div class="grid">
+            <div style="background: #11161d; padding: 12px; border-radius: 8px; border: 1px solid var(--line);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h3 style="margin-top: 0; margin-bottom: 0; color: #e1306c;">Instagram Açıklaması</h3>
+                    <span id="countIg" class="badge b2">0 Karakter</span>
+                </div>
+                <div id="outIg" style="white-space: pre-wrap; font-size: 13px; color: #cdd6e3; margin-bottom: 10px; min-height: 120px; border: 1px dashed var(--line); padding: 8px; border-radius: 6px;"></div>
+                <button class="btn-copy" onclick="copy('outIg')">📋 IG Kopyala</button>
+            </div>
+            <div style="background: #11161d; padding: 12px; border-radius: 8px; border: 1px solid var(--line);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h3 style="margin-top: 0; margin-bottom: 0; color: #1877f2;">Facebook Açıklaması</h3>
+                    <span id="countFb" class="badge b2">0 Karakter</span>
+                </div>
+                <div id="outFb" style="white-space: pre-wrap; font-size: 13px; color: #cdd6e3; margin-bottom: 10px; min-height: 120px; border: 1px dashed var(--line); padding: 8px; border-radius: 6px;"></div>
+                <button class="btn-copy" onclick="copy('outFb')">📋 FB Kopyala</button>
+            </div>
+        </div>
+    </div>
+    <!-- REELS OLUŞTURUCU SONU -->
 
     <div class="card">
         <h2>📌 Günlük Plan</h2>
@@ -355,7 +445,7 @@
         </div>
         <div style="display: flex; gap: 10px;">
             <button class="btn teal" onclick="addCustomer()" style="flex: 1;">➕ Müşteri Ekle</button>
-            <button class="btn danger" onclick="clearAllCrm()">🗑️ Tümünü Sil</button>
+            <button class="btn danger" onclick="clearCrmTable()">🗑️ Tümünü Sil</button>
         </div>
         
         <div style="overflow-x: auto;">
@@ -379,6 +469,90 @@
 </div>
 
 <script>
+// REELS AÇIKLAMA OLUŞTURUCU VE ANLIK ÖNİZLEME
+function generateCaptions() {
+    const artist = document.getElementById('capArtist').value;
+    const song = document.getElementById('capSong').value;
+    const series = document.getElementById('capSeries').value;
+    const vibe = document.getElementById('capVibe').value;
+    const igLink = document.getElementById('capIgLink').value || '[Link Profilde]';
+    const fbLink = document.getElementById('capFbLink').value || '[Link Profilde]';
+
+    // Regex hatası giderildi (\\s yerine \s) - Boşluklar tam anlamıyla kaldırılır
+    const makeTag = (text) => text ? '#' + text.replace(/\s+/g, '') : '';
+    
+    // Etiket oluşturulurken birden fazla aralık varsa düzeltilir
+    const tags = `#4mevsimşarkılar ${makeTag(artist)} ${makeTag(song)} ${makeTag(vibe)} ${makeTag(series)} #Shorts`.replace(/\s+/g, ' ').trim();
+
+    // Şablonu oluşturan ana fonksiyon
+    const createTemplate = (link) => {
+        // Eğer tüm inputlar boşsa sayacı ve metni boş tutması daha mantıklı
+        if(!artist && !song && !series && !vibe && document.getElementById('capIgLink').value === '' && document.getElementById('capFbLink').value === '') return "";
+        
+        return `🎙️ ${artist} – “${song}” ❤️🎶\n\n"${series}" Serimize sanatçımız ${artist} ile devam ediyoruz. Sıradaki eserimiz: "${song}"\n🎧 Keyifli dinlemeler!🌹\n\n🎵 Eser Adı: ${song}\n🎤 Sanatçı Adı: ${artist}\n💖 Eser Hissi: ${vibe}\n👉 Uzun versiyon linki: ${link}\n*\n*\n*\n${tags}`;
+    };
+
+    const igText = createTemplate(igLink);
+    const fbText = createTemplate(fbLink);
+
+    document.getElementById('outIg').innerText = igText;
+    document.getElementById('outFb').innerText = fbText;
+
+    // Karakter sayaçlarını canlı güncelle
+    document.getElementById('countIg').innerText = igText.length + " Karakter";
+    document.getElementById('countFb').innerText = fbText.length + " Karakter";
+}
+
+// X (TEMİZLE) BUTONU GÖSTER/GİZLE VE TEKİL TEMİZLEME FONKSİYONLARI
+function toggleClearBtn(inputElement) {
+    const btn = inputElement.nextElementSibling;
+    if (inputElement.value.length > 0) {
+        btn.style.display = 'block';
+    } else {
+        btn.style.display = 'none';
+    }
+}
+
+function clearInput(inputId) {
+    const inputElement = document.getElementById(inputId);
+    inputElement.value = '';
+    toggleClearBtn(inputElement); // X butonunu gizle
+    generateCaptions(); // Önizlemeyi güncelle
+}
+
+// TÜM KUTULARI TEMİZLE BUTONU FONKSİYONU
+function clearAllInputs() {
+    const ids = ['capArtist', 'capSong', 'capSeries', 'capVibe', 'capIgLink', 'capFbLink'];
+    ids.forEach(id => {
+        let el = document.getElementById(id);
+        el.value = '';
+        toggleClearBtn(el);
+    });
+    
+    // Çıktıları ve sayaçları sıfırla
+    document.getElementById('outIg').innerText = '';
+    document.getElementById('outFb').innerText = '';
+    document.getElementById('countIg').innerText = "0 Karakter";
+    document.getElementById('countFb').innerText = "0 Karakter";
+}
+
+// YUKARI KAYDIR (SCROLL TO TOP) FONKSİYONU
+window.onscroll = function() { scrollFunction() };
+
+function scrollFunction() {
+    let scrollTopBtn = document.getElementById("scrollTopBtn");
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        scrollTopBtn.style.display = "block";
+    } else {
+        scrollTopBtn.style.display = "none";
+    }
+}
+
+document.getElementById("scrollTopBtn").addEventListener("click", function(){
+    window.scrollTo({top: 0, behavior: 'smooth'});
+});
+
+// YARDIMCI FONKSİYONLAR
 function toggleHelp(show) { document.getElementById('helpModal').style.display = show ? 'flex' : 'none'; }
 function copy(id){ navigator.clipboard.writeText(document.getElementById(id).innerText); alert('Kopyalandı!'); }
 
@@ -426,6 +600,7 @@ function newQ(){
  document.getElementById('question').innerText=arr[Math.floor(Math.random()*arr.length)];
 }
 
+// CRM SİSTEMİ
 let crmData = JSON.parse(localStorage.getItem('crmData')||'[]');
 function badge(s){ return `<span class="badge ${s==='İlk mesaj'?'b1':s==='Görüşme'?'b2':s==='Fiyat verildi'?'b3':'b4'}">${s}</span>`; }
 
@@ -441,7 +616,7 @@ function addCustomer(){
 function updateStatus(id){ const s=prompt('Durum: İlk mesaj/Görüşme/Fiyat verildi/Satış yapıldı'); if(s) {crmData=crmData.map(x=>x.id===id?{...x,status:s}:x); saveCrm();} }
 function updatePrice(id){ const p=prompt('Tutar (TL)'); if(p!==null) {crmData=crmData.map(x=>x.id===id?{...x,price:parseInt(p||0)}:x); saveCrm();} }
 function delCrm(id){ crmData=crmData.filter(x=>x.id!==id); saveCrm(); }
-function clearAllCrm(){ if(confirm('Hepsini sil?')){crmData=[]; saveCrm();} }
+function clearCrmTable(){ if(confirm('Hepsini sil?')){crmData=[]; saveCrm();} }
 
 function renderCrm(){
  const tb=document.querySelector('#crmTable tbody'); tb.innerHTML='';
@@ -458,6 +633,7 @@ function renderCrm(){
  document.getElementById('kpiRevenue').innerText=r+' ₺';
 }
 
+// ODAK ZAMANLAYICI
 let timerInterval, seconds=0;
 function startTimer(){ clearInterval(timerInterval); timerInterval=setInterval(()=>{ seconds++; let m=Math.floor(seconds/60), s=seconds%60; document.getElementById('timer').innerText=(m<10?'0'+m:m)+":"+(s<10?'0'+s:s); },1000); }
 function stopTimer(){ clearInterval(timerInterval); }
