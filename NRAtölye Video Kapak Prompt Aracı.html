@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NRAtölye PRO • NRA Prompt Aracı V6.7 (Studio)</title>
+<title>NRAtölye PRO • NRA Prompt Aracı V6.8 (Studio)</title>
 
 <style>
-/* ========== v6.7 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
+/* ========== v6.8 NRA HİS EVRENİ GÖRSEL TEMASI ========== */
 :root {
     --bg: #0f1115;
     --card: #151922;
@@ -282,7 +282,7 @@ input[type=range]::-moz-range-thumb {
         <div class="logo-real">
             <img src="NRAtölyelogo.png" alt="NR" onerror="this.src='https://via.placeholder.com/80/14b8a6/fff?text=NR'">
         </div>
-        <h2>NRAtölye PRO • NRA Prompt Aracı V6.7 (Studio)</h2>
+        <h2>NRAtölye PRO • NRA Prompt Aracı V6.8 (Studio)</h2>
     </header>
 
     <div class="main-card">
@@ -410,7 +410,7 @@ input[type=range]::-moz-range-thumb {
             <div class="select-box">
                 <label>🚀 HEDEF YAPAY ZEKA</label>
                 <select id="targetTool" style="border: 1px solid var(--accent) !important;">
-                <option value="other"selected>🤖 Metin Tabanlı Y.Z.</option>
+                <option value="other" selected>🤖 Metin Tabanlı Y.Z.</option>
                 <option value="midjourney">⛵ Üretken Y.Z.</option>
                 </select>
             </div>
@@ -680,17 +680,32 @@ function selectIcon(iconName, btn) {
     let currentVal = iconInput.value.trim();
     
     if(btn.classList.contains('selected')) {
+        // Çip seçiliyse kaldır
         btn.classList.remove('selected');
-        let parts = currentVal.split(", ").filter(p => p !== iconName && p !== "");
-        iconInput.value = parts.join(", ");
+        
+        // İlgili metni doğrudan input'un içinden çıkar
+        currentVal = currentVal.replace(iconName, "").trim();
+        
+        // Metin içinden parça çıkardığımız için kalan bozuk virgülleri temizle
+        currentVal = currentVal.replace(/,\s*,/g, ", ").replace(/^,\s*/, "").replace(/,\s*$/, "");
+        
+        iconInput.value = currentVal;
     } else {
+        // Çip seçili değilse ekle
         btn.classList.add('selected');
-        if (currentVal === "") { iconInput.value = iconName; } 
-        else { if (!currentVal.includes(iconName)) iconInput.value = currentVal + ", " + iconName; }
+        
+        // Kutucuk boşsa direkt ekle, doluysa ve metin zaten yoksa sonuna virgülle ekle
+        if (currentVal === "") {
+            iconInput.value = iconName;
+        } else if (!currentVal.includes(iconName)) {
+            iconInput.value = currentVal + ", " + iconName;
+        }
     }
     
     autoGrow(iconInput);
-    updatePrompts();
+    if (typeof updatePrompts === "function") {
+        updatePrompts();
+    }
 }
 
 function clearField(id) { 
@@ -882,18 +897,24 @@ function updatePrompts() {
         safeZonePrompt = "\n\n[FRAME LAYER 1 - BACKGROUND]: The background environment, studio setup, lights, and textures MUST be full-bleed, stretching edge-to-edge from left to right, covering the entire canvas without any empty black borders or cinematic cropping.\n\n[FRAME LAYER 2 - TEXT SAFE ZONE]: All text elements, including artist names, song titles, and central typography, MUST be strictly confined to the exact vertical and horizontal center of the image. Do not place any main text near the top or bottom edges to avoid UI overlap.\n\n[FRAME LAYER 3 - AESTHETIC PLACEMENT]: All decorative elements and brush strokes must be placed aesthetically in the extreme bottom left and bottom right corners, or arranged diagonally. They MUST NOT mix with, overlap, or obstruct the central main text.";
     }
 
-    let brushPrompt = "";
+let brushPrompt = "";
     if (useBrush) {
-        const defaultBrush = "expressive, thick oil paint brush strokes";
+        const defaultBrush = "elegant and subtle oil paint brush strokes";
         const selectedBrush = brushStyle || defaultBrush;
-        let brushTextLines = [];
-        if(line1) brushTextLines.push(line1);
-        if(line2) brushTextLines.push(line2);
-        let brushTextStr = brushTextLines.length > 0 ? ` featuring the text "${brushTextLines.join(' ')}"` : "";
         
-        brushPrompt = `\n\n[BRUSH STROKE LAYER]: Add ${selectedBrush} acting as a dynamic background layer. The brush strokes MUST be grouped together as a cohesive unit, rather than separated. Ensure the brush colors are distinct and vibrant enough so they do not blend into the background or get lost. Keep the brush stroke elements appropriately sized (not too large).${brushTextStr}`;
+        let textCommand = "";
+        let brushTextLines = [];
+        if (line1) brushTextLines.push(line1);
+        if (line2) brushTextLines.push(line2);
+        
+        if (brushTextLines.length > 0) {
+            let combinedText = brushTextLines.join(" ");
+            textCommand = ` The typography "${combinedText}" must be placed directly ON TOP OF this specific brush stroke block.`;
+        }
+        
+        // Fırçayı baskınlıktan çıkarıp yazının arkasına bir zemin olarak yerleştiriyoruz
+        brushPrompt = `\n\n[BRUSH STROKE LAYER]: Add a clean, cohesive cluster of ${selectedBrush} specifically positioned as a background canvas for the text. It MUST be properly scaled, subtle, and kept behind the text to avoid visual clutter and random placement.${textCommand}`;
     }
-
     // ==========================================
     // YENİ EKLENEN YOL AYRIMI (TARGET TOOL LOGIC)
     // ==========================================
@@ -972,111 +993,160 @@ function updatePrompts() {
         `Transform the uploaded image into a Wisdom Study composite cover.\n\n${focusCommand}\n\nBackground: rich warm traditional tones, striking Rembrandt lighting on the subject.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
         `Transform the uploaded image into a Retro Yeşilçam composite cover.\n\n${focusCommand}\n\nBackground: vibrant warm nostalgic tones, intense film halation, rich cinematic grain.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
         `Transform the uploaded image into a Live Stage composite cover.\n\n${focusCommand}\n\nBackground: explosive glowing neon stage lights, deep concert blacks, dynamic lens flares.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Ancient Pillar composite cover.\n\n${focusCommand}\n\nBackground: rich textured marble, dramatic epic sunlight striking through columns.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Deep Street Night composite cover.\n\n${focusCommand}\n\nBackground: moody dark urban shadows, intensely vibrant neon reflections on wet asphalt.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Cyber Neon composite cover.\n\n${focusCommand}\n\nBackground: intense electric blues, vibrant cyberpunk pinks, glowing digital grids.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Luxury Marble composite cover.\n\n${focusCommand}\n\nBackground: pristine deep white marble, intensely reflective luxury gold accents.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Ocean Deep composite cover.\n\n${focusCommand}\n\nBackground: bioluminescent deep oceanic blues, piercing bright underwater sunrays.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Phoenix Fire composite cover.\n\n${focusCommand}\n\nBackground: explosive flying fire embers, blindingly bright orange and red flares.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Carnival Lights composite cover.\n\n${focusCommand}\n\nBackground: wildly vibrant festive neon colors, glowing long-exposure light trails.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Natural Forest composite cover.\n\n${focusCommand}\n\nBackground: intensely vibrant lush greens, piercing golden sunbeams filtering through leaves.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Gothic Soul composite cover.\n\n${focusCommand}\n\nBackground: deep mysterious dark greys, striking colorful stained-glass light beams.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Future Vision composite cover.\n\n${focusCommand}\n\nBackground: intensely glowing holographic blue panels, sleek metallic tones.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Artistic Oil Painting cover.\n\n${focusCommand}\n\nBackground: wildly vibrant color palettes, thick textured oil brush strokes.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Classical Opera cover.\n\n${focusCommand}\n\nBackground: extraordinarily rich velvet reds, glowing warm golden orchestra lights.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Interstellar Nebula cover.\n\n${focusCommand}\n\nBackground: explosively vibrant cosmic purples, glowing pink nebulas.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Modern Podcast cover.\n\n${focusCommand}\n\nBackground: sleek high-end studio tones, pop-color LED light accents.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Cozy Acoustic Studio cover.\n\n${focusCommand}\n\nBackground: warm glowing string lights, rich deep mahogany wooden textures.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Deep Space Galaxy cover.\n\n${focusCommand}\n\nBackground: intensely vibrant swirling cosmic dust, piercing bright supernovas.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Sunset Landscape cover.\n\n${focusCommand}\n\nBackground: overwhelmingly vivid glowing orange and magenta skies.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a High-Impact YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: surreal hyper-realistic background blend, vibrant cinematic lighting.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an Action-Shock YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: intense cinematic action, explosive lighting, dynamic motion blur.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Mystery-Intrigue YouTube Thumbnail.\n\n${focusCommand}\n\nBackground: deep moody shadows, striking neon accents.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Cozy Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: warm glowing string lights, rich deep mahogany wooden textures blended with wildly vibrant color palettes and thick textured oil brush strokes.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Cinematic Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: cinematic dramatic lighting, deep mahogany wooden textures, heavy shadows blended with expressive, thick textured oil brush strokes and subtle glowing string lights.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a Lofi Acoustic Oil Painting composite cover.\n\n${focusCommand}\n\nBackground: dreamy lofi aesthetic lighting, soft neon purple and warm orange accents, rich wooden textures fused with expressive, thick oil paint brush strokes and glowing dust particles.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a 'Sahne Ateşi' composite cover.\n\n${focusCommand}\n\nBackground: intense stage lights, explosive glowing gold fire embers, and dramatic rim lighting on the subject.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into an 'Epik Nota Tüneli' composite cover.\n\n${focusCommand}\n\nBackground: a massive 3D musical staff spiraling into an infinite tunnel, vibrant golden musical notes, motion blur, and dramatic cinematic lighting.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
-        `Transform the uploaded image into a 'Nostaljik Gül & Varak' composite cover.\n\n${focusCommand}\n\nBackground: lush blooming red roses at the bottom, traditional intricate Anatolian tile patterns, glowing golden dust particles, and luxury gold leaf accents.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`
+        `Transform the uploaded image into an Ancient Marble composite cover.\n\n${focusCommand}\n\nBackground: solid pristine white marble, gleaming gold accents, and epic godly sunlight shafts.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Deep Night composite cover.\n\n${focusCommand}\n\nBackground: deep urban blacks, intense glowing neon signs reflecting off wet pavement.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cyber Neon composite cover.\n\n${focusCommand}\n\nBackground: high-contrast dark cyberpunk alleyways with aggressive electric blue and neon pink glowing lights.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Elite Luxury composite cover.\n\n${focusCommand}\n\nBackground: ultra-smooth dark marble contrasted with intensely glowing gold veins and sharp luxury lighting.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Ocean Wave composite cover.\n\n${focusCommand}\n\nBackground: vivid glowing bioluminescent blue waters, deep oceanic blacks, bright white crashing wave foam.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Phoenix Fire composite cover.\n\n${focusCommand}\n\nBackground: explosive pure reds and oranges, glowing flying embers against a deep charred black canvas.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Carnival composite cover.\n\n${focusCommand}\n\nBackground: intensely saturated rainbow neon lights flashing against a dark night sky.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Acoustic Nature composite cover.\n\n${focusCommand}\n\nBackground: lush vivid emerald greens, piercing golden hour sunlight breaking through a dark forest canopy.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Gothic Soul composite cover.\n\n${focusCommand}\n\nBackground: stark, cold stone textures with intensely glowing ethereal blue magical light, piercing through pitch black shadows.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Future Age composite cover.\n\n${focusCommand}\n\nBackground: pristine ultra-white futuristic surfaces glowing with sharp cyan holographic lines.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Art Canvas composite cover.\n\n${focusCommand}\n\nBackground: explosive, vibrant, heavily textured oil paint strokes with extreme color saturation.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Classic Symphony composite cover.\n\n${focusCommand}\n\nBackground: rich crimson velvet curtains, brilliant warm golden stage spotlights.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Epic Galaxy composite cover.\n\n${focusCommand}\n\nBackground: pure space black filled with intensely glowing neon purple and pink stardust and supernovas.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Podcast Studio composite cover.\n\n${focusCommand}\n\nBackground: warm moody studio acoustic panels, bright glowing neon rim lights.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Acoustic Lofi composite cover.\n\n${focusCommand}\n\nBackground: rich warm wood textures, incredibly soft and bright cinematic fairy light bokeh.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Epic Cosmic Infinity composite cover.\n\n${focusCommand}\n\nBackground: boundless deep space, intense glowing nebulas, brilliant sparkling stardust and surreal cosmic energy.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Red Sunset composite cover.\n\n${focusCommand}\n\nBackground: blazing warm sunset tones, saturated deep oranges and crimsons, majestic glowing horizon with dramatic shadows.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        
+        `Transform the uploaded image into an eye-catching YouTube thumbnail.\n\n${focusCommand}\n\nBackground: surreal, vibrant, high-contrast, designed to maximize CTR with glowing outlines. 3D composition.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}TYPOGRAPHY DOMINANCE: Massive, extreme 3D bold fonts, highly readable even at small sizes, popping off the screen with bright glowing borders.${branding}${sizeRule}`,
+        `Transform the uploaded image into an action-packed YouTube thumbnail.\n\n${focusCommand}\n\nBackground: explosive motion blur, flying embers, intense fiery oranges and reds, high energy, shocking visual impact.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}TYPOGRAPHY DOMINANCE: Giant, aggressive, slanted 3D action fonts in bright yellow or white, screaming for attention.${branding}${sizeRule}`,
+        `Transform the uploaded image into a mysterious/suspense YouTube thumbnail.\n\n${focusCommand}\n\nBackground: dark moody shadows, glowing neon highlights (red or green), eerie, suspenseful, creating intense curiosity.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}TYPOGRAPHY DOMINANCE: Huge, clean, striking 3D fonts with neon glows, positioned perfectly to draw the eye.${branding}${sizeRule}`,
+
+        // YENİ EKLENEN AHŞAP TEMALAR
+        `Transform the uploaded image into a Warm Wooden Acoustic Oil Paint composite cover.\n\n${focusCommand}\n\nBackground: rich, highly detailed natural warm wood textures seamlessly blended with expressive, thick oil paint brush strokes. Create an organic, artistic atmosphere with vibrant earthy tones and visible painterly textures.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Cinematic Wooden Oil Paint composite cover.\n\n${focusCommand}\n\nBackground: deep, polished dark wood grains layered with thick, dramatic oil paint impasto strokes. Use striking cinematic lighting with high contrast, glowing amber highlights, and rich, moody shadows over the textured wooden canvas.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Modern Neon Wood Paint composite cover.\n\n${focusCommand}\n\nBackground: a stylish contrast of rustic raw wood surfaces and thick, vibrant oil paint strokes, illuminated by soft glowing neon reflections. Create a cozy yet contemporary lofi aesthetic with beautiful bokeh and deep atmospheric shadows.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        
+        // YENİ EKLENEN MÜZİK TEMALARI (Sahneler)
+        `Transform the uploaded image into a fiery Stage & Sparkle music cover.\n\n${focusCommand}\n\nBackground: intense live concert atmosphere, blinding golden stage lights cutting through thick theatrical smoke, explosive glowing gold embers and fiery sparks flying dynamically around the subject. Deep cinematic blacks contrasting with brilliant warm luminescence.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into an Epic Note Tunnel music cover.\n\n${focusCommand}\n\nBackground: a massive, glowing 3D musical staff spiraling endlessly into a deep perspective tunnel. Brilliant golden and neon musical notes floating and rushing past the viewer with a dynamic motion blur effect. A surreal, majestic, and deeply immersive symphonic atmosphere.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`,
+        `Transform the uploaded image into a Nostalgic Rose & Gold music cover.\n\n${focusCommand}\n\nBackground: a rich, vintage aesthetic featuring intricate classic Anatolian tile borders, adorned with incredibly vibrant, dewy red roses. Layered with luxurious glowing gold leaf accents, warm cinematic dust particles, and deep elegant shadows for a timeless, romantic feel.\n\n[ICON_MOD]${safeZonePrompt}${brushPrompt}${textSection}${textPower}${branding}${sizeRule}`
+
     ];
 
-    promptsData.forEach((id, i) => {
-        const area = document.getElementById(id);
-        const finalIcon = userIcon ? userIcon : defaultThemeIcons[i];
+    pTemplates.forEach((pt, i) => {
+        let finalIconModifier = "";
         
-        let currentIconMod = iconModifier.replace("[ICON]", finalIcon);
-        let finalPrompt = pTemplates[i].replace("[ICON_MOD]", currentIconMod);
+        // Kutudaki ikon (virgülleri silinmiş salt dizi) 
+        const items = userIcon.split(",").map(item => item.trim()).filter(item => item !== "");
         
-        finalPrompt = finalPrompt.replace(/\s+/g, ' ').replace(/ \n/g, '\n').replace(/\n /g, '\n');
+        if (items.length > 0) {
+            finalIconModifier = iconModifier.replace("[ICON]", items.join(" and "));
+        } else {
+            finalIconModifier = iconModifier.replace("[ICON]", defaultThemeIcons[i]);
+        }
+
+        let result = "";
         
-        if(area && area.hasAttribute("readonly")) area.value = finalPrompt;
+        if (targetTool === "midjourney") {
+            let basePrompt = pt.replace("[ICON_MOD]", finalIconModifier);
+            
+            if (currentImg) {
+                // Sadece resim URL'si
+                result = currentImg + " " + basePrompt.replace(/\n\n/g, ' ').replace(/\n/g, ' ');
+            } else {
+                // Eğer resim yoksa "Transform the uploaded image into..." ifadesini kaldır 
+                // ya da yerine "Create an image of a person in..." yaz
+                let promptWithoutImageText = basePrompt.replace("Transform the uploaded image into a ", "Create an image featuring a subject in a ");
+                promptWithoutImageText = promptWithoutImageText.replace("Transform the uploaded image into an ", "Create an image featuring a subject in an ");
+                result = promptWithoutImageText.replace(/\n\n/g, ' ').replace(/\n/g, ' ');
+            }
+
+        } else {
+            let basePrompt = pt.replace("[ICON_MOD]", finalIconModifier);
+            if (currentImg) {
+                result = "[This prompt is designed for an attached reference image.]\n\n" + basePrompt;
+            } else {
+                let promptWithoutImageText = basePrompt.replace("Transform the uploaded image into a ", "Create an image featuring a subject in a ");
+                promptWithoutImageText = promptWithoutImageText.replace("Transform the uploaded image into an ", "Create an image featuring a subject in an ");
+                result = promptWithoutImageText;
+            }
+        }
+        
+        document.getElementById(`p${i+1}`).value = result.trim();
     });
 }
 
+function copyText(id, btn) {
+    const text = document.getElementById(id).value;
+    navigator.clipboard.writeText(text);
+    const old = btn.innerText;
+    const oldBg = btn.style.background;
+    btn.innerText = "✅ Kopyalandı!";
+    btn.style.background = "#22c55e";
+    btn.style.color = "#fff";
+    setTimeout(() => {
+        btn.innerText = old;
+        btn.style.background = oldBg;
+        btn.style.color = "#000";
+    }, 2000);
+}
+
 function toggleEdit(id, btn) {
-    const area = document.getElementById(id);
-    if(area.hasAttribute("readonly")) {
-        area.removeAttribute("readonly"); btn.innerText = "🔓 Düzenle"; btn.style.background = "var(--amber)";
+    const el = document.getElementById(id);
+    if(el.hasAttribute('readonly')) {
+        el.removeAttribute('readonly');
+        el.style.border = "1px solid var(--accent)";
+        el.style.background = "#151a24";
+        btn.innerText = "🔓 Düzenleniyor";
+        btn.style.background = "var(--gold)";
+        btn.style.color = "#000";
     } else {
-        area.setAttribute("readonly", "true"); btn.innerText = "🔒 Kilitli"; btn.style.background = "var(--btn)";
+        el.setAttribute('readonly', 'true');
+        el.style.border = "1px solid #1e293b";
+        el.style.background = "#090c10";
+        btn.innerText = "🔒 Kilitli";
+        btn.style.background = "var(--btn)";
+        btn.style.color = "var(--text)";
     }
 }
 
-function copyText(id, btn) {
-    const area = document.getElementById(id); area.select(); document.execCommand("copy");
-    btn.innerText = "✔ Kopyalandı"; setTimeout(() => { btn.innerText = "📋 Kopyala"; }, 1500);
-}
-
-function filterPrompts(category, btn) {
+function filterPrompts(cat, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     
-    const boxes = document.querySelectorAll('.prompt-box');
-    boxes.forEach(box => {
-        if (category === 'all' || box.dataset.category === category) {
-            box.style.display = 'block';
+    document.querySelectorAll('.prompt-box').forEach(box => {
+        if(cat === 'all') {
+            box.style.display = "block";
         } else {
-            box.style.display = 'none';
+            if(box.dataset.category === cat) {
+                box.style.display = "block";
+            } else {
+                box.style.display = "none";
+            }
         }
     });
 }
 
-window.onscroll = function() { scrollFunction() };
-
-function scrollFunction() {
-    const btn = document.getElementById("scrollTopBtn");
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        btn.style.display = "block";
-    } else {
-        btn.style.display = "none";
-    }
-}
-
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-// ==== YENİ EKLENEN targetTool DAHİL EDİLDİ ==== 
-const allInputs = ["channel", "artist", "song", "negative", "icon", "line1", "line2", "brushStyle", "format", "imageWeight", "focusStyle", "watermarkStyle", "aiModel", "targetTool"];
-
-allInputs.forEach(id => {
-
-    const el = document.getElementById(id);
-    if(el) {
-        el.addEventListener("input", updatePrompts);
-        el.addEventListener("change", updatePrompts);
-window.addEventListener("DOMContentLoaded", updatePrompts);
-    }
+const inputEvents = ['artist', 'song', 'negative', 'icon', 'format', 'imageWeight', 'focusStyle', 'watermarkStyle', 'aiModel', 'line1', 'line2', 'brushStyle', 'channel', 'targetTool'];
+inputEvents.forEach(id => {
+    document.getElementById(id).addEventListener('input', updatePrompts);
+    document.getElementById(id).addEventListener('change', updatePrompts);
 });
 
-window.onload = function() {
-    updatePrompts();
+updatePrompts();
+
+// --- SCROLL TO TOP FONKSİYONU ---
+const scrollTopBtn = document.createElement("button");
+scrollTopBtn.id = "scrollTopBtn";
+scrollTopBtn.innerHTML = "↑";
+scrollTopBtn.title = "Başa Dön";
+document.body.appendChild(scrollTopBtn);
+
+window.onscroll = function() {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        scrollTopBtn.style.display = "block";
+    } else {
+        scrollTopBtn.style.display = "none";
+    }
 };
 
+scrollTopBtn.onclick = function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 </script>
-<button id="scrollTopBtn" onclick="scrollToTop()" title="Başa Dön">YUKARI</button>
 </body>
 </html>
