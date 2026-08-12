@@ -49,6 +49,16 @@ textarea {
     box-shadow: 0 0 8px rgba(78,169,255,0.3);
 }
 
+/* TEMİZLEME BUTONU (X) İÇİN STİLLER */
+.input-wrap { position: relative; width: 100%; display: flex; align-items: center; }
+.input-wrap input { padding-right: 32px !important; }
+.input-clear {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; font-size: 11px; font-weight: 900;
+    cursor: pointer; display: none; padding: 4px 6px; border-radius: 6px; transition: 0.2s ease; z-index: 10;
+}
+.input-clear:hover { background: rgba(239, 68, 68, 0.3); color: #fff; border-color: #ef4444; }
+
     /* ========== ORTAK VE 4MEVSİM CSS ========== */
     :root{
       --bg:#0f1115; --card:#151922; --muted:#9aa3b2; --text:#e9ecf1;
@@ -156,7 +166,8 @@ textarea {
     
     .neo-search-wrap{position:relative; margin:5px 0;}
     #neoQ{width:100%; background:#1a222c; color:#fff; border:1px solid var(--line); padding:14px 90px 14px 14px; border-radius:12px; outline:none; font-size:15px;}
-    .neo-clear-btn{position:absolute; right:10px; top:50%; transform:translateY(-50%); background:var(--line); border:none; color:#fff; padding:6px 12px; border-radius:8px; cursor:pointer; font-size:11px; display:none;}
+    .neo-clear-btn{position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(239, 68, 68, 0.15); border:1px solid rgba(239, 68, 68, 0.4); color:#ef4444; padding:5px 10px; border-radius:8px; cursor:pointer; font-size:12px; font-weight:bold; display:none; transition: 0.2s;}
+    .neo-clear-btn:hover { background: rgba(239, 68, 68, 0.3); color: #fff; }
 
     .neo-pool { border:1px dashed #2a3444; border-radius:16px; padding:15px; background:rgba(20,26,34,0.4); position:relative; flex:1; overflow:hidden; display:flex; flex-direction:column;}
     .neo-chips { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px; overflow-y:auto; padding-right:5px; height: 100%; max-height: 450px;}
@@ -173,6 +184,16 @@ textarea {
 
     .deriv-list { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:15px 0; max-height:200px; overflow-y:auto; }
     .deriv-item { background:#161b22; padding:10px; border-radius:10px; border:1px solid var(--line); font-size:13px; display:flex; align-items:center; gap:5px; cursor:pointer; color:#fff;}
+
+    /* YUKARI ÇIK BUTONU STİLİ */
+    #poolScrollTop {
+        display: none; position: absolute; right: 20px; bottom: 20px; 
+        background: var(--accent-neo); color: #000; width: 40px; height: 40px; 
+        border-radius: 12px; cursor: pointer; z-index: 100; align-items: center; 
+        justify-content: center; font-weight: bold; font-size: 18px; 
+        box-shadow: 0 4px 15px rgba(78, 169, 255, 0.4); transition: 0.2s ease;
+    }
+    #poolScrollTop:hover { transform: translateY(-3px); filter: brightness(1.1); }
   </style>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
@@ -212,15 +233,24 @@ textarea {
       </div>
       <div>
         <label id="lblOwner">Şarkıcı</label>
-        <input id="owner" placeholder="örn: Zeki Müren">
+        <div class="input-wrap">
+          <input id="owner" placeholder="örn: Zeki Müren">
+          <button type="button" class="input-clear" data-clear="owner">✕</button>
+        </div>
       </div>
       <div>
         <label id="lblWork">Şarkı Adı</label>
-        <input id="work" placeholder="örn: Şimdi Uzaklardasın">
+        <div class="input-wrap">
+          <input id="work" placeholder="örn: Şimdi Uzaklardasın">
+          <button type="button" class="input-clear" data-clear="work">✕</button>
+        </div>
       </div>
       <div>
         <label id="lblAlbum">Albüm / Playlist</label>
-        <input id="album" placeholder="örn: https://www.youtube.com/playlist?list=...">
+        <div class="input-wrap">
+          <input id="album" placeholder="örn: https://www.youtube.com/playlist?list=...">
+          <button type="button" class="input-clear" data-clear="album">✕</button>
+        </div>
       </div>
     </div>
 
@@ -256,7 +286,10 @@ textarea {
             <a href="NRAtölye Dijital İçerik Asistanı.html" target="_blank" class="btn-act act-6">🧑‍💻 İçerik Asistanı</a>
             <a href="NRAtölye Video Kapak Prompt Aracı.html" target="_blank" class="btn-act act-5">💽 Kapak Prompt Aracı</a> 
             <button id="btnHisAra" type="button" class="btn-act act-7">🌹 NRA His Evreni</button>
-            <input type="text" id="hisSelected" class="input-kutucuk" style="flex:1; min-width:200px;" placeholder="His Seçin veya Elle Yazın..." oninput="$('#feel').value=this.value; regenerate();">
+            <div class="input-wrap" style="flex:1; min-width:200px;">
+                <input type="text" id="hisSelected" class="input-kutucuk" placeholder="His Seçin veya Elle Yazın..." oninput="$('#feel').value=this.value; regenerate();">
+                <button type="button" class="input-clear" data-clear="hisSelected">✕</button>
+            </div>
             <input type="hidden" id="feel">
         </div>
     </div>
@@ -411,7 +444,7 @@ textarea {
       <div class="neo-prev"><small>Arama / Filtreleme</small>
         <div class="neo-search-wrap" style="margin-top:15px;">
           <input id="neoQ" placeholder="Hislerde veya emojilerde ara..." oninput="applyNeoFilters()" />
-          <button class="neo-clear-btn" id="neoClearSearch" onclick="clearNeoInput()">Temizle ✕</button>
+          <button class="neo-clear-btn" id="neoClearSearch" onclick="clearNeoInput()">✕</button>
         </div>
       </div>
       <div class="neo-prev"><small>Durum</small>
@@ -420,6 +453,7 @@ textarea {
     </div>
 
     <div class="neo-pool">
+      <div id="poolScrollTop" onclick="scrollPoolToTop()" title="Yukarı Çık">↑</div>
       <div class="neo-chips" id="neoChips"></div>
     </div>
 
@@ -501,12 +535,15 @@ textarea {
     </div>
 </div>
 
+<!-- İŞLEM ÖZETİ RAPOR MODALI (GÖRSELDEKİ TAM TASARIM) -->
 <div id="reportModal" class="neo-modal-overlay">
-  <div class="neo-modal" style="max-width: 400px; padding: 20px;">
-    <div style="font-size:3rem; margin-bottom:10px; text-align:center;">📊</div>
-    <h2 style="margin-bottom: 5px; color:#fff; text-align:center;">İşlem Özeti</h2>
-    <div id="reportContent" style="background:#151a23; padding:15px; border-radius:12px; margin:15px 0; border:1px solid var(--line); font-size: 14px; color:#fff;"></div>
-    <button class="neo-actionBtn" onclick="closeSubModals()" style="width:100%; background: var(--accent-neo); color: #000;">Tamamdır ✨</button>
+  <div class="neo-modal" style="max-width: 380px; padding: 25px; text-align: center;">
+    <div style="display: inline-block; padding: 12px; border-radius: 16px; background: rgba(78, 169, 255, 0.1); box-shadow: 0 0 20px rgba(78, 169, 255, 0.25); margin-bottom: 15px;">
+      <span style="font-size: 32px;">📊</span>
+    </div>
+    <h2 style="margin: 0 0 20px 0; color: #fff; text-align: left; font-size: 22px;">İşlem Özeti</h2>
+    <div id="reportContent" style="background: #151a23; padding: 18px; border-radius: 16px; margin-bottom: 20px; border: 1px solid var(--line); text-align: left;"></div>
+    <button class="neo-actionBtn" onclick="closeSubModals()" style="width: 100%; height: 48px; background: var(--accent-neo); color: #000; font-weight: bold; border-radius: 12px; font-size: 15px;">Tamamdır ✨</button>
   </div>
 </div>
 
@@ -605,9 +642,9 @@ function getDynamicHashtags(type, owner, work, feel, isShorts) {
 }
 
 const PIN_DEFAULT =
-`💬 Yorumlarınızla yalnız olmadığımızı hissediyor, daha iyisini yapmak için motive oluyoruz💬
-💖 Beğeni ve yorumlarınız bizim için çok kıymetli, desteğiniz için teşekkür ederiz 💖
-🎶 Ruhunuza iyi gelen videolar için abone olmayı, bildirimleri açamayı unutmayın🎶
+`💬 Yorumlarınızla yalnız olmadığımızı hissediyor, daha iyisini yapmak için motive oluyoruz
+💖 Beğeni ve yorumlarınız bizim için çok kıymetli, desteğiniz için teşekkür ederiz 
+🎶 Ruhunuza iyi gelen videolar için abone olmayı, bildirimleri açamayı unutmayın
 👉 https://www.youtube.com/channel/UCipCjQD1NXNHy-T6Mf34jZg/?sub_confirmation=1
 📺 Keyifli izlemeler!🌹`;
 
@@ -980,8 +1017,8 @@ function shortsBlocks(){
   const feelPlain = feelVal.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim() || "—";
   const m = TYPE_MAP[t];
   
-  // Düzeltme: Tür değiştiğinde Shorts modundaki emojiler de dinamik olarak TYPE_MAP verilerine göre güncellenir.
-  const infoShort = (t==="Ambiyans Videoları") ? `🍃 Ortam Adı: ${owner}\n🎉 Ambiyans Türü: ${work}\n💚 Atmosfer Hissi: ${feelPlain}` : `${m.icon1} ${m.eser}:  ${work}\n${m.icon2} ${m.sahip}: ${owner}\n💖 ${m.feel}:  ${feelVal}`;
+  /* Shorts açıklama bilgi bloğunda his ismi emojiden arındırıldı (saf) */
+  const infoShort = (t==="Ambiyans Videoları") ? `🍃 Ortam Adı: ${owner}\n🎉 Ambiyans Türü: ${work}\n💚 Atmosfer Hissi: ${feelPlain}` : `${m.icon1} ${m.eser}:  ${work}\n${m.icon2} ${m.sahip}: ${owner}\n💖 ${m.feel}:  ${feelPlain}`;
   const defaultShortMiddle = `💞 Ruhu dinlendiren en duygusal yansımalar.💝\n📌 Huzur veren paylaşımlar için  @4mevsimsarkilar 'ı takipte kalın.🕊️\n📝 Beğeni ve yorumlarınızla ailemize güç katın.💕\n🎧 Keyifli dinlemeler!🌹`;
   return { infoShort, defaultShortMiddle };
 }
@@ -1003,7 +1040,7 @@ function regenerate(){
     
     const owner = ownerInput || "—";
     const work  = workInput || "—";
-    const feelVal = feelInput || "—"; 
+    const feelVal = feelInput || "—";
     const ownerTag = ownerInput ? "#"+ownerInput.split(/\s+/).map(w=>w.charAt(0).toLocaleUpperCase('tr-TR')+w.slice(1).toLocaleLowerCase('tr-TR')).join("") : "";
     
     const titleTags = [...selTitle]; 
@@ -1011,6 +1048,7 @@ function regenerate(){
     if(ownerTag && !titleTags.includes(ownerTag)) titleTags.push(ownerTag);
     
     let titleShort;
+    /* Başlıkta orijinal feelVal (emojili hali) muhafaza edildi */
     if(t==="Ambiyans Videoları"){ titleShort = `${owner} Ambiyansı | ${work} | ${feelVal} ${titleTags.join(" ")}`; }
     else{ titleShort = `${owner} – ${work}${feelInput?` (${feelVal})`:""} | #4mevsimşarkılar ${titleTags.join(" ")}`; }
     
@@ -1139,7 +1177,10 @@ function prepareInitialFeels() {
     }
     for (let cat in RAW_DATA) { 
         RAW_DATA[cat].forEach(item => { 
-            initial.push({ id: ++idCounter, e: item[0], t: item[1], c: cat, fav: false }); 
+            // Aynı başlığa sahip hislerin başlangıçta da mükerrer olmasını önler
+            if (!initial.some(x => x.t.toLowerCase() === item[1].toLowerCase())) {
+                initial.push({ id: ++idCounter, e: item[0], t: item[1], c: cat, fav: false }); 
+            }
         }); 
     }
     return initial;
@@ -1192,7 +1233,16 @@ function applyNeoFilters() {
     document.getElementById('neoRcStatus').innerText = `${FEELS_NEO.length} his / ${count} sonuç`;
 }
 
-function clearNeoInput() { document.getElementById('neoQ').value = ''; applyNeoFilters(); }
+function clearNeoInput() { 
+    document.getElementById('neoQ').value = ''; 
+    applyNeoFilters(); 
+    document.getElementById('neoQ').focus(); 
+}
+
+function scrollPoolToTop() { 
+    document.getElementById('neoChips').scrollTo({top: 0, behavior: 'smooth'}); 
+}
+
 function toggleFavFilter() { neoFavOnly = !neoFavOnly; document.getElementById('btnFavFilter').classList.toggle('active', neoFavOnly); applyNeoFilters(); }
 function toggleFavNeo(e, id) { e.stopPropagation(); const idx = FEELS_NEO.findIndex(x => x.id === id); if(idx !== -1) { FEELS_NEO[idx].fav = !FEELS_NEO[idx].fav; saveNeo(); renderNeo(); } }
 
@@ -1217,6 +1267,9 @@ function applyNeoFeelAndClose() {
         $("#hisSelected").value = seciliMetin;
         $("#feel").value = seciliMetin;
         
+        const clearBtn = document.querySelector(`.input-clear[data-clear="hisSelected"]`);
+        if(clearBtn) clearBtn.style.display = 'block';
+        
         regenerate(); 
         closeHisModal(); 
         toast("His Başarıyla Aktarıldı!");
@@ -1231,9 +1284,26 @@ document.getElementById('neoCats').onclick = (e) => {
     btn.classList.add('active'); neoActiveCat = btn.dataset.cat; applyNeoFilters();
 };
 
-function saveNewFeel() {
+/* MANUEL TEKİL HİS EKLEME - MÜKERRER KONTROLÜ */
+function saveNewFeel(force = false) {
     const t = document.getElementById('newTitle').value.trim();
     if(!t) return;
+
+    // Aynı başlıkla başka his var mı?
+    const exists = FEELS_NEO.some(f => f.t.toLowerCase() === t.toLowerCase());
+
+    if(exists && !force) {
+        document.getElementById('confirmIcon').innerText = "⚠️";
+        document.getElementById('confirmTitle').innerText = "Zaten Mevcut";
+        document.getElementById('confirmMsg').innerText = `"${t}" başlığıyla bir his zaten kayıtlı. Yine de eklemek istiyor musunuz?`;
+        
+        document.getElementById('confirmYesBtn').onclick = () => {
+            saveNewFeel(true);
+        };
+        openSubModal('confirmModal');
+        return;
+    }
+
     const newId = FEELS_NEO.length > 0 ? Math.max(...FEELS_NEO.map(f => f.id)) + 1 : 1;
     FEELS_NEO.push({ id: newId, e: document.getElementById('newEmoji').value || "✨", t, c: document.getElementById('newCat').value, fav: false });
     saveNeo(); renderNeo(); closeSubModals(); document.getElementById('newTitle').value = "";
@@ -1245,11 +1315,30 @@ function openEditModal() {
     openSubModal('editModal');
 }
 
-function updateFeel() {
+/* MANUEL HİS DÜZENLEME - MÜKERRER KONTROLÜ */
+function updateFeel(force = false) {
     const newT = document.getElementById('editTitle').value.trim();
     if(!newT || neoPinnedId === null) return;
+
+    const exists = FEELS_NEO.some(f => f.t.toLowerCase() === newT.toLowerCase() && f.id !== neoPinnedId);
+
+    if (exists && !force) {
+        document.getElementById('confirmIcon').innerText = "⚠️";
+        document.getElementById('confirmTitle').innerText = "İsim Çakışması";
+        document.getElementById('confirmMsg').innerText = `"${newT}" ismi başka bir his tarafından kullanılıyor. Yine de güncellemek istiyor musunuz?`;
+        
+        document.getElementById('confirmYesBtn').onclick = () => {
+            updateFeel(true); 
+        };
+        openSubModal('confirmModal');
+        return; 
+    }
+
     const idx = FEELS_NEO.findIndex(f => f.id === neoPinnedId);
-    if(idx !== -1) { FEELS_NEO[idx] = { ...FEELS_NEO[idx], e: document.getElementById('editEmoji').value, t: newT, c: document.getElementById('editCat').value }; saveNeo(); renderNeo(); closeSubModals(); document.getElementById('neoP1').innerText = `${FEELS_NEO[idx].e} ${newT}`; }
+    if(idx !== -1) { 
+        FEELS_NEO[idx] = { ...FEELS_NEO[idx], e: document.getElementById('editEmoji').value, t: newT, c: document.getElementById('editCat').value }; 
+        saveNeo(); renderNeo(); closeSubModals(); document.getElementById('neoP1').innerText = `${FEELS_NEO[idx].e} ${newT}`; 
+    }
 }
 
 function deleteFeel() {
@@ -1283,7 +1372,11 @@ function showDerivativesMenu() {
 function addSelectedDerivatives() {
     const checks = document.querySelectorAll('#derivList input:checked');
     let currentMaxId = FEELS_NEO.length > 0 ? Math.max(...FEELS_NEO.map(f => f.id)) : 0;
-    checks.forEach(c => { FEELS_NEO.push({id: ++currentMaxId, e: c.dataset.e, t: c.dataset.t, c: c.dataset.c, fav: false}); });
+    checks.forEach(c => { 
+        if(!FEELS_NEO.some(f => f.t.toLowerCase() === c.dataset.t.toLowerCase())) {
+            FEELS_NEO.push({id: ++currentMaxId, e: c.dataset.e, t: c.dataset.t, c: c.dataset.c, fav: false});
+        }
+    });
     saveNeo(); renderNeo(); closeSubModals();
 }
 
@@ -1293,6 +1386,7 @@ function exportXLSX() {
     XLSX.writeFile(wb, "NRA_His_Evreni.xlsx");
 }
 
+/* TOPLU EXCEL / CSV YÜKLEME - MÜKERRER KONTROLÜ VE İŞLEM ÖZETİ RAPORU */
 function openFileLoader() {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -1310,31 +1404,61 @@ function openFileLoader() {
                 const sheet = workbook.Sheets[workbook.SheetNames[0]];
                 const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-                let basarili = 0;
-                let hatali = 0;
+                let addedCount = 0;
+                let duplicateCount = 0;
+                let skipCount = 0;
                 let currentMaxId = FEELS_NEO.length > 0 ? Math.max(...FEELS_NEO.map(f => f.id)) : 0;
 
+                const headers = ["emoji", "his", "his adı", "his ismi", "kategori", "category", "title"];
+
                 json.forEach((row, index) => {
-                    if (index === 0 || !row || row.length < 2) {
-                        if(row && row.length > 0) hatali++; 
-                        return; 
+                    if (!row || row.length < 1) {
+                        skipCount++;
+                        return;
                     }
 
-                    const emoji = (row[0] || "✨").toString().trim();
-                    const hisAdi = (row[1] || "").toString().trim();
-                    const kategori = (row[2] || "genel").toString().toLowerCase().trim();
+                    const rawE = (row[0] || "✨").toString().trim();
+                    const rawT = (row[1] || "").toString().trim();
+                    const rawC = (row[2] || "genel").toString().toLowerCase().trim();
 
-                    if (hisAdi) {
-                        FEELS_NEO.push({ id: ++currentMaxId, e: emoji, t: hisAdi, c: kategori, fav: false });
-                        basarili++;
+                    if (!rawT || headers.includes(rawT.toLowerCase())) {
+                        skipCount++;
+                        return;
+                    }
+
+                    // Mükerrer Kontrolü (Zaten evrende var mı?)
+                    if (!FEELS_NEO.some(f => f.t.toLowerCase() === rawT.toLowerCase())) {
+                        FEELS_NEO.push({ id: ++currentMaxId, e: rawE, t: rawT, c: rawC, fav: false });
+                        addedCount++;
                     } else {
-                        hatali++;
+                        duplicateCount++;
                     }
                 });
 
                 saveNeo(); 
                 renderNeo();
-                document.getElementById('reportContent').innerHTML = `<p><b>${basarili}</b> yeni his başarıyla eklendi!</p><p><b>${hatali}</b> hatalı/boş satır atlandı.</p>`;
+
+                // Görseldeki İşlem Özeti Modalının HTML Yapısı
+                const reportHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="color:var(--muted); font-size:14px;">✅ Yeni Eklenen</span>
+                        <span style="background:var(--copy); color:#000; padding:2px 10px; border-radius:20px; font-weight:bold; font-size:13px;">${addedCount}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="color:var(--muted); font-size:14px;">⚠️ Zaten Mevcut</span>
+                        <span style="background:var(--fav); color:#000; padding:2px 10px; border-radius:20px; font-weight:bold; font-size:13px;">${duplicateCount}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="color:var(--muted); font-size:14px;">📄 Başlık / Boş</span>
+                        <span style="background:var(--line); color:var(--muted); padding:2px 10px; border-radius:20px; font-weight:bold; font-size:13px;">${skipCount}</span>
+                    </div>
+                    <div style="margin-top:15px; padding-top:15px; border-top:1px dashed var(--line); display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight:600; color:var(--accent-neo); font-size:14px;">Evrendeki Toplam</span>
+                        <b style="font-size:16px; color:#fff;">${FEELS_NEO.length} His</b>
+                    </div>
+                `;
+
+                document.getElementById('reportContent').innerHTML = reportHTML;
                 openSubModal('reportModal');
                 
             } catch (err) {
@@ -1351,6 +1475,43 @@ function openFileLoader() {
 document.addEventListener("DOMContentLoaded",()=>{
   initDrops(); attachEditLock(); setupCopy(); addRandomCommentButton(); 
 
+  /* 'X' TEMİZLEME BUTONLARI DİNLEYİCİSİ */
+  $$(".input-clear").forEach(btn => {
+      const targetId = btn.getAttribute("data-clear");
+      const inputEl = document.getElementById(targetId);
+      
+      if(inputEl && inputEl.value.length > 0) {
+          btn.style.display = "block";
+      }
+      
+      if(inputEl) {
+          inputEl.addEventListener("input", () => {
+              btn.style.display = inputEl.value.length > 0 ? "block" : "none";
+          });
+      }
+      
+      btn.addEventListener("click", () => {
+          inputEl.value = "";
+          btn.style.display = "none";
+          if(targetId === "hisSelected") {
+              const hiddenFeel = document.getElementById("feel");
+              if(hiddenFeel) hiddenFeel.value = "";
+          }
+          regenerate();
+      });
+  });
+
+  /* YUKARI ÇIK (SCROLL TO TOP) BUTONU DİNLEYİCİSİ */
+  const neoChipsEl = document.getElementById('neoChips');
+  if (neoChipsEl) {
+      neoChipsEl.addEventListener('scroll', function() {
+          const btn = document.getElementById('poolScrollTop');
+          if (btn) {
+              btn.style.display = this.scrollTop > 80 ? 'flex' : 'none';
+          }
+      });
+  }
+
   $("#typeSel").addEventListener("change",()=>{ labelize(); regenerate(); });
   
   ["owner","work","album"].forEach(id=>{ 
@@ -1366,8 +1527,15 @@ document.addEventListener("DOMContentLoaded",()=>{
   $("#btnClearAll").onclick=()=>{ 
       selTitle.clear(); selTitleAlt.clear(); selDesc.clear(); 
       $$(".opt.active").forEach(o=> { o.classList.remove("active"); o.textContent = o.textContent.replace(" ✓", ""); }); 
-      ["owner","work","album","feel"].forEach(id=>document.getElementById(id).value=""); 
-      $("#hisSelected").value=""; $("#pinSelect").value="default"; 
+      ["owner","work","album","feel"].forEach(id=>{ 
+          document.getElementById(id).value=""; 
+          const btn = document.querySelector(`.input-clear[data-clear="${id}"]`);
+          if(btn) btn.style.display = "none";
+      }); 
+      $("#hisSelected").value=""; 
+      const hisBtn = document.querySelector(`.input-clear[data-clear="hisSelected"]`);
+      if(hisBtn) hisBtn.style.display = "none";
+      $("#pinSelect").value="default"; 
       shortsMode=false; regenerate(); initDrops(); toast("Temizlendi"); 
   };
 
@@ -1401,13 +1569,21 @@ document.addEventListener("DOMContentLoaded",()=>{
         try {
           const st = JSON.parse(r.result);
           if(st.type) $("#typeSel").value = st.type;
-          if(st.owner) $("#owner").value = st.owner;
-          if(st.work) $("#work").value = st.work;
-          if(st.album) $("#album").value = st.album;
+          
+          ["owner", "work", "album"].forEach(id => {
+              if(st[id]) {
+                  const el = document.getElementById(id);
+                  el.value = st[id];
+                  const btn = document.querySelector(`.input-clear[data-clear="${id}"]`);
+                  if(btn) btn.style.display = "block";
+              }
+          });
           
           if(st.feel) { 
               $("#feel").value = st.feel; 
               $("#hisSelected").value = st.feel; 
+              const hisBtn = document.querySelector(`.input-clear[data-clear="hisSelected"]`);
+              if(hisBtn) hisBtn.style.display = "block";
           }
           
           selTitle.clear(); (st.titleTags||[]).forEach(t => selTitle.add(t));
