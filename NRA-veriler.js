@@ -889,12 +889,20 @@ const RAW_DATA = {
       "Kalbi Kırılmış"
     ],
     [
-      "💘",
-      "Aşkın İlk Kıvılcımı"
-    ],
-    [
       "🔥",
       "Yanan Hatıralar"
+    ],
+    [
+      "❤️",
+      "Nostaljik Aşkı Anlatan"
+    ],
+    [
+      "❤️",
+      "Romantik Aşkı Anlatan"
+    ],
+    [
+      "🌠",
+      "Gizemli Dileğin Parıltısı"
     ]
   ],
   "vatan": [
@@ -2151,6 +2159,10 @@ const RAW_DATA = {
     [
       "🪙",
       "Huzurlu Gönül Egzisi"
+    ],
+    [
+      "💓",
+      "Huzurlu Kalp Ritimleri"
     ]
   ],
   "atmosfer": [
@@ -4019,6 +4031,22 @@ const RAW_DATA = {
     [
       "🌧️",
       "Yağmurlu Ormanın Gizemi"
+    ],
+    [
+      "📖",
+      "Derin Hatıra"
+    ],
+    [
+      "📖",
+      "Gizemli Hatıra"
+    ],
+    [
+      "📖",
+      "Huzurlu Hatıra"
+    ],
+    [
+      "📖",
+      "Romantik Hatıra"
     ]
   ],
   "ambiyans": [
