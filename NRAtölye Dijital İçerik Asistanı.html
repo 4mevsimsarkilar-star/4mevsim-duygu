@@ -206,7 +206,7 @@
 
     <!-- REELS AÇIKLAMA OLUŞTURUCU KARTI -->
     <div class="card" style="border-top: 3px solid var(--accent-neo);">
-        <h2>📝 Reels Seri Açıklama Oluşturucu</h2>
+        <h2>📝 Reels Açıklama Oluşturucu</h2>
         <div class="grid" style="margin-bottom: 10px;">
             <div class="input-wrapper">
                 <input id="capArtist" class="input-kutucuk" placeholder="Sanatçı Adı" oninput="generateCaptions(); toggleClearBtn(this)">
@@ -225,12 +225,12 @@
                 <span class="clear-btn" onclick="clearInput('capVibe')" title="Temizle">&times;</span>
             </div>
             <div class="input-wrapper">
-                <input id="capIgLink" class="input-kutucuk" placeholder="Instagram Uzun Versiyon Linki (Boşsa [Link Profilde] yazar)" oninput="generateCaptions(); toggleClearBtn(this)">
-                <span class="clear-btn" onclick="clearInput('capIgLink')" title="Temizle">&times;</span>
-            </div>
-            <div class="input-wrapper">
                 <input id="capFbLink" class="input-kutucuk" placeholder="Facebook Uzun Versiyon Linki (Boşsa [Link Profilde] yazar)" oninput="generateCaptions(); toggleClearBtn(this)">
                 <span class="clear-btn" onclick="clearInput('capFbLink')" title="Temizle">&times;</span>
+            </div>
+            <div class="input-wrapper">
+                <input id="capIgLink" class="input-kutucuk" placeholder="Instagram Uzun Versiyon Linki (Boşsa [Link Profilde] yazar)" oninput="generateCaptions(); toggleClearBtn(this)">
+                <span class="clear-btn" onclick="clearInput('capIgLink')" title="Temizle">&times;</span>
             </div>
         </div>
         
@@ -242,19 +242,19 @@
         <div class="grid">
             <div style="background: #11161d; padding: 12px; border-radius: 8px; border: 1px solid var(--line);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <h3 style="margin-top: 0; margin-bottom: 0; color: #e1306c;">Instagram Açıklaması</h3>
-                    <span id="countIg" class="badge b2">0 Karakter</span>
-                </div>
-                <div id="outIg" style="white-space: pre-wrap; font-size: 13px; color: #cdd6e3; margin-bottom: 10px; min-height: 120px; border: 1px dashed var(--line); padding: 8px; border-radius: 6px;"></div>
-                <button class="btn-copy" onclick="copy('outIg')">📋 IG Kopyala</button>
-            </div>
-            <div style="background: #11161d; padding: 12px; border-radius: 8px; border: 1px solid var(--line);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <h3 style="margin-top: 0; margin-bottom: 0; color: #1877f2;">Facebook Açıklaması</h3>
                     <span id="countFb" class="badge b2">0 Karakter</span>
                 </div>
                 <div id="outFb" style="white-space: pre-wrap; font-size: 13px; color: #cdd6e3; margin-bottom: 10px; min-height: 120px; border: 1px dashed var(--line); padding: 8px; border-radius: 6px;"></div>
                 <button class="btn-copy" onclick="copy('outFb')">📋 FB Kopyala</button>
+            </div>
+            <div style="background: #11161d; padding: 12px; border-radius: 8px; border: 1px solid var(--line);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h3 style="margin-top: 0; margin-bottom: 0; color: #e1306c;">Instagram Açıklaması</h3>
+                    <span id="countIg" class="badge b2">0 Karakter</span>
+                </div>
+                <div id="outIg" style="white-space: pre-wrap; font-size: 13px; color: #cdd6e3; margin-bottom: 10px; min-height: 120px; border: 1px dashed var(--line); padding: 8px; border-radius: 6px;"></div>
+                <button class="btn-copy" onclick="copy('outIg')">📋 IG Kopyala</button>
             </div>
         </div>
     </div>
@@ -475,32 +475,40 @@ function generateCaptions() {
     const song = document.getElementById('capSong').value;
     const series = document.getElementById('capSeries').value;
     const vibe = document.getElementById('capVibe').value;
-    const igLink = document.getElementById('capIgLink').value || '[Link Profilde]';
     const fbLink = document.getElementById('capFbLink').value || '[Link Profilde]';
+    const igLink = document.getElementById('capIgLink').value || '[Link Profilde]';
 
-    // Regex hatası giderildi (\\s yerine \s) - Boşluklar tam anlamıyla kaldırılır
-    const makeTag = (text) => text ? '#' + text.replace(/\s+/g, '') : '';
+    // Regex ile sadece harf ve rakamları bırakarak hashtag içindeki emojileri, boşlukları ve özel karakterleri siliyoruz
+    const makeTag = (text) => text ? '#' + text.replace(/[^\p{L}\p{N}]/gu, '') : '';
     
     // Etiket oluşturulurken birden fazla aralık varsa düzeltilir
     const tags = `#4mevsimşarkılar ${makeTag(artist)} ${makeTag(song)} ${makeTag(vibe)} ${makeTag(series)} #Shorts`.replace(/\s+/g, ' ').trim();
 
     // Şablonu oluşturan ana fonksiyon
     const createTemplate = (link) => {
-        // Eğer tüm inputlar boşsa sayacı ve metni boş tutması daha mantıklı
-        if(!artist && !song && !series && !vibe && document.getElementById('capIgLink').value === '' && document.getElementById('capFbLink').value === '') return "";
+        // Eğer tüm inputlar boşsa sayacı ve metni boş tut
+        if(!artist && !song && !series && !vibe && document.getElementById('capFbLink').value === '' && document.getElementById('capIgLink').value === '') return "";
         
-        return `🎙️ ${artist} – “${song}” ❤️🎶\n\n"${series}" Serimize sanatçımız ${artist} ile devam ediyoruz. Sıradaki eserimiz: "${song}"\n🎧 Keyifli dinlemeler!🌹\n\n🎵 Eser Adı: ${song}\n🎤 Sanatçı Adı: ${artist}\n💖 Eser Hissi: ${vibe}\n👉 Uzun versiyon linki: ${link}\n*\n*\n*\n${tags}`;
+        // Seri adı doluysa üst başlığı değiştir, boşsa "🎙️ Sanatçı Adı..." mesajını ekle
+        let headerText = '';
+        if (series && series.trim() !== '') {
+            headerText = `${series} Serimize sanatçımız ${artist} ile devam ediyoruz. Sıradaki eserimiz: "${song}"\n🎧 Keyifli dinlemeler!🌹\n\n`;
+        } else {
+            headerText = `🎙️ ${artist} – “${song}” ❤️🎶\n🎧 Keyifli dinlemeler!🌹\n\n`;
+        }
+        
+        return `${headerText}🎵 Eser Adı: ${song}\n🎤 Sanatçı Adı: ${artist}\n💖 Eser Hissi: ${vibe}\n👉 Uzun versiyon linki: ${link}\n*\n*\n*\n${tags}`;
     };
 
-    const igText = createTemplate(igLink);
     const fbText = createTemplate(fbLink);
+    const igText = createTemplate(igLink);
 
-    document.getElementById('outIg').innerText = igText;
     document.getElementById('outFb').innerText = fbText;
+    document.getElementById('outIg').innerText = igText;
 
     // Karakter sayaçlarını canlı güncelle
-    document.getElementById('countIg').innerText = igText.length + " Karakter";
     document.getElementById('countFb').innerText = fbText.length + " Karakter";
+    document.getElementById('countIg').innerText = igText.length + " Karakter";
 }
 
 // X (TEMİZLE) BUTONU GÖSTER/GİZLE VE TEKİL TEMİZLEME FONKSİYONLARI
@@ -522,7 +530,7 @@ function clearInput(inputId) {
 
 // TÜM KUTULARI TEMİZLE BUTONU FONKSİYONU
 function clearAllInputs() {
-    const ids = ['capArtist', 'capSong', 'capSeries', 'capVibe', 'capIgLink', 'capFbLink'];
+    const ids = ['capArtist', 'capSong', 'capSeries', 'capVibe', 'capFbLink', 'capIgLink'];
     ids.forEach(id => {
         let el = document.getElementById(id);
         el.value = '';
@@ -530,10 +538,10 @@ function clearAllInputs() {
     });
     
     // Çıktıları ve sayaçları sıfırla
-    document.getElementById('outIg').innerText = '';
     document.getElementById('outFb').innerText = '';
-    document.getElementById('countIg').innerText = "0 Karakter";
+    document.getElementById('outIg').innerText = '';
     document.getElementById('countFb').innerText = "0 Karakter";
+    document.getElementById('countIg').innerText = "0 Karakter";
 }
 
 // YUKARI KAYDIR (SCROLL TO TOP) FONKSİYONU
